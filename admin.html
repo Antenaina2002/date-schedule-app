@@ -330,9 +330,23 @@
     <div class="login-emoji">🔐</div>
     <h1>Espace <span>Admin</span></h1>
     <p>Accès réservé à mon amour secret</p>
-    <input type="password" id="passwordInput" placeholder="••••••••" onkeydown="if(event.key==='Enter')login()">
-    <button class="btn-primary" onclick="login()">Entrer ❤️</button>
-    <div class="login-error" id="loginError">Mot de passe incorrect 😕</div>
+
+    <input
+      type="email"
+      id="emailInput"
+      placeholder="ton@email.com"
+      style="text-align:left; letter-spacing:normal;"
+    >
+    <input
+      type="password"
+      id="passwordInput"
+      placeholder="••••••••"
+      onkeydown="if(event.key==='Enter') login()"
+    >
+    <button class="btn-primary" id="loginBtn" onclick="login()">
+      Entrer ❤️
+    </button>
+    <div class="login-error" id="loginError"></div>
   </div>
 </div>
 
@@ -341,7 +355,9 @@
   <div class="admin-header">
     <h1>Admin — <span>mes propositions</span> 💌</h1>
     <div style="display:flex;align-items:center;gap:0.75rem;">
-      <span style="font-size:0.82rem;color:var(--text-muted);">Bienvenue, mon amour 👋</span>
+      <span style="font-size:0.82rem;color:var(--text-muted);">
+        Connecté : <strong id="adminEmail"></strong>
+      </span>
       <button class="logout-btn" onclick="logout()">Déconnexion</button>
     </div>
   </div>
@@ -412,8 +428,14 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
 import {
   getFirestore, collection, addDoc, getDocs,
-  doc, updateDoc, deleteDoc, query, orderBy, where, Timestamp
+  doc, updateDoc, deleteDoc, query, orderBy, where
 } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged
+} from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
 
 // ╔══════════════════════════════════════════════════╗
 // ║  🔧 CONFIGURATION FIREBASE        ║
@@ -427,14 +449,32 @@ const firebaseConfig = {
   appId: "1:340648368652:web:e96efe6100d45a39846c29"
 };
 
-let db;
-try {
-  const app = initializeApp(firebaseConfig);
-  db = getFirestore(app);
-} catch(e) { console.log('Firebase non configuré'); }
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
 
 window._db = db;
-window._fb = { collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, orderBy, where, Timestamp };
+window._auth = auth;
+window._fb = {
+  collection, addDoc, getDocs, doc, updateDoc,
+  deleteDoc, query, orderBy, where,
+  signInWithEmailAndPassword, signOut, onAuthStateChanged
+};
+
+// Surveille l'état de connexion
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    // Connecté → afficher l'admin
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('adminScreen').style.display = 'block';
+    document.getElementById('adminEmail').textContent = user.email;
+    initAdmin();
+  } else {
+    // Déconnecté → afficher le login
+    document.getElementById('loginScreen').style.display = 'flex';
+    document.getElementById('adminScreen').style.display = 'none';
+  }
+});
 </script>
 
 <script>
@@ -442,20 +482,38 @@ window._fb = { collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, or
 //  AUTH
 // ══════════════════════════════════════════════
 
-const ADMIN_PASSWORD = 'monAmour2024!';
-
-function login() {
+async function login() {
+  const email = document.getElementById('emailInput').value.trim();
   const pw = document.getElementById('passwordInput').value;
-  if (pw === ADMIN_PASSWORD) {
-    document.getElementById('loginScreen').style.display = 'none';
-    document.getElementById('adminScreen').style.display = 'block';
-    sessionStorage.setItem('adminAuth', '1');
-    initAdmin();
-  } else {
-    document.getElementById('loginError').style.display = 'block';
-    document.getElementById('passwordInput').value = '';
-    document.getElementById('passwordInput').focus();
+  const btn = document.getElementById('loginBtn');
+  const err = document.getElementById('loginError');
+
+  if (!email || !pw) {
+    err.textContent = 'Remplis tous les champs 😕';
+    err.style.display = 'block';
+    return;
   }
+
+  btn.disabled = true;
+  btn.textContent = 'Connexion…';
+  err.style.display = 'none';
+
+  try {
+    const { signInWithEmailAndPassword } = window._fb;
+    await signInWithEmailAndPassword(window._auth, email, pw);
+    // onAuthStateChanged s'occupe du reste automatiquement
+  } catch (e) {
+    err.textContent = 'Email ou mot de passe incorrect 😕';
+    err.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Entrer ❤️';
+  }
+}
+
+async function logout() {
+  const { signOut } = window._fb;
+  await signOut(window._auth);
+  // onAuthStateChanged s'occupe du reste automatiquement
 }
 
 function logout() {
