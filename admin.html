@@ -55,6 +55,7 @@
   .login-box p { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 2rem; }
   .login-emoji { font-size: 2.5rem; }
 
+  input[type="email"],
   input[type="password"] {
     width: 100%;
     padding: 0.85rem 1rem;
@@ -65,11 +66,13 @@
     color: var(--text);
     background: var(--rose-pale);
     outline: none;
-    text-align: center;
-    letter-spacing: 0.2em;
+    text-align: left;
+    letter-spacing: normal;
     margin-bottom: 1rem;
     transition: border-color 0.2s;
   }
+  input[type="password"] { text-align: center; letter-spacing: 0.2em; }
+  input[type="email"]:focus,
   input[type="password"]:focus { border-color: var(--rose-deep); background: white; }
 
   .btn-primary {
@@ -438,7 +441,7 @@ import {
 } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
 
 // ╔══════════════════════════════════════════════════╗
-// ║  🔧 CONFIGURATION FIREBASE        ║
+// ║  🔧 CONFIGURATION FIREBASE                       ║
 // ╚══════════════════════════════════════════════════╝
 const firebaseConfig = {
   apiKey: "AIzaSyB-GZDMMGGCsoxAgVHBuWG0Z9UGsVVx4x8",
@@ -453,58 +456,38 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-window._db = db;
-window._auth = auth;
-window._fb = {
-  collection, addDoc, getDocs, doc, updateDoc,
-  deleteDoc, query, orderBy, where,
-  signInWithEmailAndPassword, signOut, onAuthStateChanged
-};
+// ══════════════════════════════════════════════
+//  FONCTIONS UTILITAIRES (inline — plus besoin de admin.utils.js)
+// ══════════════════════════════════════════════
+function validateLoginForm({ email, password }) {
+  if (!email || email.trim() === '') return 'Email requis';
+  if (!email.includes('@')) return 'Email invalide';
+  if (!password || password.trim() === '') return 'Mot de passe requis';
+  if (password.length < 6) return 'Mot de passe trop court (min. 6 caractères)';
+  return null;
+}
 
-// Surveille l'état de connexion
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    // Connecté → afficher l'admin
-    document.getElementById('loginScreen').style.display = 'none';
-    document.getElementById('adminScreen').style.display = 'block';
-    document.getElementById('adminEmail').textContent = user.email;
-    initAdmin();
-  } else {
-    // Déconnecté → afficher le login
-    document.getElementById('loginScreen').style.display = 'flex';
-    document.getElementById('adminScreen').style.display = 'none';
-  }
-});
-
-import {
-    statusLabel, computeStats,
-    isUnavailable, addUnavailableDate, removeUnavailableDate,
-    updateRequestStatus, filterByStatus, extractBookedDates,
-    isValidUser, validateLoginForm, getAuthErrorMessage,
-    formatDateFr, formatDate
-  } from './admin.utils.js';
-
-  window._adminUtils = {
-    statusLabel, computeStats,
-    isUnavailable, addUnavailableDate, removeUnavailableDate,
-    updateRequestStatus, filterByStatus, extractBookedDates,
-    isValidUser, validateLoginForm, getAuthErrorMessage,
-    formatDateFr, formatDate
+function getAuthErrorMessage(errorCode) {
+  const messages = {
+    'auth/user-not-found':         'Aucun compte avec cet email 😕',
+    'auth/wrong-password':         'Mot de passe incorrect 😕',
+    'auth/invalid-email':          'Email invalide',
+    'auth/too-many-requests':      'Trop de tentatives, réessaie plus tard',
+    'auth/network-request-failed': 'Problème de connexion réseau',
+    'auth/invalid-credential':     'Email ou mot de passe incorrect 😕',
   };
-</script>
+  return messages[errorCode] ?? 'Une erreur est survenue, réessaie';
+}
 
-<script>
 // ══════════════════════════════════════════════
-//  AUTH
+//  AUTH — LOGIN / LOGOUT
 // ══════════════════════════════════════════════
-
-async function login() {
+window.login = async function() {
   const email = document.getElementById('emailInput').value.trim();
-  const pw = document.getElementById('passwordInput').value;
-  const btn = document.getElementById('loginBtn');
-  const err = document.getElementById('loginError');
+  const pw    = document.getElementById('passwordInput').value;
+  const btn   = document.getElementById('loginBtn');
+  const err   = document.getElementById('loginError');
 
-  // ← validation locale (avant d'appeler Firebase)
   const formError = validateLoginForm({ email, password: pw });
   if (formError) {
     err.textContent = formError;
@@ -517,33 +500,40 @@ async function login() {
   err.style.display = 'none';
 
   try {
-    const { signInWithEmailAndPassword } = window._fb;
-    await signInWithEmailAndPassword(window._auth, email, pw);
+    await signInWithEmailAndPassword(auth, email, pw);
+    // onAuthStateChanged prend le relais automatiquement
   } catch (e) {
-    // ← message Firebase traduit en français
     err.textContent = getAuthErrorMessage(e.code);
     err.style.display = 'block';
     btn.disabled = false;
     btn.textContent = 'Entrer ❤️';
   }
-}
+};
 
-async function logout() {
-  const { signOut } = window._fb;
-  await signOut(window._auth);
-  // onAuthStateChanged s'occupe du reste automatiquement
-}
+window.logout = async function() {
+  await signOut(auth);
+  // onAuthStateChanged remet le login automatiquement
+};
 
-function logout() {
-  sessionStorage.removeItem('adminAuth');
-  location.reload();
-}
+// ══════════════════════════════════════════════
+//  SURVEILLE L'ÉTAT DE CONNEXION
+// ══════════════════════════════════════════════
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('adminScreen').style.display = 'block';
+    document.getElementById('adminEmail').textContent = user.email;
+    window._db = db;
+    window._fb = { collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, orderBy, where };
+    if (typeof initAdmin === 'function') initAdmin();
+  } else {
+    document.getElementById('loginScreen').style.display = 'flex';
+    document.getElementById('adminScreen').style.display = 'none';
+  }
+});
+</script>
 
-// Auto-login if session
-if (sessionStorage.getItem('adminAuth') === '1') {
-  document.getElementById('loginScreen').style.display = 'none';
-  document.getElementById('adminScreen').style.display = 'block';
-}
+<script>
 
 // ══════════════════════════════════════════════
 //  ADMIN CALENDAR
@@ -811,12 +801,8 @@ function showToast(msg, type='') {
   setTimeout(() => t.classList.remove('show'), 3000);
 }
 
-// Init if already logged in
-if (sessionStorage.getItem('adminAuth') === '1') {
-  setTimeout(() => {
-    if (typeof initAdmin === 'function') initAdmin();
-  }, 500);
-}
+// Init déclenché par onAuthStateChanged dans le module Firebase ci-dessus
+
 </script>
 </body>
 </html>
