@@ -639,6 +639,22 @@ try {
 // Exposer pour les fonctions globales
 window._db = db;
 window._fbFns = { collection, addDoc, getDocs, query, where, Timestamp };
+
+import {
+    isWeekend, isHoliday, isBookableDay,
+    canBook, getQuotaText, validateMealRequest,
+    validatePlanningRequest, formatDate, formatDateFr,
+    getMonthKey, getMonthOffset, getDaysInMonth,
+    HOLIDAYS, MAX_QUOTA
+  } from './Utils.js';
+
+  // Expose au script global si besoin
+  window._utils = {
+    isWeekend, isHoliday, isBookableDay, canBook,
+    getQuotaText, validateMealRequest, validatePlanningRequest,
+    formatDate, formatDateFr, getMonthKey,
+    getMonthOffset, getDaysInMonth, HOLIDAYS, MAX_QUOTA
+  };
 </script>
 
 <script>
