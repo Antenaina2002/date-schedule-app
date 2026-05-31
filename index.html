@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Date avec mon amour ❤️</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rose: #f2a7b8;
+    --rose-deep: #d4688a;
+    --rose-light: #fce8ef;
+    --rose-pale: #fff5f8;
+    --blush: #f7d6e0;
+    --cream: #fdf8f5;
+    --mauve: #c9a0b0;
+    --text: #3d2535;
+    --text-soft: #8a6070;
+    --text-muted: #c4a8b4;
+    --white: #ffffff;
+    --shadow: rgba(180, 100, 130, 0.12);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Background petals */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 40% at 10% 20%, rgba(242,167,184,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 60% at 90% 80%, rgba(212,104,138,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 80% 30% at 50% 100%, rgba(247,214,224,0.25) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container { max-width: 720px; margin: 0 auto; padding: 0 1.5rem; position: relative; z-index: 1; }
+
+  /* HEADER */
+  header {
+    text-align: center;
+    padding: 3.5rem 1rem 2rem;
+    position: relative;
+  }
+  .header-hearts {
+    font-size: 1.5rem;
+    letter-spacing: 0.5rem;
+    margin-bottom: 1rem;
+    animation: float 3s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+  header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.8rem;
+    font-weight: 300;
+    color: var(--text);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+  header h1 span { color: var(--rose-deep); font-style: italic; }
+  header p {
+    font-size: 0.95rem;
+    color: var(--text-soft);
+    margin-top: 0.75rem;
+    font-weight: 300;
+  }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    gap: 0.75rem;
+    margin: 1.5rem 0 2rem;
+    background: var(--white);
+    padding: 0.4rem;
+    border-radius: 20px;
+    box-shadow: 0 2px 20px var(--shadow);
+  }
+  .tab-btn {
+    flex: 1;
+    padding: 0.85rem 1rem;
+    border: none;
+    border-radius: 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 400;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: transparent;
+    color: var(--text-soft);
+  }
+  .tab-btn.active {
+    background: linear-gradient(135deg, var(--rose-deep), #c45580);
+    color: white;
+    box-shadow: 0 4px 15px rgba(212,104,138,0.35);
+    font-weight: 500;
+  }
+  .tab-btn:not(.active):hover { background: var(--rose-light); color: var(--rose-deep); }
+
+  /* SECTION */
+  .section { display: none; animation: fadeIn 0.4s ease; }
+  .section.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* CARD */
+  .card {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 1.75rem;
+    margin-bottom: 1.25rem;
+    box-shadow: 0 4px 24px var(--shadow);
+    border: 1px solid rgba(242,167,184,0.2);
+  }
+  .card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.4rem;
+  }
+  .card-sub {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 1.25rem;
+  }
+
+  /* FOOD GRID */
+  .food-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+  .food-item {
+    border: 2px solid var(--blush);
+    border-radius: 14px;
+    padding: 0.9rem 0.5rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    background: var(--rose-pale);
+  }
+  .food-item:hover { border-color: var(--rose); transform: translateY(-2px); }
+  .food-item.selected {
+    border-color: var(--rose-deep);
+    background: var(--rose-light);
+    box-shadow: 0 4px 12px rgba(212,104,138,0.2);
+    transform: translateY(-2px);
+  }
+  .food-item .emoji { font-size: 2rem; display: block; margin-bottom: 0.4rem; }
+  .food-item .label { font-size: 0.78rem; color: var(--text-soft); font-weight: 400; }
+  .food-item.selected .label { color: var(--rose-deep); font-weight: 500; }
+
+  /* FORM ELEMENTS */
+  label {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--text-soft);
+    margin-bottom: 0.4rem;
+    font-weight: 500;
+  }
+  input[type="text"], input[type="date"], textarea, select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1.5px solid var(--blush);
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    color: var(--text);
+    background: var(--rose-pale);
+    outline: none;
+    transition: border-color 0.2s;
+    margin-bottom: 1rem;
+  }
+  input:focus, textarea:focus, select:focus { border-color: var(--rose-deep); background: white; }
+  textarea { resize: vertical; min-height: 80px; }
+
+  .slot-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.65rem;
+    margin-bottom: 1rem;
+  }
+  .slot-btn {
+    padding: 0.75rem;
+    border: 1.5px solid var(--blush);
+    border-radius: 12px;
+    background: var(--rose-pale);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    color: var(--text-soft);
+    transition: all 0.2s;
+  }
+  .slot-btn:hover { border-color: var(--rose); }
+  .slot-btn.selected {
+    border-color: var(--rose-deep);
+    background: var(--rose-light);
+    color: var(--rose-deep);
+    font-weight: 500;
+  }
+
+  /* SUBMIT BTN */
+  .btn-primary {
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(135deg, var(--rose-deep), #c45580);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 20px rgba(212,104,138,0.3);
+    letter-spacing: 0.02em;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(212,104,138,0.4); }
+  .btn-primary:active { transform: translateY(0); }
+  .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+  /* CALENDAR */
+  .calendar-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+  }
+  .calendar-nav button {
+    background: var(--rose-pale);
+    border: 1.5px solid var(--blush);
+    border-radius: 10px;
+    width: 36px; height: 36px;
+    cursor: pointer;
+    font-size: 1rem;
+    color: var(--rose-deep);
+    transition: all 0.2s;
+  }
+  .calendar-nav button:hover { background: var(--rose-light); }
+  .calendar-month {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--text);
+    text-transform: capitalize;
+  }
+  .cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    text-align: center;
+  }
+  .cal-day-label {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    padding: 0.4rem 0;
+    font-weight: 500;
+  }
+  .cal-day {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    cursor: default;
+    transition: all 0.2s;
+  }
+  .cal-day.empty { background: transparent; }
+  .cal-day.weekday { color: var(--text-muted); background: transparent; font-size: 0.82rem; }
+  .cal-day.weekend, .cal-day.holiday {
+    background: var(--rose-pale);
+    color: var(--text);
+    cursor: pointer;
+    border: 1.5px solid var(--blush);
+  }
+  .cal-day.weekend:hover, .cal-day.holiday:hover {
+    background: var(--rose-light);
+    border-color: var(--rose);
+    transform: scale(1.08);
+  }
+  .cal-day.selected-day {
+    background: var(--rose-deep) !important;
+    color: white !important;
+    border-color: var(--rose-deep) !important;
+    font-weight: 500;
+    box-shadow: 0 3px 10px rgba(212,104,138,0.35);
+  }
+  .cal-day.booked {
+    background: var(--blush) !important;
+    color: var(--mauve) !important;
+    cursor: not-allowed;
+    border-color: var(--blush) !important;
+    text-decoration: line-through;
+  }
+  .cal-day.today { font-weight: 600; }
+
+  /* QUOTA */
+  .quota-banner {
+    background: var(--rose-light);
+    border: 1.5px solid var(--rose);
+    border-radius: 14px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .quota-dots { display: flex; gap: 6px; }
+  .quota-dot {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--blush);
+    border: 1.5px solid var(--mauve);
+    transition: all 0.3s;
+  }
+  .quota-dot.used { background: var(--rose-deep); border-color: var(--rose-deep); }
+  .quota-text { font-size: 0.85rem; color: var(--text-soft); }
+
+  /* ACTIVITIES */
+  .activities-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.65rem;
+  }
+  .activity-card {
+    background: var(--rose-pale);
+    border: 1.5px solid var(--blush);
+    border-radius: 14px;
+    padding: 1rem;
+    cursor: pointer;
+    transition: all 0.25s;
+    text-align: left;
+  }
+  .activity-card:hover { border-color: var(--rose); background: var(--rose-light); transform: translateY(-2px); }
+  .activity-card .act-emoji { font-size: 1.6rem; margin-bottom: 0.4rem; display: block; }
+  .activity-card .act-name { font-size: 0.85rem; color: var(--text); font-weight: 500; }
+  .activity-card .act-desc { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.2rem; }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--text);
+    color: white;
+    padding: 0.9rem 1.75rem;
+    border-radius: 14px;
+    font-size: 0.9rem;
+    z-index: 1000;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    white-space: nowrap;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast.success { background: #3d7d5a; }
+  .toast.error { background: #b04040; }
+
+  /* MODAL */
+  .modal-bg {
+    position: fixed;
+    inset: 0;
+    background: rgba(61,37,53,0.5);
+    backdrop-filter: blur(4px);
+    z-index: 100;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+  }
+  .modal-bg.open { display: flex; }
+  .modal {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    max-width: 420px;
+    width: 100%;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    animation: modalIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes modalIn { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .modal h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+  }
+  .modal p { font-size: 0.9rem; color: var(--text-soft); margin-bottom: 1.25rem; line-height: 1.6; }
+  .modal-date-badge {
+    background: var(--rose-light);
+    color: var(--rose-deep);
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    display: inline-block;
+    margin-bottom: 1rem;
+  }
+  .modal-btns { display: flex; gap: 0.65rem; margin-top: 1rem; }
+  .btn-secondary {
+    flex: 1;
+    padding: 0.85rem;
+    border: 1.5px solid var(--blush);
+    border-radius: 12px;
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    color: var(--text-soft);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-secondary:hover { background: var(--rose-pale); }
+
+  /* UNAVAILABLE MODAL */
+  .unavailable-msg {
+    text-align: center;
+    padding: 2rem;
+  }
+  .unavailable-msg .big-emoji { font-size: 3rem; margin-bottom: 1rem; display: block; }
+  .unavailable-msg h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    color: var(--text);
+    margin-bottom: 0.75rem;
+  }
+  .unavailable-msg p { font-size: 0.9rem; color: var(--text-soft); line-height: 1.65; margin-bottom: 1.25rem; }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 2.5rem 1rem;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+  }
+  footer a { color: var(--rose-deep); text-decoration: none; }
+
+  .divider { height: 1px; background: var(--blush); margin: 1.25rem 0; }
+
+  /* Confetti */
+  .confetti-piece {
+    position: fixed;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    animation: confettiFall linear forwards;
+    z-index: 999;
+    pointer-events: none;
+  }
+  @keyframes confettiFall {
+    0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--cream); }
+  ::-webkit-scrollbar-thumb { background: var(--blush); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <div class="header-hearts">🌸 ✨ 💕</div>
+    <h1>Date avec<br><span>mon amour</span></h1>
+    <p>Un espace rien que pour toi, ma chérie 🌹</p>
+  </header>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('repas')">🍽️ Je veux manger avec toi</button>
+    <button class="tab-btn" onclick="switchTab('planning')">🔥 Planning câlins</button>
+    <button class="tab-btn" onclick="switchTab('activites')">✨ Idées d'activités</button>
+  </div>
+
+  <!-- ═══════════════════ SECTION REPAS ═══════════════════ -->
+  <div id="section-repas" class="section active">
+    <div class="card">
+      <div class="card-title">🍽️ Qu'est-ce qui te ferait plaisir ?</div>
+      <div class="card-sub">Choisis un plat qui te fait envie ce soir…</div>
+
+      <div class="food-grid" id="foodGrid">
+        <!-- generated by JS -->
+      </div>
+
+      <label>Ou un autre plat dont tu rêves ?</label>
+      <input type="text" id="customFood" placeholder="Ex : Fondue savoyarde, dim sum…">
+    </div>
+
+    <div class="card">
+      <div class="card-title">📅 Quand on se retrouve ?</div>
+      <div class="card-sub">Choisis une date et un moment</div>
+
+      <label>La date</label>
+      <input type="date" id="mealDate">
+
+      <label>Le moment</label>
+      <div class="slot-grid">
+        <button class="slot-btn" data-slot="midi" onclick="selectSlot(this)">🌞 Déjeuner · Midi</button>
+        <button class="slot-btn" data-slot="soir" onclick="selectSlot(this)">🌙 Dîner · Soir</button>
+      </div>
+
+      <label>Un petit mot pour moi ? (optionnel)</label>
+      <textarea id="mealNote" placeholder="Ce soir j'ai envie qu'on…"></textarea>
+
+      <button class="btn-primary" onclick="submitMealRequest()">
+        Envoyer ma proposition 💌
+      </button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ SECTION PLANNING ═══════════════════ -->
+  <div id="section-planning" class="section">
+
+    <div id="weekendRestriction" class="card" style="display:none; text-align:center; padding: 2rem;">
+      <div style="font-size:3rem;margin-bottom:1rem;">😔</div>
+      <div class="card-title">Disponible uniquement le week-end</div>
+      <p style="color:var(--text-soft);font-size:0.9rem;margin-top:0.5rem;line-height:1.65">
+        Cette section est réservée aux weekends et jours fériés, mon amour.<br>
+        Reviens me voir vendredi soir… 😘
+      </p>
+    </div>
+
+    <div id="planningContent">
+      <div class="card">
+        <div class="card-title">💕 Nos moments précieux</div>
+        <div class="card-sub" id="quotaText">Tu as 2 créneaux disponibles ce mois-ci</div>
+
+        <div class="quota-banner">
+          <div class="quota-dots">
+            <div class="quota-dot" id="dot1"></div>
+            <div class="quota-dot" id="dot2"></div>
+          </div>
+          <div class="quota-text" id="quotaSubtext">Choisis un moment qui te ferait plaisir 🌹</div>
+        </div>
+
+        <div class="calendar-nav">
+          <button onclick="prevMonth()">‹</button>
+          <div class="calendar-month" id="calMonth"></div>
+          <button onclick="nextMonth()">›</button>
+        </div>
+        <div class="cal-grid" id="calGrid"><!-- generated --></div>
+
+        <p style="font-size:0.78rem;color:var(--text-muted);margin-top:1rem;text-align:center;">
+          🌸 Week-ends et jours fériés uniquement &nbsp;·&nbsp; 🔴 Déjà réservé
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ SECTION ACTIVITÉS ═══════════════════ -->
+  <div id="section-activites" class="section">
+    <div class="card">
+      <div class="card-title">✨ Des idées pour nous</div>
+      <div class="card-sub">Clique sur une idée qui t'inspire, je préparerai tout 🌹</div>
+      <div class="activities-grid" id="activitiesGrid"><!-- generated --></div>
+    </div>
+
+    <div class="card" id="activityWishCard" style="display:none">
+      <div class="card-title">🌸 Mon envie</div>
+      <p style="font-size:0.9rem;color:var(--text-soft);margin-bottom:1rem;">Tu as choisi : <strong id="selectedActivity"></strong></p>
+      <label>Un message pour moi ?</label>
+      <textarea id="activityNote" placeholder="Je voudrais qu'on fasse ça parce que…"></textarea>
+      <label>Quand tu imagines ça ?</label>
+      <input type="date" id="activityDate">
+      <button class="btn-primary" onclick="submitActivityRequest()">Envoyer mon envie 💌</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── MODAL : choix créneau planning ─── -->
+<div class="modal-bg" id="planningModal">
+  <div class="modal">
+    <h3>Un moment pour nous 💕</h3>
+    <p>Tu as sélectionné le :</p>
+    <div class="modal-date-badge" id="modalDateBadge"></div>
+    <label>Ton petit secret pour ce moment… 🌸</label>
+    <textarea id="planningComment" placeholder='Ex : "Mode doux 🕯️", "Surprise...", "Le truc dont on a parlé 😏"'></textarea>
+    <div class="modal-btns">
+      <button class="btn-secondary" onclick="closeModal()">Annuler</button>
+      <button class="btn-primary" style="flex:1" onclick="submitPlanningRequest()">Valider 💌</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── MODAL : date indisponible ─── -->
+<div class="modal-bg" id="unavailableModal">
+  <div class="modal">
+    <div class="unavailable-msg">
+      <span class="big-emoji">😔</span>
+      <h3>Je ne serai pas là ce jour-là…</h3>
+      <p>Désolé mon amour, je ne suis pas disponible à cette date. Tu veux qu'on trouve un autre moment rien que pour nous ? 🌹</p>
+      <button class="btn-primary" onclick="document.getElementById('unavailableModal').classList.remove('open')">
+        On cherche une autre date 💕
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── TOAST ─── -->
+<div class="toast" id="toast"></div>
+
+<!-- ─── FIREBASE SDK ─── -->
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getFirestore, collection, addDoc, getDocs, query, where, Timestamp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+
+// ╔══════════════════════════════════════════════════╗
+// ║  🔧 CONFIGURATION FIREBASE — À MODIFIER          ║
+// ║  Remplace par ta config depuis Firebase Console  ║
+// ╚══════════════════════════════════════════════════╝
+const firebaseConfig = {
+  apiKey: "TON_API_KEY",
+  authDomain: "TON_PROJECT.firebaseapp.com",
+  projectId: "TON_PROJECT_ID",
+  storageBucket: "TON_PROJECT.appspot.com",
+  messagingSenderId: "TON_SENDER_ID",
+  appId: "TON_APP_ID"
+};
+
+let db;
+try {
+  const app = initializeApp(firebaseConfig);
+  db = getFirestore(app);
+} catch(e) {
+  console.log('Firebase non configuré - mode démo');
+}
+
+// Exposer pour les fonctions globales
+window._db = db;
+window._fbFns = { collection, addDoc, getDocs, query, where, Timestamp };
+</script>
+
+<script>
+// ══════════════════════════════════════════════
+//  DATA
+// ══════════════════════════════════════════════
+const FOODS = [
+  { emoji: '🍕', label: 'Pizza' },
+  { emoji: '🍣', label: 'Sushi' },
+  { emoji: '🍔', label: 'Burger' },
+  { emoji: '🍝', label: 'Carbonara' },
+  { emoji: '🍜', label: 'Nouilles sautées' },
+  { emoji: '🌮', label: 'Tacos' },
+  { emoji: '🥗', label: 'Salade Bowl' },
+  { emoji: '🍱', label: 'Poké Bowl' },
+  { emoji: '🥩', label: 'Steak Frites' },
+  { emoji: '🥞', label: 'Crêpes' },
+  { emoji: '🍫', label: 'Fondant choco' },
+  { emoji: '🍜', label: 'Ramen' },
+];
+
+const ACTIVITIES = [
+  { emoji: '🌅', name: 'Balade au coucher du soleil', desc: 'Main dans la main' },
+  { emoji: '🎬', name: 'Soirée ciné câlins', desc: 'Plaid + pop-corn' },
+  { emoji: '💆', name: 'Massage mutuel', desc: 'Bougies et huile' },
+  { emoji: '🧺', name: 'Pique-nique', desc: 'Dans le parc' },
+  { emoji: '📸', name: 'Session photo', desc: 'Nos plus beaux souvenirs' },
+  { emoji: '🛁', name: 'Bain moussant', desc: 'Rien que nous deux' },
+  { emoji: '🎲', name: 'Jeu coquin', desc: 'Soirée jeux' },
+  { emoji: '💃', name: 'Danse dans le salon', desc: 'Playlist romantique' },
+  { emoji: '🍳', name: 'Cuisine ensemble', desc: 'On invente une recette' },
+  { emoji: '⭐', name: 'Observer les étoiles', desc: 'Sur le balcon' },
+];
+
+// Jours fériés France 2024-2025 (format MM-DD)
+const HOLIDAYS = [
+  '01-01','04-01','05-01','05-08','05-09','05-20','07-14',
+  '08-15','11-01','11-11','12-25','04-21','05-29','06-09',
+];
+
+// State
+let selectedFood = null;
+let selectedSlot = null;
+let selectedActivity = null;
+let currentDate = new Date();
+let selectedPlanningDate = null;
+let unavailableDates = [];
+let bookedDates = [];
+let quotaUsed = 0;
+const MAX_QUOTA = 2;
+
+// ══════════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  buildFoodGrid();
+  buildActivitiesGrid();
+  buildCalendar();
+  loadData();
+  setMinDate();
+  checkWeekendRestriction();
+});
+
+function setMinDate() {
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('mealDate').min = today;
+  document.getElementById('activityDate').min = today;
+}
+
+function checkWeekendRestriction() {
+  const day = new Date().getDay();
+  const isWeekend = (day === 0 || day === 6);
+  document.getElementById('weekendRestriction').style.display = isWeekend ? 'none' : 'block';
+  document.getElementById('planningContent').style.display = isWeekend ? 'block' : 'none';
+}
+
+// ══════════════════════════════════════════════
+//  FOOD GRID
+// ══════════════════════════════════════════════
+function buildFoodGrid() {
+  const grid = document.getElementById('foodGrid');
+  grid.innerHTML = FOODS.map(f => `
+    <div class="food-item" onclick="selectFood(this,'${f.label}')">
+      <span class="emoji">${f.emoji}</span>
+      <span class="label">${f.label}</span>
+    </div>
+  `).join('');
+}
+
+function selectFood(el, name) {
+  document.querySelectorAll('.food-item').forEach(e => e.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedFood = name;
+  document.getElementById('customFood').value = '';
+}
+
+function selectSlot(el) {
+  document.querySelectorAll('.slot-btn').forEach(e => e.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedSlot = el.dataset.slot;
+}
+
+// ══════════════════════════════════════════════
+//  ACTIVITIES GRID
+// ══════════════════════════════════════════════
+function buildActivitiesGrid() {
+  const grid = document.getElementById('activitiesGrid');
+  grid.innerHTML = ACTIVITIES.map(a => `
+    <div class="activity-card" onclick="selectActivity('${a.name}')">
+      <span class="act-emoji">${a.emoji}</span>
+      <div class="act-name">${a.name}</div>
+      <div class="act-desc">${a.desc}</div>
+    </div>
+  `).join('');
+}
+
+function selectActivity(name) {
+  selectedActivity = name;
+  document.getElementById('selectedActivity').textContent = name;
+  document.getElementById('activityWishCard').style.display = 'block';
+  document.getElementById('activityWishCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// ══════════════════════════════════════════════
+//  CALENDAR
+// ══════════════════════════════════════════════
+function buildCalendar() {
+  const d = currentDate;
+  const year = d.getFullYear();
+  const month = d.getMonth();
+
+  document.getElementById('calMonth').textContent =
+    d.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
+
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const today = new Date();
+
+  const labels = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+  let html = labels.map(l => `<div class="cal-day-label">${l}</div>`).join('');
+
+  // Offset (Mon = 0)
+  const offset = (firstDay + 6) % 7;
+  for (let i = 0; i < offset; i++) html += '<div class="cal-day empty"></div>';
+
+  for (let day = 1; day <= daysInMonth; day++) {
+    const date = new Date(year, month, day);
+    const dayOfWeek = date.getDay();
+    const dateStr = formatDate(date);
+    const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+    const isHoliday = HOLIDAYS.includes(`${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`);
+    const isToday = date.toDateString() === today.toDateString();
+    const isUnavailable = unavailableDates.includes(dateStr);
+    const isBooked = bookedDates.includes(dateStr);
+    const isPast = date < today && !isToday;
+
+    let cls = 'cal-day';
+    let onclick = '';
+    let title = '';
+
+    if (isPast || !(isWeekend || isHoliday)) {
+      cls += ' weekday';
+    } else if (isBooked) {
+      cls += ' weekend booked';
+      title = 'Déjà réservé';
+    } else if (isUnavailable) {
+      cls += ' weekend';
+      onclick = `openUnavailableModal()`;
+    } else if (isWeekend || isHoliday) {
+      cls += ' weekend';
+      if (isHoliday) title = '🎉 Jour férié';
+      onclick = quotaUsed >= MAX_QUOTA ? '' : `openPlanningModal('${dateStr}')`;
+    }
+    if (isToday) cls += ' today';
+
+    html += `<div class="${cls}" onclick="${onclick}" title="${title}">${day}</div>`;
+  }
+
+  document.getElementById('calGrid').innerHTML = html;
+  updateQuotaDisplay();
+}
+
+function prevMonth() {
+  currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1);
+  buildCalendar();
+}
+function nextMonth() {
+  currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1);
+  buildCalendar();
+}
+
+function formatDate(d) {
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+function updateQuotaDisplay() {
+  const remaining = MAX_QUOTA - quotaUsed;
+  document.getElementById('dot1').className = 'quota-dot' + (quotaUsed >= 1 ? ' used' : '');
+  document.getElementById('dot2').className = 'quota-dot' + (quotaUsed >= 2 ? ' used' : '');
+
+  if (quotaUsed >= MAX_QUOTA) {
+    document.getElementById('quotaText').textContent = 'Tes 2 moments sont déjà réservés ce mois-ci ❤️';
+    document.getElementById('quotaSubtext').textContent = 'On recommence le mois prochain mon amour…';
+  } else {
+    document.getElementById('quotaText').textContent = `Il te reste ${remaining} créneau${remaining > 1 ? 'x' : ''} ce mois-ci`;
+    document.getElementById('quotaSubtext').textContent = 'Choisis un moment qui te ferait plaisir 🌹';
+  }
+}
+
+// ══════════════════════════════════════════════
+//  MODALS
+// ══════════════════════════════════════════════
+function openPlanningModal(dateStr) {
+  if (quotaUsed >= MAX_QUOTA) {
+    showToast('Tu as déjà utilisé tes 2 moments ce mois-ci ❤️', 'error'); return;
+  }
+  selectedPlanningDate = dateStr;
+  const d = new Date(dateStr + 'T00:00:00');
+  document.getElementById('modalDateBadge').textContent =
+    d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
+  document.getElementById('planningComment').value = '';
+  document.getElementById('planningModal').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('planningModal').classList.remove('open');
+}
+
+function openUnavailableModal() {
+  document.getElementById('unavailableModal').classList.add('open');
+}
+
+// ══════════════════════════════════════════════
+//  FIREBASE DATA LOAD
+// ══════════════════════════════════════════════
+async function loadData() {
+  const db = window._db;
+  if (!db) return; // demo mode
+
+  const { collection, getDocs, query, where } = window._fbFns;
+  const now = new Date();
+  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0];
+  const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0).toISOString().split('T')[0];
+
+  try {
+    // Unavailable dates
+    const uSnap = await getDocs(collection(db, 'unavailableDates'));
+    unavailableDates = uSnap.docs.map(d => d.data().date);
+
+    // Booked planning slots this month
+    const pSnap = await getDocs(query(
+      collection(db, 'planningRequests'),
+      where('month', '==', `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`)
+    ));
+    bookedDates = pSnap.docs.filter(d => d.data().status !== 'cancelled').map(d => d.data().date);
+    quotaUsed = bookedDates.length;
+
+    buildCalendar();
+  } catch(e) { console.log('Erreur chargement données:', e); }
+}
+
+// ══════════════════════════════════════════════
+//  SUBMIT FUNCTIONS
+// ══════════════════════════════════════════════
+async function submitMealRequest() {
+  const food = selectedFood || document.getElementById('customFood').value.trim();
+  const date = document.getElementById('mealDate').value;
+  const note = document.getElementById('mealNote').value.trim();
+
+  if (!food) { showToast('Choisis quelque chose à manger 😋', 'error'); return; }
+  if (!date) { showToast('Choisis une date mon amour 📅', 'error'); return; }
+  if (!selectedSlot) { showToast('Midi ou soir ? 🌞🌙', 'error'); return; }
+
+  const btn = event.target;
+  btn.disabled = true;
+  btn.textContent = 'Envoi en cours…';
+
+  const data = {
+    type: 'meal',
+    food, date, slot: selectedSlot, note,
+    status: 'pending',
+    createdAt: new Date().toISOString()
+  };
+
+  try {
+    if (window._db) {
+      const { collection, addDoc } = window._fbFns;
+      await addDoc(collection(window._db, 'mealRequests'), data);
+    }
+    showToast('Ta proposition a été envoyée 💌', 'success');
+    launchConfetti();
+    resetMealForm();
+  } catch(e) {
+    showToast('Oups, une erreur… Réessaie 💕', 'error');
+  }
+  btn.disabled = false;
+  btn.textContent = 'Envoyer ma proposition 💌';
+}
+
+async function submitPlanningRequest() {
+  const comment = document.getElementById('planningComment').value.trim();
+  if (!comment) { showToast('Dis-moi ce dont tu as envie… 🌸', 'error'); return; }
+
+  const now = new Date(selectedPlanningDate);
+  const month = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+
+  const data = {
+    type: 'planning',
+    date: selectedPlanningDate,
+    month, comment,
+    status: 'pending',
+    createdAt: new Date().toISOString()
+  };
+
+  try {
+    if (window._db) {
+      const { collection, addDoc } = window._fbFns;
+      await addDoc(collection(window._db, 'planningRequests'), data);
+    }
+    quotaUsed++;
+    bookedDates.push(selectedPlanningDate);
+    closeModal();
+    buildCalendar();
+    showToast('Ton moment a été réservé 💕', 'success');
+    launchConfetti();
+  } catch(e) {
+    showToast('Oups, une erreur… Réessaie 💕', 'error');
+  }
+}
+
+async function submitActivityRequest() {
+  if (!selectedActivity) { showToast('Choisis une activité 🌸', 'error'); return; }
+  const note = document.getElementById('activityNote').value.trim();
+  const date = document.getElementById('activityDate').value;
+
+  const data = {
+    type: 'activity',
+    activity: selectedActivity, note, date,
+    status: 'pending',
+    createdAt: new Date().toISOString()
+  };
+
+  try {
+    if (window._db) {
+      const { collection, addDoc } = window._fbFns;
+      await addDoc(collection(window._db, 'activityRequests'), data);
+    }
+    showToast('Ton envie a été envoyée 💌', 'success');
+    launchConfetti();
+    document.getElementById('activityWishCard').style.display = 'none';
+    document.getElementById('activityNote').value = '';
+    document.getElementById('activityDate').value = '';
+  } catch(e) {
+    showToast('Oups… Réessaie 💕', 'error');
+  }
+}
+
+// ══════════════════════════════════════════════
+//  UI HELPERS
+// ══════════════════════════════════════════════
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach((b, i) => {
+    const tabs = ['repas', 'planning', 'activites'];
+    b.classList.toggle('active', tabs[i] === tab);
+  });
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById('section-' + tab).classList.add('active');
+  if (tab === 'planning') checkWeekendRestriction();
+}
+
+function showToast(msg, type='') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + type;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+function resetMealForm() {
+  selectedFood = null; selectedSlot = null;
+  document.querySelectorAll('.food-item').forEach(e => e.classList.remove('selected'));
+  document.querySelectorAll('.slot-btn').forEach(e => e.classList.remove('selected'));
+  document.getElementById('mealDate').value = '';
+  document.getElementById('mealNote').value = '';
+  document.getElementById('customFood').value = '';
+}
+
+function launchConfetti() {
+  const colors = ['#f2a7b8','#d4688a','#f7d6e0','#c9a0b0','#fce8ef'];
+  for (let i = 0; i < 40; i++) {
+    setTimeout(() => {
+      const c = document.createElement('div');
+      c.className = 'confetti-piece';
+      c.style.cssText = `
+        left: ${Math.random() * 100}vw;
+        top: 0;
+        background: ${colors[Math.floor(Math.random()*colors.length)]};
+        animation-duration: ${1.5 + Math.random() * 1.5}s;
+        animation-delay: ${Math.random() * 0.5}s;
+        width: ${6 + Math.random() * 8}px;
+        height: ${6 + Math.random() * 8}px;
+        border-radius: ${Math.random() > 0.5 ? '50%' : '0'};
+      `;
+      document.body.appendChild(c);
+      setTimeout(() => c.remove(), 3000);
+    }, i * 30);
+  }
+}
+
+// Close modals on bg click
+document.querySelectorAll('.modal-bg').forEach(bg => {
+  bg.addEventListener('click', e => {
+    if (e.target === bg) bg.classList.remove('open');
+  });
+});
+</script>
+
+<footer>
+  <p>Fait avec ❤️ rien que pour toi · <a href="admin.html">Admin</a></p>
+</footer>
+
+</body>
+</html>
