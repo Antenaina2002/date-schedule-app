@@ -475,6 +475,22 @@ onAuthStateChanged(auth, (user) => {
     document.getElementById('adminScreen').style.display = 'none';
   }
 });
+
+import {
+    statusLabel, computeStats,
+    isUnavailable, addUnavailableDate, removeUnavailableDate,
+    updateRequestStatus, filterByStatus, extractBookedDates,
+    isValidUser, validateLoginForm, getAuthErrorMessage,
+    formatDateFr, formatDate
+  } from './admin.utils.js';
+
+  window._adminUtils = {
+    statusLabel, computeStats,
+    isUnavailable, addUnavailableDate, removeUnavailableDate,
+    updateRequestStatus, filterByStatus, extractBookedDates,
+    isValidUser, validateLoginForm, getAuthErrorMessage,
+    formatDateFr, formatDate
+  };
 </script>
 
 <script>
@@ -488,8 +504,10 @@ async function login() {
   const btn = document.getElementById('loginBtn');
   const err = document.getElementById('loginError');
 
-  if (!email || !pw) {
-    err.textContent = 'Remplis tous les champs 😕';
+  // ← validation locale (avant d'appeler Firebase)
+  const formError = validateLoginForm({ email, password: pw });
+  if (formError) {
+    err.textContent = formError;
     err.style.display = 'block';
     return;
   }
@@ -501,9 +519,9 @@ async function login() {
   try {
     const { signInWithEmailAndPassword } = window._fb;
     await signInWithEmailAndPassword(window._auth, email, pw);
-    // onAuthStateChanged s'occupe du reste automatiquement
   } catch (e) {
-    err.textContent = 'Email ou mot de passe incorrect 😕';
+    // ← message Firebase traduit en français
+    err.textContent = getAuthErrorMessage(e.code);
     err.style.display = 'block';
     btn.disabled = false;
     btn.textContent = 'Entrer ❤️';
