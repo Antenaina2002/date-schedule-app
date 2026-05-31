@@ -463,126 +463,215 @@
     100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
   }
 
+  /* ══ BANNIÈRE SEMAINE (planning) ══ */
+  .weekday-info-banner {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    background: var(--rose-light);
+    border: 1.5px solid var(--rose);
+    border-radius: 16px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.25rem;
+    font-size: 0.88rem;
+    color: var(--text);
+    line-height: 1.5;
+  }
+  .wib-emoji { font-size: 1.6rem; flex-shrink: 0; }
+
   /* ══ SECTION RÉPONSES ══ */
   .response-item {
     border-radius: 16px;
-    padding: 1.25rem 1.4rem;
-    margin-bottom: 0.9rem;
+    padding: 1.2rem 1.4rem;
+    margin-bottom: 0.85rem;
     border: 1.5px solid var(--blush);
     background: var(--rose-pale);
-    transition: all 0.2s;
   }
-  .response-item.accepted {
-    background: #f0faf4;
-    border-color: #a8dbb8;
-  }
-  .response-item.declined {
-    background: #fff5f5;
-    border-color: #f5b8b8;
-  }
-  .response-item.pending {
-    background: var(--rose-pale);
-    border-color: var(--blush);
-  }
-  .resp-top {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.9rem;
-  }
+  .response-item.accepted { background: #f0faf4; border-color: #a8dbb8; }
+  .response-item.declined { background: #fff5f5; border-color: #f5b8b8; }
+  .resp-top { display: flex; align-items: flex-start; gap: 0.9rem; }
   .resp-icon { font-size: 1.8rem; flex-shrink: 0; line-height: 1; }
   .resp-body { flex: 1; min-width: 0; }
-  .resp-title {
-    font-size: 0.95rem;
-    font-weight: 500;
-    color: var(--text);
-    margin-bottom: 0.2rem;
-  }
-  .resp-date {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    margin-bottom: 0.5rem;
-  }
-  .resp-status {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    padding: 0.3rem 0.75rem;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 500;
-  }
+  .resp-type-tag { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.2rem; }
+  .resp-title { font-size: 0.95rem; font-weight: 500; color: var(--text); margin-bottom: 0.2rem; }
+  .resp-date { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem; }
+  .resp-status { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.25rem 0.7rem; border-radius: 20px; font-size: 0.78rem; font-weight: 500; }
   .resp-status.accepted { background: #d4f0de; color: #2d7a4a; }
   .resp-status.declined { background: #fdd8d8; color: #a03030; }
   .resp-status.pending  { background: var(--blush); color: var(--mauve); }
-
-  /* Message accepté — grosse mise en valeur */
   .resp-accepted-msg {
-    margin-top: 0.9rem;
-    padding: 0.9rem 1.1rem;
+    margin-top: 0.85rem; padding: 0.85rem 1rem;
     background: linear-gradient(135deg, #f0fdf6, #e6f9ee);
-    border-left: 3px solid #5aac6e;
-    border-radius: 0 12px 12px 0;
-    display: flex;
-    align-items: center;
-    gap: 0.65rem;
+    border-left: 3px solid #5aac6e; border-radius: 0 12px 12px 0;
+    display: flex; align-items: center; gap: 0.6rem;
   }
   .resp-accepted-msg .acc-emoji { font-size: 1.4rem; flex-shrink: 0; }
-  .resp-accepted-msg .acc-text {
-    font-size: 0.9rem;
-    color: #2d5a3a;
-    font-style: italic;
-    line-height: 1.5;
-  }
-
-  /* Message refusé — avec la raison */
+  .resp-accepted-msg .acc-text { font-size: 0.88rem; color: #2d5a3a; font-style: italic; line-height: 1.5; }
   .resp-declined-msg {
-    margin-top: 0.9rem;
-    padding: 0.9rem 1.1rem;
-    background: #fff8f8;
-    border-left: 3px solid #e08080;
-    border-radius: 0 12px 12px 0;
+    margin-top: 0.85rem; padding: 0.85rem 1rem;
+    background: #fff8f8; border-left: 3px solid #e08080; border-radius: 0 12px 12px 0;
   }
-  .resp-declined-msg .dec-label {
-    font-size: 0.75rem;
-    color: #b06060;
-    font-weight: 500;
-    margin-bottom: 0.3rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-  .resp-declined-msg .dec-reason {
-    font-size: 0.88rem;
-    color: #7a3535;
-    font-style: italic;
-    line-height: 1.5;
-  }
-
-  .responses-empty {
-    text-align: center;
-    padding: 2.5rem 1rem;
-    color: var(--text-muted);
-  }
+  .resp-declined-msg .dec-label { font-size: 0.72rem; color: #b06060; font-weight: 500; margin-bottom: 0.25rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  .resp-declined-msg .dec-reason { font-size: 0.88rem; color: #7a3535; font-style: italic; line-height: 1.5; }
+  .responses-empty { text-align: center; padding: 2.5rem 1rem; color: var(--text-muted); }
   .responses-empty .big { font-size: 2.5rem; margin-bottom: 0.75rem; }
-  .responses-empty p { font-size: 0.88rem; line-height: 1.6; }
+  .chat-loading { text-align: center; padding: 2rem; color: var(--text-muted); }
+  .loading-hearts { font-size: 1.8rem; animation: float 1.5s ease-in-out infinite; margin-bottom: 0.5rem; }
 
-  .responses-loading {
-    text-align: center;
-    padding: 2rem;
+  /* ══ CHAT ══ */
+  .chat-header {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 1.1rem 1.4rem;
+    border-bottom: 1px solid var(--blush);
+    background: white;
+  }
+  .chat-header-avatar {
+    width: 40px; height: 40px;
+    background: linear-gradient(135deg, var(--rose), var(--rose-deep));
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; flex-shrink: 0;
+  }
+  .chat-header-name { font-size: 0.95rem; font-weight: 500; color: var(--text); }
+  .chat-header-sub  { font-size: 0.75rem; color: var(--text-muted); }
+  .chat-refresh-btn {
+    margin-left: auto;
+    background: var(--rose-pale);
+    border: 1px solid var(--blush);
+    border-radius: 8px;
+    width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; color: var(--rose-deep);
+    transition: all 0.2s; flex-shrink: 0;
+  }
+  .chat-refresh-btn:hover { background: var(--rose-light); }
+
+  .chat-messages {
+    height: 380px;
+    overflow-y: auto;
+    padding: 1.25rem 1.1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    background: var(--cream);
+    scroll-behavior: smooth;
+  }
+
+  /* Bulles */
+  .msg-row { display: flex; align-items: flex-end; gap: 0.5rem; }
+  .msg-row.me { flex-direction: row-reverse; }
+
+  .msg-avatar {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--rose), var(--rose-deep));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.8rem; flex-shrink: 0;
+  }
+  .msg-row.me .msg-avatar { background: linear-gradient(135deg, #a0c4ff, #6a9fd8); }
+
+  .msg-bubble {
+    max-width: 72%;
+    padding: 0.7rem 1rem;
+    border-radius: 18px;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    word-break: break-word;
+    position: relative;
+  }
+  /* Lui → bulle rose à gauche */
+  .msg-row.lui .msg-bubble {
+    background: white;
+    color: var(--text);
+    border: 1px solid var(--blush);
+    border-bottom-left-radius: 4px;
+    box-shadow: 0 2px 8px var(--shadow);
+  }
+  /* Elle → bulle rose profond à droite */
+  .msg-row.me .msg-bubble {
+    background: linear-gradient(135deg, var(--rose-deep), #c45580);
+    color: white;
+    border-bottom-right-radius: 4px;
+    box-shadow: 0 2px 10px rgba(212,104,138,0.3);
+  }
+  .msg-time {
+    font-size: 0.68rem;
     color: var(--text-muted);
+    margin-top: 0.25rem;
+    text-align: right;
   }
-  .loading-hearts {
-    font-size: 1.8rem;
-    animation: float 1.5s ease-in-out infinite;
-    margin-bottom: 0.5rem;
-  }
+  .msg-row.lui .msg-time { text-align: left; }
 
-  .resp-type-tag {
+  .msg-group { display: flex; flex-direction: column; max-width: 72%; gap: 0.15rem; }
+  .msg-row.me .msg-group { align-items: flex-end; }
+  .msg-row.lui .msg-group { align-items: flex-start; }
+
+  /* Zone de saisie */
+  .chat-composer {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.65rem;
+    padding: 0.9rem 1.1rem;
+    border-top: 1px solid var(--blush);
+    background: white;
+  }
+  .chat-textarea {
+    flex: 1;
+    border: 1.5px solid var(--blush);
+    border-radius: 20px;
+    padding: 0.65rem 1rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    color: var(--text);
+    background: var(--rose-pale);
+    outline: none;
+    resize: none;
+    max-height: 120px;
+    overflow-y: auto;
+    transition: border-color 0.2s;
+    line-height: 1.4;
+  }
+  .chat-textarea:focus { border-color: var(--rose-deep); background: white; }
+  .chat-send-btn {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--rose-deep), #c45580);
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.25s;
+    box-shadow: 0 3px 12px rgba(212,104,138,0.35);
+  }
+  .chat-send-btn:hover { transform: scale(1.08); box-shadow: 0 5px 16px rgba(212,104,138,0.5); }
+  .chat-send-btn:active { transform: scale(0.96); }
+
+  .chat-date-sep {
+    text-align: center;
     font-size: 0.72rem;
     color: var(--text-muted);
-    margin-bottom: 0.3rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    margin: 0.5rem 0;
+    position: relative;
   }
+  .chat-date-sep::before, .chat-date-sep::after {
+    content: '';
+    position: absolute;
+    top: 50%; width: 30%;
+    height: 1px; background: var(--blush);
+  }
+  .chat-date-sep::before { left: 0; }
+  .chat-date-sep::after  { right: 0; }
+
+  .chat-empty {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    color: var(--text-muted); text-align: center; gap: 0.5rem; padding: 2rem;
+  }
+  .chat-empty .big { font-size: 2.5rem; }
+  .chat-empty p { font-size: 0.85rem; line-height: 1.6; }
 
   /* Scrollbar */
   ::-webkit-scrollbar { width: 6px; }
@@ -604,6 +693,7 @@
     <button class="tab-btn" onclick="switchTab('planning')">🔥 Câlins</button>
     <button class="tab-btn" onclick="switchTab('activites')">✨ Activités</button>
     <button class="tab-btn" onclick="switchTab('reponses')">💌 Réponses</button>
+    <button class="tab-btn" onclick="switchTab('chat')">💬 Nous</button>
   </div>
 
   <!-- ═══════════════════ SECTION REPAS ═══════════════════ -->
@@ -645,13 +735,12 @@
   <!-- ═══════════════════ SECTION PLANNING ═══════════════════ -->
   <div id="section-planning" class="section">
 
-    <div id="weekendRestriction" class="card" style="display:none; text-align:center; padding: 2rem;">
-      <div style="font-size:3rem;margin-bottom:1rem;">😔</div>
-      <div class="card-title">Disponible uniquement le week-end</div>
-      <p style="color:var(--text-soft);font-size:0.9rem;margin-top:0.5rem;line-height:1.65">
-        Cette section est réservée aux weekends et jours fériés, mon amour.<br>
-        Reviens me voir vendredi soir… 😘
-      </p>
+    <div id="weekdayBanner" class="weekday-info-banner" style="display:none">
+      <span class="wib-emoji">🌸</span>
+      <div>
+        <strong>Tu peux planifier quand tu veux !</strong><br>
+        <span style="font-size:0.82rem;color:var(--text-soft);">Seuls les week-ends et jours fériés sont réservables 💕</span>
+      </div>
     </div>
 
     <div id="planningContent">
@@ -699,20 +788,58 @@
       <button class="btn-primary" onclick="submitActivityRequest()">Envoyer mon envie 💌</button>
     </div>
   </div>
+
   <!-- ═══════════════════ SECTION RÉPONSES ═══════════════════ -->
   <div id="section-reponses" class="section">
     <div class="card">
       <div class="card-title">💌 Ses réponses pour moi</div>
       <div class="card-sub">Voilà ce qu'il a décidé pour nos moments ❤️</div>
       <div id="reponsesList">
-        <div class="responses-loading">
-          <div class="loading-hearts">💕</div>
-          <p>Chargement…</p>
+        <div class="chat-loading">
+          <div class="loading-hearts">💕</div><p>Chargement…</p>
         </div>
       </div>
     </div>
   </div>
+
+  <!-- ═══════════════════ SECTION CHAT ═══════════════════ -->
+  <div id="section-chat" class="section">
+    <div class="card" style="padding:0; overflow:hidden;">
+      <div class="chat-header">
+        <div class="chat-header-avatar">💕</div>
+        <div>
+          <div class="chat-header-name">Notre fil secret</div>
+          <div class="chat-header-sub">Juste nous deux ici 🌹</div>
+        </div>
+        <button class="chat-refresh-btn" onclick="loadChat()" title="Rafraîchir">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+        </button>
+      </div>
+
+      <div class="chat-messages" id="chatMessages">
+        <div class="chat-loading">
+          <div class="loading-hearts">💕</div><p>Chargement…</p>
+        </div>
+      </div>
+
+      <div class="chat-composer">
+        <textarea
+          id="chatInput"
+          class="chat-textarea"
+          placeholder="Écris-lui quelque chose… 🌸"
+          onkeydown="handleChatKey(event)"
+          oninput="autoResizeChat(this)"
+        ></textarea>
+        <button class="chat-send-btn" onclick="sendMessage()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
 </div>
+
+<!-- ─── MODAL : choix créneau planning ─── -->
 <div class="modal-bg" id="planningModal">
   <div class="modal">
     <h3>Un moment pour nous 💕</h3>
@@ -859,9 +986,10 @@ function setMinDate() {
 
 function checkWeekendRestriction() {
   const day = new Date().getDay();
-  const isWeekend = (day === 0 || day === 6);
-  document.getElementById('weekendRestriction').style.display = isWeekend ? 'none' : 'block';
-  document.getElementById('planningContent').style.display = isWeekend ? 'block' : 'none';
+  const isWeekday = day !== 0 && day !== 6;
+  const banner = document.getElementById('weekdayBanner');
+  if (banner) banner.style.display = isWeekday ? 'flex' : 'none';
+  // Le calendrier est toujours visible — on ne le cache plus jamais
 }
 
 // ══════════════════════════════════════════════
@@ -1149,7 +1277,7 @@ async function submitActivityRequest() {
 //  UI HELPERS
 // ══════════════════════════════════════════════
 function switchTab(tab) {
-  const tabs = ['repas', 'planning', 'activites', 'reponses'];
+  const tabs = ['repas', 'planning', 'activites', 'reponses', 'chat'];
   document.querySelectorAll('.tab-btn').forEach((b, i) => {
     b.classList.toggle('active', tabs[i] === tab);
   });
@@ -1157,6 +1285,7 @@ function switchTab(tab) {
   document.getElementById('section-' + tab).classList.add('active');
   if (tab === 'planning') checkWeekendRestriction();
   if (tab === 'reponses') loadResponses();
+  if (tab === 'chat') loadChat();
 }
 
 function showToast(msg, type='') {
@@ -1203,97 +1332,200 @@ function launchConfetti() {
 // ══════════════════════════════════════════════
 async function loadResponses() {
   const container = document.getElementById('reponsesList');
-  container.innerHTML = '<div class="responses-loading"><div class="loading-hearts">💕</div><p>Chargement…</p></div>';
+  container.innerHTML = '<div class="chat-loading"><div class="loading-hearts">💕</div><p>Chargement…</p></div>';
 
   const db = window._db;
   if (!db) {
     renderResponses([
-      { id:'d1', type:'meal', food:'Sushi', date:'2025-06-08', slot:'soir', status:'accepted', declineReason:'' },
-      { id:'d2', type:'planning', date:'2025-06-14', comment:'Mode doux', status:'declined', declineReason:'Je travaille ce jour-là mon amour, désolé 😔' },
-      { id:'d3', type:'activity', activity:'Bain moussant', date:'2025-06-21', status:'pending', declineReason:'' },
+      { id:'d1', type:'meal', food:'Sushi', date:'2025-06-08', slot:'soir', status:'accepted' },
+      { id:'d2', type:'planning', date:'2025-06-14', comment:'Mode doux', status:'declined', declineReason:'Je travaille ce jour-là mon amour 😔' },
+      { id:'d3', type:'activity', activity:'Bain moussant', date:'2025-06-21', status:'pending' },
+    ]);
+    return;
+  }
+  try {
+    const { collection, getDocs, query, orderBy } = window._fbFns;
+    const all = [];
+    const cols = ['mealRequests','planningRequests','activityRequests'];
+    const types = ['meal','planning','activity'];
+    for (let i = 0; i < cols.length; i++) {
+      const snap = await getDocs(query(collection(db, cols[i]), orderBy('createdAt','desc')));
+      snap.docs.forEach(d => all.push({ id: d.id, type: types[i], ...d.data() }));
+    }
+    all.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+    renderResponses(all);
+  } catch(e) {
+    container.innerHTML = '<div class="responses-empty"><div class="big">😔</div><p>Impossible de charger les réponses.</p></div>';
+  }
+}
+
+function renderResponses(items) {
+  const container = document.getElementById('reponsesList');
+  if (!items.length) {
+    container.innerHTML = '<div class="responses-empty"><div class="big">🌸</div><p>Tu n\'as encore rien envoyé…<br>Propose quelque chose, je serai là ❤️</p></div>';
+    return;
+  }
+  const typeLabel = { meal:'🍽️ Repas', planning:'💕 Câlins', activity:'✨ Activité' };
+  const typeIcon  = { meal:'🍽️', planning:'💕', activity:'✨' };
+  container.innerHTML = items.map(r => {
+    const title = r.type==='meal' ? r.food : r.type==='planning' ? 'Moment câlins' : r.activity;
+    const dateFr = r.date ? new Date(r.date+'T00:00:00').toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'}) : '';
+    const slot = r.slot==='midi' ? '🌞 Déjeuner' : r.slot==='soir' ? '🌙 Dîner' : '';
+    const statusHtml = {
+      accepted:`<span class="resp-status accepted">✅ Validé</span>`,
+      declined:`<span class="resp-status declined">❌ Refusé</span>`,
+      pending: `<span class="resp-status pending">⏳ En attente…</span>`,
+    }[r.status] ?? '';
+    const acceptedMsg = r.status==='accepted' ? `<div class="resp-accepted-msg"><span class="acc-emoji">😉</span><span class="acc-text">Prépare-toi mon amour… ce moment va être parfait ❤️</span></div>` : '';
+    const declinedMsg = r.status==='declined' ? `<div class="resp-declined-msg"><div class="dec-label">Sa raison</div><div class="dec-reason">${r.declineReason||'Il n\'a pas laissé de message… 😔'}</div></div>` : '';
+    return `<div class="response-item ${r.status}">
+      <div class="resp-top">
+        <div class="resp-icon">${typeIcon[r.type]}</div>
+        <div class="resp-body">
+          <div class="resp-type-tag">${typeLabel[r.type]}</div>
+          <div class="resp-title">${title}${slot?' · '+slot:''}</div>
+          <div class="resp-date">${dateFr}</div>
+          ${statusHtml}
+        </div>
+      </div>${acceptedMsg}${declinedMsg}
+    </div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════════
+//  CHAT
+// ══════════════════════════════════════════════
+let chatPollingInterval = null;
+let lastChatCount = 0;
+
+async function loadChat() {
+  const container = document.getElementById('chatMessages');
+  const db = window._db;
+
+  if (!db) {
+    renderChatMessages([
+      { id:'c1', sender:'lui', text:'Bonsoir mon amour ❤️', createdAt: new Date(Date.now()-3600000).toISOString() },
+      { id:'c2', sender:'elle', text:'Bonsoir toi 🌸 Tu vas bien ?', createdAt: new Date(Date.now()-1800000).toISOString() },
+      { id:'c3', sender:'lui', text:'Oui ! Je pensais à toi 😘', createdAt: new Date(Date.now()-900000).toISOString() },
     ]);
     return;
   }
 
   try {
     const { collection, getDocs, query, orderBy } = window._fbFns;
-    const all = [];
-
-    const mSnap = await getDocs(query(collection(db, 'mealRequests'), orderBy('createdAt','desc')));
-    mSnap.docs.forEach(d => all.push({ id: d.id, type: 'meal', ...d.data() }));
-
-    const pSnap = await getDocs(query(collection(db, 'planningRequests'), orderBy('createdAt','desc')));
-    pSnap.docs.forEach(d => all.push({ id: d.id, type: 'planning', ...d.data() }));
-
-    const aSnap = await getDocs(query(collection(db, 'activityRequests'), orderBy('createdAt','desc')));
-    aSnap.docs.forEach(d => all.push({ id: d.id, type: 'activity', ...d.data() }));
-
-    all.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-    renderResponses(all);
+    const snap = await getDocs(query(collection(db, 'messages'), orderBy('createdAt','asc')));
+    const msgs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    renderChatMessages(msgs);
+    lastChatCount = msgs.length;
   } catch(e) {
-    container.innerHTML = '<div class="responses-empty"><div class="big">😔</div><p>Impossible de charger les réponses.<br>Réessaie dans un moment.</p></div>';
+    container.innerHTML = '<div class="chat-empty"><div class="big">😔</div><p>Impossible de charger le chat.</p></div>';
   }
+
+  // Polling toutes les 8s pour les nouveaux messages
+  if (chatPollingInterval) clearInterval(chatPollingInterval);
+  chatPollingInterval = setInterval(pollChat, 8000);
 }
 
-function renderResponses(items) {
-  const container = document.getElementById('reponsesList');
+async function pollChat() {
+  const db = window._db;
+  if (!db) return;
+  try {
+    const { collection, getDocs, query, orderBy } = window._fbFns;
+    const snap = await getDocs(query(collection(db, 'messages'), orderBy('createdAt','asc')));
+    const msgs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    if (msgs.length !== lastChatCount) {
+      renderChatMessages(msgs);
+      lastChatCount = msgs.length;
+    }
+  } catch(e) {}
+}
 
-  if (!items.length) {
-    container.innerHTML = `
-      <div class="responses-empty">
-        <div class="big">🌸</div>
-        <p>Tu n'as encore rien envoyé mon amour…<br>Propose quelque chose, je serai là ❤️</p>
-      </div>`;
+function renderChatMessages(msgs) {
+  const container = document.getElementById('chatMessages');
+
+  if (!msgs.length) {
+    container.innerHTML = '<div class="chat-empty"><div class="big">💬</div><p>Pas encore de messages…<br>Dis-lui quelque chose de doux 🌸</p></div>';
     return;
   }
 
-  const typeLabel = { meal: '🍽️ Repas', planning: '💕 Moment câlins', activity: '✨ Activité' };
-  const typeIcon  = { meal: '🍽️', planning: '💕', activity: '✨' };
+  let html = '';
+  let lastDateStr = '';
 
-  container.innerHTML = items.map(r => {
-    const title = r.type === 'meal'     ? r.food
-                : r.type === 'planning' ? 'Moment câlins'
-                : r.activity;
-
-    const dateFr = r.date ? new Date(r.date + 'T00:00:00').toLocaleDateString('fr-FR', {
-      weekday: 'long', day: 'numeric', month: 'long'
-    }) : '';
-
-    const slot = r.slot === 'midi' ? '🌞 Déjeuner' : r.slot === 'soir' ? '🌙 Dîner' : '';
-
-    const statusHtml = {
-      accepted: `<span class="resp-status accepted">✅ Validé</span>`,
-      declined: `<span class="resp-status declined">❌ Refusé</span>`,
-      pending:  `<span class="resp-status pending">⏳ En attente…</span>`,
-    }[r.status] ?? '';
-
-    const acceptedMsg = r.status === 'accepted' ? `
-      <div class="resp-accepted-msg">
-        <span class="acc-emoji">😉</span>
-        <span class="acc-text">Prépare-toi mon amour… ce moment va être parfait ❤️</span>
-      </div>` : '';
-
-    const declinedMsg = r.status === 'declined' ? `
-      <div class="resp-declined-msg">
-        <div class="dec-label">Sa raison</div>
-        <div class="dec-reason">${r.declineReason || 'Il n\'a pas laissé de message… 😔'}</div>
-      </div>` : '';
-
-    return `
-      <div class="response-item ${r.status}">
-        <div class="resp-top">
-          <div class="resp-icon">${typeIcon[r.type]}</div>
-          <div class="resp-body">
-            <div class="resp-type-tag">${typeLabel[r.type]}</div>
-            <div class="resp-title">${title}${slot ? ' · ' + slot : ''}</div>
-            <div class="resp-date">${dateFr}</div>
-            ${statusHtml}
-          </div>
+  msgs.forEach(msg => {
+    const d = new Date(msg.createdAt);
+    const dateStr = d.toLocaleDateString('fr-FR', { day:'numeric', month:'long' });
+    if (dateStr !== lastDateStr) {
+      html += `<div class="chat-date-sep">${dateStr}</div>`;
+      lastDateStr = dateStr;
+    }
+    const isMe = msg.sender === 'elle';
+    const timeStr = d.toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' });
+    const avatar = isMe ? '🌸' : '💕';
+    html += `
+      <div class="msg-row ${isMe ? 'me' : 'lui'}">
+        <div class="msg-avatar">${avatar}</div>
+        <div class="msg-group">
+          <div class="msg-bubble">${escapeHtml(msg.text)}</div>
+          <div class="msg-time">${timeStr}</div>
         </div>
-        ${acceptedMsg}
-        ${declinedMsg}
       </div>`;
-  }).join('');
+  });
+
+  container.innerHTML = html;
+  container.scrollTop = container.scrollHeight;
+}
+
+async function sendMessage() {
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text) return;
+
+  input.value = '';
+  autoResizeChat(input);
+
+  const db = window._db;
+  const msg = { sender: 'elle', text, createdAt: new Date().toISOString() };
+
+  // Affichage optimiste immédiat
+  const container = document.getElementById('chatMessages');
+  const d = new Date();
+  const timeStr = d.toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' });
+  const optimistic = document.createElement('div');
+  optimistic.className = 'msg-row me';
+  optimistic.innerHTML = `
+    <div class="msg-avatar">🌸</div>
+    <div class="msg-group">
+      <div class="msg-bubble">${escapeHtml(text)}</div>
+      <div class="msg-time">${timeStr}</div>
+    </div>`;
+  container.appendChild(optimistic);
+  container.scrollTop = container.scrollHeight;
+
+  if (db) {
+    try {
+      const { collection, addDoc } = window._fbFns;
+      await addDoc(collection(db, 'messages'), msg);
+      lastChatCount++;
+    } catch(e) {
+      showToast('Message non envoyé, réessaie 💕', 'error');
+    }
+  }
+}
+
+function handleChatKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
+  }
+}
+
+function autoResizeChat(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+}
+
+function escapeHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
 }
 
 // Close modals on bg click
