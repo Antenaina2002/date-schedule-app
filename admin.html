@@ -416,15 +416,15 @@ import {
 } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
 // ╔══════════════════════════════════════════════════╗
-// ║  🔧 MÊME CONFIG FIREBASE QUE index.html          ║
+// ║  🔧 CONFIGURATION FIREBASE        ║
 // ╚══════════════════════════════════════════════════╝
 const firebaseConfig = {
-  apiKey: "TON_API_KEY",
-  authDomain: "TON_PROJECT.firebaseapp.com",
-  projectId: "TON_PROJECT_ID",
-  storageBucket: "TON_PROJECT.appspot.com",
-  messagingSenderId: "TON_SENDER_ID",
-  appId: "TON_APP_ID"
+  apiKey: "AIzaSyB-GZDMMGGCsoxAgVHBuWG0Z9UGsVVx4x8",
+  authDomain: "date-schedule-app.firebaseapp.com",
+  projectId: "date-schedule-app",
+  storageBucket: "date-schedule-app.firebasestorage.app",
+  messagingSenderId: "340648368652",
+  appId: "1:340648368652:web:e96efe6100d45a39846c29"
 };
 
 let db;
@@ -439,9 +439,9 @@ window._fb = { collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, or
 
 <script>
 // ══════════════════════════════════════════════
-//  AUTH — SIMPLE PASSWORD (à changer !)
+//  AUTH
 // ══════════════════════════════════════════════
-// ⚠️ Change ce mot de passe avant de déployer
+
 const ADMIN_PASSWORD = 'monAmour2024!';
 
 function login() {
