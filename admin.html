@@ -238,8 +238,8 @@
 
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-  import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc, query, orderBy, addDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
-  import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+  import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc, query, orderBy, addDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+  import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, setPersistence, browserSessionPersistence } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
 
   const firebaseConfig = {
     apiKey: "AIzaSyB-GZDMMGGCsoxAgVHBuWG0Z9UGsVVx4x8",
@@ -254,303 +254,90 @@
   const db = getFirestore(app);
   const auth = getAuth(app);
 
-  // Exposer pour les fonctions globales
+  // 1. FORCER LA DÉCONNEXION À LA FERMETURE DE L'ONGLET
+  setPersistence(auth, browserSessionPersistence)
+    .then(() => console.log("🔒 Session réglée sur 'onglet uniquement'"))
+    .catch(console.error);
+
+  // 2. EXPOSER FIREBASE POUR LE RESTE DU CODE (C'était l'erreur qui bloquait l'affichage !)
   window.db = db;
   window.auth = auth;
+  window._fb = { collection, getDocs, doc, updateDoc, deleteDoc, query, orderBy, addDoc, onSnapshot };
   
   console.log("🔥 Firebase initialisé");
 
-  // Écouter les changements d'état de connexion
   onAuthStateChanged(auth, (user) => {
     console.log("📌 Auth state changed:", user ? `Connecté: ${user.email}` : "Déconnecté");
     if (user) {
       document.getElementById('loginScreen').style.display = 'none';
       document.getElementById('adminScreen').style.display = 'block';
       document.getElementById('adminEmail').textContent = user.email;
-      // Charger toutes les données
       loadAllData();
       loadChat();
       loadFeedbacks();
-      // Démarrer le polling du chat
-      startChatPolling();
     } else {
       document.getElementById('loginScreen').style.display = 'flex';
       document.getElementById('adminScreen').style.display = 'none';
-      stopChatPolling();
     }
   });
 </script>
 
 <script>
-  // Variables globales
-  let allMeals = [];
-  let allPlanning = [];
-  let allActivities = [];
-  let chatPollingInterval = null;
-
-  // ========== UTILITAIRES ==========
-  function showToast(msg, type) {
-    const toast = document.getElementById('toast');
-    toast.textContent = msg;
-    toast.className = 'toast show ' + (type || '');
-    setTimeout(() => toast.classList.remove('show'), 3000);
-  }
-
-  function formatDateFr(dateStr) {
-    if (!dateStr) return '';
-    const d = new Date(dateStr + 'T00:00:00');
-    return d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
-  }
-
-  function escapeHtml(text) {
-    if (!text) return '';
-    return text.replace(/[&<>]/g, function(m) {
-      if (m === '&') return '&amp;';
-      if (m === '<') return '&lt;';
-      if (m === '>') return '&gt;';
-      return m;
-    });
-  }
-
-  // ========== AUTH ==========
-  async function login() {
-    const email = document.getElementById('emailInput').value.trim();
-    const password = document.getElementById('passwordInput').value;
-    const errDiv = document.getElementById('loginError');
-    
-    if (!email || !password) {
-      errDiv.textContent = 'Email et mot de passe requis';
-      errDiv.style.display = 'block';
-      return;
-    }
-    
-    errDiv.style.display = 'none';
-    const btn = document.querySelector('#loginScreen .btn-primary');
-    btn.disabled = true;
-    btn.textContent = 'Connexion...';
+// ========== CHARGEMENT DES DONNÉES EN TEMPS RÉEL ==========
+async function loadAllData() {
+    if (!window.db) return loadDemoData();
     
     try {
-      await signInWithEmailAndPassword(window.auth, email, password);
-      console.log("✅ Connexion réussie");
-    } catch(e) {
-      console.error("❌ Erreur connexion:", e.code);
-      let message = 'Email ou mot de passe incorrect';
-      if (e.code === 'auth/user-not-found') message = 'Aucun compte avec cet email';
-      if (e.code === 'auth/wrong-password') message = 'Mot de passe incorrect';
-      if (e.code === 'auth/invalid-email') message = 'Email invalide';
-      if (e.code === 'auth/too-many-requests') message = 'Trop de tentatives, réessaie plus tard';
-      errDiv.textContent = message + ' 😕';
-      errDiv.style.display = 'block';
-    } finally {
-      btn.disabled = false;
-      btn.textContent = 'Se connecter ❤️';
-    }
-  }
-
-  async function logout() {
-    try {
-      await signOut(window.auth);
-      console.log("✅ Déconnexion réussie");
-      showToast('Déconnecté', 'success');
-    } catch(e) {
-      console.error("❌ Erreur déconnexion:", e);
-    }
-  }
-
-  // ========== CHARGEMENT DES DONNÉES ==========
-  async function loadAllData() {
-    if (!window.db) {
-      console.warn("⚠️ Firebase non disponible, mode démo");
-      loadDemoData();
-      return;
-    }
-    
-    try {
-      console.log("📥 Chargement des données...");
+      const { collection, query, orderBy, onSnapshot } = window._fb;
       
-      // Charger les repas
-      const mealsSnap = await getDocs(query(collection(db, 'mealRequests'), orderBy('createdAt', 'desc')));
-      allMeals = mealsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
-      console.log(`🍽️ ${allMeals.length} repas chargés`);
+      // Repas
+      onSnapshot(query(collection(db, 'mealRequests'), orderBy('createdAt', 'desc')), (snap) => {
+        allMeals = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        renderMeals();
+        updateStats();
+      });
       
-      // Charger les planning
-      const planningSnap = await getDocs(query(collection(db, 'planningRequests'), orderBy('createdAt', 'desc')));
-      allPlanning = planningSnap.docs.map(d => ({ id: d.id, ...d.data() }));
-      console.log(`💕 ${allPlanning.length} moments câlins chargés`);
+      // Planning
+      onSnapshot(query(collection(db, 'planningRequests'), orderBy('createdAt', 'desc')), (snap) => {
+        allPlanning = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        renderPlanning();
+        updateStats();
+      });
       
-      // Charger les activités
-      const activitiesSnap = await getDocs(query(collection(db, 'activityRequests'), orderBy('createdAt', 'desc')));
-      allActivities = activitiesSnap.docs.map(d => ({ id: d.id, ...d.data() }));
-      console.log(`✨ ${allActivities.length} activités chargées`);
+      // Activités
+      onSnapshot(query(collection(db, 'activityRequests'), orderBy('createdAt', 'desc')), (snap) => {
+        allActivities = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        renderActivities();
+        updateStats();
+      });
       
-      renderAll();
     } catch(e) {
       console.error("❌ Erreur chargement:", e);
       showToast('Erreur de chargement des données', 'error');
-      loadDemoData();
     }
-  }
-
-  function loadDemoData() {
-    allMeals = [
-      { id: 'demo1', food: 'Sushi 🍣', date: new Date().toISOString().split('T')[0], slot: 'soir', note: 'J\'ai envie de passer un bon moment avec toi', status: 'pending', createdAt: new Date().toISOString() }
-    ];
-    allPlanning = [
-      { id: 'demo2', date: new Date(Date.now() + 86400000).toISOString().split('T')[0], comment: 'Un moment rien que pour nous 💕', status: 'pending', createdAt: new Date().toISOString() }
-    ];
-    allActivities = [
-      { id: 'demo3', activity: 'Bain moussant 🛁', note: 'Avec des bougies...', status: 'pending', createdAt: new Date().toISOString() }
-    ];
-    renderAll();
-    showToast('Mode démo - les données ne sont pas sauvegardées', 'info');
-  }
-
-  // ========== AFFICHAGE ==========
-  function renderAll() {
-    renderMeals();
-    renderPlanning();
-    renderActivities();
-    updateStats();
-  }
-
-  function renderMeals() {
-    const container = document.getElementById('mealList');
-    if (!allMeals.length) {
-      container.innerHTML = '<div class="empty-state"><div class="big">🍽️</div><p>Aucune proposition de repas</p></div>';
-      return;
-    }
-    
-    container.innerHTML = allMeals.map(r => `
-      <div class="request-card">
-        <div class="req-icon">🍽️</div>
-        <div class="req-body">
-          <div class="req-title">${escapeHtml(r.food)} · ${r.slot === 'midi' ? '🌞 Déjeuner' : '🌙 Dîner'}</div>
-          <div class="req-meta">${formatDateFr(r.date)} · <span class="badge badge-${r.status}">${getStatusLabel(r.status)}</span></div>
-          ${r.note ? `<div class="req-note">"${escapeHtml(r.note)}"</div>` : ''}
-          <div class="req-actions">
-            ${r.status === 'pending' ? `
-              <button class="btn-sm btn-accept" onclick="updateStatus('mealRequests', '${r.id}', 'accepted')">✅ Accepter</button>
-              <button class="btn-sm btn-decline" onclick="updateStatus('mealRequests', '${r.id}', 'declined')">❌ Refuser</button>
-            ` : ''}
-          </div>
-        </div>
-      </div>
-    `).join('');
-  }
-
-  function renderPlanning() {
-    const container = document.getElementById('planningList');
-    if (!allPlanning.length) {
-      container.innerHTML = '<div class="empty-state"><div class="big">💕</div><p>Aucune demande de moment câlins</p></div>';
-      return;
-    }
-    
-    container.innerHTML = allPlanning.map(r => `
-      <div class="request-card">
-        <div class="req-icon">💕</div>
-        <div class="req-body">
-          <div class="req-title">Moment câlins</div>
-          <div class="req-meta">${formatDateFr(r.date)} · <span class="badge badge-${r.status}">${getStatusLabel(r.status)}</span></div>
-          ${r.comment ? `<div class="req-note">"${escapeHtml(r.comment)}"</div>` : ''}
-          <div class="req-actions">
-            ${r.status === 'pending' ? `
-              <button class="btn-sm btn-accept" onclick="updateStatus('planningRequests', '${r.id}', 'accepted')">✅ Accepter</button>
-              <button class="btn-sm btn-decline" onclick="updateStatus('planningRequests', '${r.id}', 'declined')">❌ Refuser</button>
-            ` : ''}
-          </div>
-        </div>
-      </div>
-    `).join('');
-  }
-
-  function renderActivities() {
-    const container = document.getElementById('activityList');
-    if (!allActivities.length) {
-      container.innerHTML = '<div class="empty-state"><div class="big">✨</div><p>Aucune idée d\'activité</p></div>';
-      return;
-    }
-    
-    container.innerHTML = allActivities.map(r => `
-      <div class="request-card">
-        <div class="req-icon">✨</div>
-        <div class="req-body">
-          <div class="req-title">${escapeHtml(r.activity)}</div>
-          <div class="req-meta">${r.date ? formatDateFr(r.date) + ' · ' : ''}<span class="badge badge-${r.status}">${getStatusLabel(r.status)}</span></div>
-          ${r.note ? `<div class="req-note">"${escapeHtml(r.note)}"</div>` : ''}
-          <div class="req-actions">
-            ${r.status === 'pending' ? `
-              <button class="btn-sm btn-accept" onclick="updateStatus('activityRequests', '${r.id}', 'accepted')">✅ Accepter</button>
-              <button class="btn-sm btn-decline" onclick="updateStatus('activityRequests', '${r.id}', 'declined')">❌ Refuser</button>
-            ` : ''}
-          </div>
-        </div>
-      </div>
-    `).join('');
-  }
-
-  function getStatusLabel(status) {
-    if (status === 'pending') return '⏳ En attente';
-    if (status === 'accepted') return '✅ Accepté';
-    if (status === 'declined') return '❌ Refusé';
-    return status;
-  }
-
-  function updateStats() {
-    const totalMeals = allMeals.length;
-    const totalPlanning = allPlanning.length;
-    const totalActivities = allActivities.length;
-    const pending = [...allMeals, ...allPlanning, ...allActivities].filter(r => r.status === 'pending').length;
-    
-    document.getElementById('statMeals').textContent = totalMeals;
-    document.getElementById('statPlanning').textContent = totalPlanning;
-    document.getElementById('statActivities').textContent = totalActivities;
-    document.getElementById('statPending').textContent = pending;
   }
 
   // ========== MISE À JOUR STATUT ==========
   async function updateStatus(collectionName, id, newStatus) {
-    if (!window.db) {
-      showToast('Mode démo - action non disponible', 'error');
-      return;
-    }
-    
+    if (!window.db) return;
     try {
+      const { doc, updateDoc } = window._fb;
       await updateDoc(doc(db, collectionName, id), { status: newStatus });
-      console.log(`✅ Statut mis à jour: ${collectionName}/${id} -> ${newStatus}`);
-      
-      // Mettre à jour localement
-      if (collectionName === 'mealRequests') {
-        const item = allMeals.find(r => r.id === id);
-        if (item) item.status = newStatus;
-        renderMeals();
-      } else if (collectionName === 'planningRequests') {
-        const item = allPlanning.find(r => r.id === id);
-        if (item) item.status = newStatus;
-        renderPlanning();
-      } else if (collectionName === 'activityRequests') {
-        const item = allActivities.find(r => r.id === id);
-        if (item) item.status = newStatus;
-        renderActivities();
-      }
-      updateStats();
-      showToast(newStatus === 'accepted' ? '✅ Proposition acceptée avec amour ❤️' : '❌ Proposition refusée', newStatus === 'accepted' ? 'success' : '');
+      // Plus besoin de mettre à jour manuellement l'interface, onSnapshot s'en occupe !
+      showToast(newStatus === 'accepted' ? '✅ Proposition acceptée ❤️' : '❌ Proposition refusée', newStatus === 'accepted' ? 'success' : '');
     } catch(e) {
       console.error("❌ Erreur mise à jour:", e);
-      showToast('Erreur lors de la mise à jour', 'error');
     }
   }
 
-  // ========== CHAT ==========
+  // ========== CHAT TEMPS RÉEL ==========
   async function loadChat() {
     const container = document.getElementById('adminChatMessages');
-    if (!window.db) {
-      container.innerHTML = '<div class="empty-state"><div class="big">💬</div><p>Mode démo - chat non disponible</p></div>';
-      return;
-    }
+    if (!window.db) return;
     
-    try {
-      const q = query(collection(db, 'messages'), orderBy('createdAt', 'asc'));
-      const snap = await getDocs(q);
+    const { collection, query, orderBy, onSnapshot } = window._fb;
+    
+    onSnapshot(query(collection(db, 'messages'), orderBy('createdAt', 'asc')), (snap) => {
       const messages = snap.docs.map(d => d.data());
       
       if (!messages.length) {
@@ -585,79 +372,39 @@
       
       container.innerHTML = html;
       container.scrollTop = container.scrollHeight;
-    } catch(e) {
-      console.error("❌ Erreur chargement chat:", e);
-      container.innerHTML = '<div class="empty-state"><div class="big">😔</div><p>Erreur de chargement du chat</p></div>';
-    }
+    });
   }
 
   async function sendAdminMessage() {
     const input = document.getElementById('adminChatInput');
     const text = input.value.trim();
-    if (!text) return;
+    if (!text || !window.db) return;
     
     input.value = '';
     input.style.height = 'auto';
     
-    if (!window.db) {
-      showToast('Mode démo - message non envoyé', 'error');
-      return;
-    }
-    
     try {
+      const { collection, addDoc } = window._fb;
       await addDoc(collection(db, 'messages'), {
         sender: 'me',
         text: text,
         createdAt: new Date().toISOString()
       });
-      await loadChat();
-      showToast('Message envoyé ❤️', 'success');
+      // Plus besoin d'appeler loadChat(), c'est automatique !
     } catch(e) {
       console.error("❌ Erreur envoi message:", e);
-      showToast('Erreur lors de l\'envoi', 'error');
       input.value = text;
     }
   }
 
-  function handleChatKey(e) {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      sendAdminMessage();
-    }
-  }
-
-  function autoResizeTextarea(textarea) {
-    textarea.style.height = 'auto';
-    textarea.style.height = Math.min(textarea.scrollHeight, 100) + 'px';
-  }
-
-  function startChatPolling() {
-    if (chatPollingInterval) clearInterval(chatPollingInterval);
-    chatPollingInterval = setInterval(() => {
-      if (document.getElementById('adminScreen').style.display !== 'none') {
-        loadChat();
-      }
-    }, 10000);
-  }
-
-  function stopChatPolling() {
-    if (chatPollingInterval) {
-      clearInterval(chatPollingInterval);
-      chatPollingInterval = null;
-    }
-  }
-
-  // ========== FEEDBACKS ==========
+  // ========== FEEDBACKS TEMPS RÉEL ==========
   async function loadFeedbacks() {
     const container = document.getElementById('feedbackList');
-    if (!window.db) {
-      container.innerHTML = '<div class="empty-state"><div class="big">💬</div><p>Mode démo - feedbacks non disponibles</p></div>';
-      return;
-    }
+    if (!window.db) return;
     
-    try {
-      const q = query(collection(db, 'feedbacks'), orderBy('createdAt', 'desc'));
-      const snap = await getDocs(q);
+    const { collection, query, orderBy, onSnapshot } = window._fb;
+    
+    onSnapshot(query(collection(db, 'feedbacks'), orderBy('createdAt', 'desc')), (snap) => {
       const feedbacks = snap.docs.map(d => ({ id: d.id, ...d.data() }));
       
       if (!feedbacks.length) {
@@ -679,41 +426,19 @@
           <div class="feedback-text">${escapeHtml(f.text) || '<em>Aucun commentaire</em>'}</div>
         </div>
       `).join('');
-    } catch(e) {
-      console.error("❌ Erreur chargement feedbacks:", e);
-      container.innerHTML = '<div class="empty-state"><div class="big">😔</div><p>Erreur de chargement des feedbacks</p></div>';
-    }
+    });
   }
 
   async function deleteFeedback(id) {
-    if (!confirm('Supprimer ce feedback ?')) return;
-    if (!window.db) return;
-    
+    if (!confirm('Supprimer ce feedback ?') || !window.db) return;
     try {
+      const { doc, deleteDoc } = window._fb;
       await deleteDoc(doc(db, 'feedbacks', id));
-      await loadFeedbacks();
       showToast('Feedback supprimé', 'success');
     } catch(e) {
       console.error("❌ Erreur suppression feedback:", e);
-      showToast('Erreur lors de la suppression', 'error');
     }
   }
-
-  // Attacher les fonctions à window pour les appels inline
-  window.login = login;
-  window.logout = logout;
-  window.updateStatus = updateStatus;
-  window.sendAdminMessage = sendAdminMessage;
-  window.handleChatKey = handleChatKey;
-  window.deleteFeedback = deleteFeedback;
-  
-  // Initialiser l'auto-resize sur le textarea
-  document.addEventListener('DOMContentLoaded', () => {
-    const textarea = document.getElementById('adminChatInput');
-    if (textarea) {
-      textarea.addEventListener('input', () => autoResizeTextarea(textarea));
-    }
-  });
 </script>
 </body>
 </html>
