@@ -254,16 +254,53 @@
   const db = getFirestore(app);
   const auth = getAuth(app);
 
-  // Forcer la déconnexion à la fermeture de l'onglet
-  setPersistence(auth, browserSessionPersistence)
-    .then(() => console.log("🔒 Session réglée sur 'onglet uniquement'"))
-    .catch(console.error);
+  // 1. Forcer la déconnexion à la fermeture de l'onglet
+  setPersistence(auth, browserSessionPersistence).catch(console.error);
 
-  // Partager Firebase avec le script standard globale
+  // 2. Partager Firebase avec le script standard global
   window.db = db;
   window.auth = auth;
   window._fb = { collection, getDocs, doc, updateDoc, deleteDoc, query, orderBy, addDoc, onSnapshot };
   
+  // =========================================================
+  // 3. FONCTIONS DE CONNEXION ET DÉCONNEXION (CORRECTION ICI)
+  // =========================================================
+  window.login = async function() {
+    const email = document.getElementById('emailInput').value.trim();
+    const password = document.getElementById('passwordInput').value;
+    const errorDiv = document.getElementById('loginError');
+    
+    if (!email || !password) {
+      if (errorDiv) {
+        errorDiv.textContent = "Veuillez remplir tous les champs.";
+        errorDiv.style.display = 'block';
+      }
+      return;
+    }
+    
+    try {
+      // Appel à Firebase pour se connecter
+      await signInWithEmailAndPassword(auth, email, password);
+      if (errorDiv) errorDiv.style.display = 'none';
+      document.getElementById('passwordInput').value = ''; // On vide le mot de passe
+    } catch (error) {
+      console.error("❌ Erreur de connexion:", error);
+      if (errorDiv) {
+        errorDiv.textContent = "Email ou mot de passe incorrect.";
+        errorDiv.style.display = 'block';
+      }
+    }
+  };
+
+  window.logout = async function() {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.error("❌ Erreur de déconnexion:", error);
+    }
+  };
+  // =========================================================
+
   console.log("🔥 Firebase initialisé");
 
   onAuthStateChanged(auth, (user) => {
@@ -274,7 +311,6 @@
     const adminEmail = document.getElementById('adminEmail');
     const loadingScreen = document.getElementById('loadingScreen');
 
-    // Masquer l'écran de chargement initial s'il existe
     if (loadingScreen) loadingScreen.style.display = 'none';
 
     if (user) {
@@ -282,12 +318,11 @@
       if (adminScreen) adminScreen.style.display = 'block';
       if (adminEmail) adminEmail.textContent = user.email;
       
-      // On attend une fraction de seconde pour s'assurer que le deuxième script est bien chargé en mémoire
       setTimeout(() => {
         if (typeof window.initAdminData === 'function') {
           window.initAdminData();
         } else {
-          console.warn("⚠️ Les fonctions d'affichage ne sont pas encore prêtes, nouvelle tentative...");
+          console.warn("⚠️ Les fonctions d'affichage ne sont pas prêtes, on tente à nouveau...");
           setTimeout(() => { if (typeof window.initAdminData === 'function') window.initAdminData(); }, 500);
         }
       }, 50);
