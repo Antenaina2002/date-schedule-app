@@ -43,6 +43,7 @@
     width: 100%;
     box-shadow: 0 25px 50px rgba(212, 104, 138, 0.15);
     text-align: center;
+    position: relative;
   }
   .login-box::before {
     content: '';
@@ -52,6 +53,7 @@
     width: 100%;
     height: 8px;
     background: linear-gradient(90deg, #d4688a, #f2a7b8);
+    border-radius: 24px 24px 0 0;
   }
   .login-emoji { font-size: 3rem; margin-bottom: 1.5rem; display: block; }
   .login-box h1 { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 400; margin-bottom: 0.5rem; color: var(--text); }
@@ -80,74 +82,94 @@
   .admin-header {
     background: white; border-bottom: 1px solid var(--blush); padding: 1rem 2rem;
     display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
   }
   .admin-header h1 { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; }
   .admin-header h1 span { color: var(--rose-deep); }
-  .logout-btn { background: transparent; border: 1px solid var(--blush); padding: 0.4rem 0.9rem; border-radius: 8px; cursor: pointer; }
+  .admin-info { display: flex; align-items: center; gap: 1rem; }
+  .admin-email { font-size: 0.85rem; color: var(--text-soft); }
+  .logout-btn { background: transparent; border: 1px solid var(--blush); padding: 0.4rem 0.9rem; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
+  .logout-btn:hover { background: var(--rose-pale); }
   .admin-body { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem; }
 
   .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem; }
   .stat-card { background: white; border-radius: 16px; padding: 1.25rem; text-align: center; box-shadow: 0 2px 12px var(--shadow); }
-  .stat-num { font-size: 2rem; color: var(--rose-deep); }
-  .stat-label { font-size: 0.8rem; color: var(--text-muted); }
+  .stat-num { font-size: 2rem; color: var(--rose-deep); font-weight: 500; }
+  .stat-label { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem; }
 
-  .section-title { font-size: 1.5rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--blush); }
+  .section-title { font-size: 1.3rem; font-weight: 500; margin: 1.5rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--blush); }
+  .section-title:first-of-type { margin-top: 0; }
+  
   .request-card {
     background: white; border-radius: 16px; padding: 1.25rem; margin-bottom: 0.75rem;
     display: flex; align-items: flex-start; gap: 1rem; box-shadow: 0 2px 12px var(--shadow);
+    border: 1px solid rgba(242,167,184,0.15);
   }
+  .req-icon { font-size: 1.8rem; }
   .req-body { flex: 1; }
-  .req-title { font-weight: 500; }
-  .req-meta { font-size: 0.82rem; color: var(--text-muted); margin-top: 0.25rem; }
-  .req-note { background: var(--rose-pale); padding: 0.5rem; border-radius: 8px; font-size: 0.85rem; margin-top: 0.5rem; }
-  .req-actions { display: flex; gap: 0.5rem; margin-top: 0.75rem; }
+  .req-title { font-weight: 600; color: var(--text); }
+  .req-meta { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem; }
+  .req-note { background: var(--rose-pale); padding: 0.5rem 0.75rem; border-radius: 10px; font-size: 0.85rem; margin-top: 0.5rem; color: var(--text-soft); font-style: italic; }
+  .req-actions { display: flex; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap; }
 
-  .btn-sm { padding: 0.4rem 0.9rem; border-radius: 8px; cursor: pointer; border: none; }
+  .btn-sm { padding: 0.4rem 1rem; border-radius: 20px; cursor: pointer; border: none; font-weight: 500; transition: all 0.2s; }
   .btn-accept { background: var(--green-light); color: var(--green); }
+  .btn-accept:hover { background: #d0ecd5; transform: scale(1.02); }
   .btn-decline { background: var(--red-light); color: var(--red); }
+  .btn-decline:hover { background: #f5d0d0; transform: scale(1.02); }
 
-  .badge { display: inline-block; padding: 0.2rem 0.65rem; border-radius: 20px; font-size: 0.75rem; }
+  .badge { display: inline-block; padding: 0.2rem 0.65rem; border-radius: 20px; font-size: 0.7rem; font-weight: 600; }
   .badge-pending { background: #fff8e1; color: #b08000; }
   .badge-accepted { background: var(--green-light); color: var(--green); }
   .badge-declined { background: var(--red-light); color: var(--red); }
 
-  .empty-state { text-align: center; padding: 2rem; color: var(--text-muted); }
+  .empty-state { text-align: center; padding: 2rem; color: var(--text-muted); background: white; border-radius: 16px; }
+  .empty-state .big { font-size: 2rem; margin-bottom: 0.5rem; }
 
-  /* CHAT ADMIN */
-  .admin-chat-wrap { background: white; border-radius: 16px; overflow: hidden; margin-bottom: 2rem; }
-  .chat-messages { height: 300px; overflow-y: auto; padding: 1rem; background: var(--cream); }
-  .msg-row { display: flex; align-items: flex-end; gap: 0.5rem; margin-bottom: 0.75rem; }
+  /* CHAT */
+  .admin-chat-wrap { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 2px 12px var(--shadow); margin-top: 1rem; }
+  .chat-messages { height: 320px; overflow-y: auto; padding: 1rem; background: var(--cream); display: flex; flex-direction: column; gap: 0.5rem; }
+  .msg-row { display: flex; align-items: flex-end; gap: 0.5rem; }
   .msg-row.me { flex-direction: row-reverse; }
-  .msg-avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--rose); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; }
-  .msg-row.me .msg-avatar { background: #7ab8f5; }
-  .msg-bubble { padding: 0.5rem 1rem; border-radius: 18px; max-width: 70%; }
-  .msg-row.lui .msg-bubble { background: white; border: 1px solid var(--blush); }
-  .msg-row.me .msg-bubble { background: var(--rose-deep); color: white; }
-  .msg-time { font-size: 0.68rem; color: var(--text-muted); margin-top: 0.2rem; display: block; }
-  .chat-date-sep { text-align: center; font-size: 0.7rem; color: var(--text-muted); margin: 0.5rem 0; }
-
+  .msg-avatar { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, var(--rose), var(--rose-deep)); display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0; }
+  .msg-row.me .msg-avatar { background: linear-gradient(135deg, #7ab8f5, #4a90d9); }
+  .msg-bubble { max-width: 70%; padding: 0.5rem 1rem; border-radius: 18px; font-size: 0.85rem; line-height: 1.4; }
+  .msg-row.lui .msg-bubble { background: white; border: 1px solid var(--blush); border-bottom-left-radius: 4px; }
+  .msg-row.me .msg-bubble { background: linear-gradient(135deg, var(--rose-deep), #c45580); color: white; border-bottom-right-radius: 4px; }
+  .msg-time { font-size: 0.65rem; opacity: 0.7; margin-top: 0.2rem; display: block; }
+  .msg-row.me .msg-time { text-align: right; }
+  .chat-date-sep { text-align: center; font-size: 0.7rem; color: var(--text-muted); margin: 0.75rem 0; }
   .admin-chat-composer { display: flex; gap: 0.5rem; padding: 0.75rem; border-top: 1px solid var(--blush); background: white; }
-  .admin-chat-textarea { flex: 1; border: 1px solid var(--blush); border-radius: 20px; padding: 0.6rem 1rem; resize: none; font-family: inherit; }
-  .admin-chat-send { width: 38px; height: 38px; border-radius: 50%; background: var(--rose-deep); color: white; border: none; cursor: pointer; }
+  .admin-chat-textarea { flex: 1; border: 1.5px solid var(--blush); border-radius: 24px; padding: 0.6rem 1rem; resize: none; font-family: inherit; font-size: 0.85rem; background: var(--rose-pale); outline: none; }
+  .admin-chat-textarea:focus { border-color: var(--rose-deep); background: white; }
+  .admin-chat-send { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--rose-deep), #c45580); color: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform 0.2s; }
+  .admin-chat-send:hover { transform: scale(1.05); }
 
   /* FEEDBACK */
-  .feedback-card { background: white; border-radius: 14px; padding: 1rem; margin-bottom: 0.75rem; }
+  .feedback-card { background: white; border-radius: 14px; padding: 1rem; margin-bottom: 0.75rem; border: 1px solid rgba(242,167,184,0.2); }
   .feedback-card-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; }
   .feedback-mood-emoji { font-size: 1.5rem; }
-  .feedback-text { background: var(--rose-pale); padding: 0.75rem; border-radius: 8px; font-size: 0.85rem; }
+  .feedback-text { background: var(--rose-pale); padding: 0.75rem; border-radius: 10px; font-size: 0.85rem; color: var(--text-soft); line-height: 1.4; }
 
   .toast {
     position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px);
-    background: var(--text); color: white; padding: 0.75rem 1.5rem; border-radius: 40px;
-    transition: transform 0.3s; z-index: 1000;
+    background: var(--text); color: white; padding: 0.75rem 1.5rem; border-radius: 40px; font-size: 0.85rem;
+    transition: transform 0.3s; z-index: 1000; white-space: nowrap;
   }
   .toast.show { transform: translateX(-50%) translateY(0); }
   .toast.success { background: var(--green); }
   .toast.error { background: var(--red); }
+
+  /* Loader */
+  .loader { text-align: center; padding: 2rem; color: var(--text-muted); }
+  .loader::before { content: '💕'; display: inline-block; animation: pulse 1s ease-in-out infinite; font-size: 1.5rem; margin-right: 0.5rem; }
+  @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
 </style>
 </head>
 <body>
 
+<!-- LOGIN SCREEN -->
 <div id="loginScreen">
   <div class="login-box">
     <div class="login-emoji">🔐</div>
@@ -155,50 +177,60 @@
     <p>Accès réservé pour gérer nos moments spéciaux</p>
     <div class="login-input-group">
       <label>Email</label>
-      <input type="email" id="emailInput" placeholder="ton@email.com">
+      <input type="email" id="emailInput" placeholder="admin@email.com" autocomplete="email">
     </div>
     <div class="login-input-group">
       <label>Mot de passe</label>
-      <input type="password" id="passwordInput" placeholder="••••••••" onkeydown="if(event.key==='Enter') login()">
+      <input type="password" id="passwordInput" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter') login()">
     </div>
     <button class="btn-primary" onclick="login()">Se connecter ❤️</button>
     <div class="login-error" id="loginError"></div>
   </div>
 </div>
 
+<!-- ADMIN SCREEN -->
 <div id="adminScreen">
   <div class="admin-header">
     <h1>Admin — <span>mes propositions</span> 💌</h1>
-    <button class="logout-btn" onclick="logout()">Déconnexion</button>
+    <div class="admin-info">
+      <span class="admin-email" id="adminEmail"></span>
+      <button class="logout-btn" onclick="logout()">Déconnexion</button>
+    </div>
   </div>
   <div class="admin-body">
+    <!-- STATS -->
     <div class="stats-row">
-      <div class="stat-card"><div class="stat-num" id="statMeals">0</div><div class="stat-label">Repas</div></div>
-      <div class="stat-card"><div class="stat-num" id="statPlanning">0</div><div class="stat-label">Câlins</div></div>
-      <div class="stat-card"><div class="stat-num" id="statActivities">0</div><div class="stat-label">Activités</div></div>
+      <div class="stat-card"><div class="stat-num" id="statMeals">0</div><div class="stat-label">Propositions repas</div></div>
+      <div class="stat-card"><div class="stat-num" id="statPlanning">0</div><div class="stat-label">Moments câlins</div></div>
+      <div class="stat-card"><div class="stat-num" id="statActivities">0</div><div class="stat-label">Idées d'activités</div></div>
       <div class="stat-card"><div class="stat-num" id="statPending">0</div><div class="stat-label">En attente</div></div>
     </div>
 
+    <!-- REPAS -->
     <div class="section-title">🍽️ Propositions repas</div>
-    <div id="mealList"><div class="empty-state">Chargement...</div></div>
+    <div id="mealList"><div class="loader">Chargement des repas...</div></div>
 
-    <div class="section-title" style="margin-top: 1.5rem;">💕 Moments câlins</div>
-    <div id="planningList"><div class="empty-state">Chargement...</div></div>
+    <!-- PLANNING -->
+    <div class="section-title">💕 Moments câlins</div>
+    <div id="planningList"><div class="loader">Chargement des moments...</div></div>
 
-    <div class="section-title" style="margin-top: 1.5rem;">✨ Idées d'activités</div>
-    <div id="activityList"><div class="empty-state">Chargement...</div></div>
+    <!-- ACTIVITÉS -->
+    <div class="section-title">✨ Idées d'activités</div>
+    <div id="activityList"><div class="loader">Chargement des activités...</div></div>
 
-    <div class="section-title" style="margin-top: 1.5rem;">💬 Chat</div>
+    <!-- CHAT -->
+    <div class="section-title">💬 Notre fil secret</div>
     <div class="admin-chat-wrap">
-      <div class="chat-messages" id="adminChatMessages"><div class="empty-state">💕 Chargement...</div></div>
+      <div class="chat-messages" id="adminChatMessages"><div class="loader">💕 Chargement du chat...</div></div>
       <div class="admin-chat-composer">
-        <textarea id="adminChatInput" class="admin-chat-textarea" placeholder="Écris un message... 🌹" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();adminSendMessage()}"></textarea>
-        <button class="admin-chat-send" onclick="adminSendMessage()">➤</button>
+        <textarea id="adminChatInput" class="admin-chat-textarea" placeholder="Écris un message... 🌹" rows="1" onkeydown="handleChatKey(event)"></textarea>
+        <button class="admin-chat-send" onclick="sendAdminMessage()">➤</button>
       </div>
     </div>
 
-    <div class="section-title">💬 Feedbacks</div>
-    <div id="feedbackList"><div class="empty-state">Chargement...</div></div>
+    <!-- FEEDBACKS -->
+    <div class="section-title">💬 Feedbacks reçus</div>
+    <div id="feedbackList"><div class="loader">Chargement des feedbacks...</div></div>
   </div>
 </div>
 
@@ -206,7 +238,7 @@
 
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-  import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, orderBy } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+  import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc, query, orderBy, addDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
   import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
 
   const firebaseConfig = {
@@ -222,27 +254,41 @@
   const db = getFirestore(app);
   const auth = getAuth(app);
 
+  // Exposer pour les fonctions globales
   window.db = db;
   window.auth = auth;
+  
+  console.log("🔥 Firebase initialisé");
 
+  // Écouter les changements d'état de connexion
   onAuthStateChanged(auth, (user) => {
-    console.log("Auth state changed:", user ? "Connecté" : "Déconnecté");
+    console.log("📌 Auth state changed:", user ? `Connecté: ${user.email}` : "Déconnecté");
     if (user) {
       document.getElementById('loginScreen').style.display = 'none';
       document.getElementById('adminScreen').style.display = 'block';
+      document.getElementById('adminEmail').textContent = user.email;
+      // Charger toutes les données
       loadAllData();
       loadChat();
+      loadFeedbacks();
+      // Démarrer le polling du chat
+      startChatPolling();
     } else {
       document.getElementById('loginScreen').style.display = 'flex';
       document.getElementById('adminScreen').style.display = 'none';
+      stopChatPolling();
     }
   });
 </script>
 
 <script>
   // Variables globales
-  let currentRequests = { meals: [], planning: [], activities: [] };
+  let allMeals = [];
+  let allPlanning = [];
+  let allActivities = [];
+  let chatPollingInterval = null;
 
+  // ========== UTILITAIRES ==========
   function showToast(msg, type) {
     const toast = document.getElementById('toast');
     toast.textContent = msg;
@@ -278,49 +324,85 @@
       return;
     }
     
+    errDiv.style.display = 'none';
+    const btn = document.querySelector('#loginScreen .btn-primary');
+    btn.disabled = true;
+    btn.textContent = 'Connexion...';
+    
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      await signInWithEmailAndPassword(window.auth, email, password);
+      console.log("✅ Connexion réussie");
     } catch(e) {
-      errDiv.textContent = e.code === 'auth/invalid-credential' ? 'Email ou mot de passe incorrect' : 'Erreur de connexion';
+      console.error("❌ Erreur connexion:", e.code);
+      let message = 'Email ou mot de passe incorrect';
+      if (e.code === 'auth/user-not-found') message = 'Aucun compte avec cet email';
+      if (e.code === 'auth/wrong-password') message = 'Mot de passe incorrect';
+      if (e.code === 'auth/invalid-email') message = 'Email invalide';
+      if (e.code === 'auth/too-many-requests') message = 'Trop de tentatives, réessaie plus tard';
+      errDiv.textContent = message + ' 😕';
       errDiv.style.display = 'block';
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Se connecter ❤️';
     }
   }
 
   async function logout() {
-    await signOut(auth);
+    try {
+      await signOut(window.auth);
+      console.log("✅ Déconnexion réussie");
+      showToast('Déconnecté', 'success');
+    } catch(e) {
+      console.error("❌ Erreur déconnexion:", e);
+    }
   }
 
   // ========== CHARGEMENT DES DONNÉES ==========
   async function loadAllData() {
     if (!window.db) {
+      console.warn("⚠️ Firebase non disponible, mode démo");
       loadDemoData();
       return;
     }
     
     try {
+      console.log("📥 Chargement des données...");
+      
+      // Charger les repas
       const mealsSnap = await getDocs(query(collection(db, 'mealRequests'), orderBy('createdAt', 'desc')));
-      currentRequests.meals = mealsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+      allMeals = mealsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+      console.log(`🍽️ ${allMeals.length} repas chargés`);
       
+      // Charger les planning
       const planningSnap = await getDocs(query(collection(db, 'planningRequests'), orderBy('createdAt', 'desc')));
-      currentRequests.planning = planningSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+      allPlanning = planningSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+      console.log(`💕 ${allPlanning.length} moments câlins chargés`);
       
+      // Charger les activités
       const activitiesSnap = await getDocs(query(collection(db, 'activityRequests'), orderBy('createdAt', 'desc')));
-      currentRequests.activities = activitiesSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+      allActivities = activitiesSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+      console.log(`✨ ${allActivities.length} activités chargées`);
       
       renderAll();
     } catch(e) {
-      console.error("Erreur chargement:", e);
+      console.error("❌ Erreur chargement:", e);
       showToast('Erreur de chargement des données', 'error');
+      loadDemoData();
     }
   }
 
   function loadDemoData() {
-    currentRequests = {
-      meals: [{ id: '1', food: 'Sushi', date: '2025-02-15', slot: 'soir', note: 'J\'ai envie de sushis', status: 'pending', createdAt: new Date().toISOString() }],
-      planning: [{ id: '2', date: '2025-02-16', comment: 'Mode doux', status: 'pending', createdAt: new Date().toISOString() }],
-      activities: [{ id: '3', activity: 'Bain moussant', note: 'J\'adorerais', status: 'pending', createdAt: new Date().toISOString() }]
-    };
+    allMeals = [
+      { id: 'demo1', food: 'Sushi 🍣', date: new Date().toISOString().split('T')[0], slot: 'soir', note: 'J\'ai envie de passer un bon moment avec toi', status: 'pending', createdAt: new Date().toISOString() }
+    ];
+    allPlanning = [
+      { id: 'demo2', date: new Date(Date.now() + 86400000).toISOString().split('T')[0], comment: 'Un moment rien que pour nous 💕', status: 'pending', createdAt: new Date().toISOString() }
+    ];
+    allActivities = [
+      { id: 'demo3', activity: 'Bain moussant 🛁', note: 'Avec des bougies...', status: 'pending', createdAt: new Date().toISOString() }
+    ];
     renderAll();
+    showToast('Mode démo - les données ne sont pas sauvegardées', 'info');
   }
 
   // ========== AFFICHAGE ==========
@@ -333,20 +415,22 @@
 
   function renderMeals() {
     const container = document.getElementById('mealList');
-    if (!currentRequests.meals.length) {
-      container.innerHTML = '<div class="empty-state">🍽️ Aucune proposition</div>';
+    if (!allMeals.length) {
+      container.innerHTML = '<div class="empty-state"><div class="big">🍽️</div><p>Aucune proposition de repas</p></div>';
       return;
     }
-    container.innerHTML = currentRequests.meals.map(r => `
+    
+    container.innerHTML = allMeals.map(r => `
       <div class="request-card">
+        <div class="req-icon">🍽️</div>
         <div class="req-body">
-          <div class="req-title">${escapeHtml(r.food)} · ${r.slot === 'midi' ? 'Déjeuner' : 'Dîner'}</div>
-          <div class="req-meta">${formatDateFr(r.date)} · <span class="badge badge-${r.status}">${r.status === 'pending' ? 'En attente' : r.status === 'accepted' ? 'Accepté' : 'Refusé'}</span></div>
+          <div class="req-title">${escapeHtml(r.food)} · ${r.slot === 'midi' ? '🌞 Déjeuner' : '🌙 Dîner'}</div>
+          <div class="req-meta">${formatDateFr(r.date)} · <span class="badge badge-${r.status}">${getStatusLabel(r.status)}</span></div>
           ${r.note ? `<div class="req-note">"${escapeHtml(r.note)}"</div>` : ''}
           <div class="req-actions">
             ${r.status === 'pending' ? `
-              <button class="btn-sm btn-accept" onclick="updateRequest('mealRequests', '${r.id}', 'accepted')">✅ Accepter</button>
-              <button class="btn-sm btn-decline" onclick="updateRequest('mealRequests', '${r.id}', 'declined')">❌ Refuser</button>
+              <button class="btn-sm btn-accept" onclick="updateStatus('mealRequests', '${r.id}', 'accepted')">✅ Accepter</button>
+              <button class="btn-sm btn-decline" onclick="updateStatus('mealRequests', '${r.id}', 'declined')">❌ Refuser</button>
             ` : ''}
           </div>
         </div>
@@ -356,20 +440,22 @@
 
   function renderPlanning() {
     const container = document.getElementById('planningList');
-    if (!currentRequests.planning.length) {
-      container.innerHTML = '<div class="empty-state">💕 Aucune demande</div>';
+    if (!allPlanning.length) {
+      container.innerHTML = '<div class="empty-state"><div class="big">💕</div><p>Aucune demande de moment câlins</p></div>';
       return;
     }
-    container.innerHTML = currentRequests.planning.map(r => `
+    
+    container.innerHTML = allPlanning.map(r => `
       <div class="request-card">
+        <div class="req-icon">💕</div>
         <div class="req-body">
           <div class="req-title">Moment câlins</div>
-          <div class="req-meta">${formatDateFr(r.date)} · <span class="badge badge-${r.status}">${r.status === 'pending' ? 'En attente' : r.status === 'accepted' ? 'Accepté' : 'Refusé'}</span></div>
+          <div class="req-meta">${formatDateFr(r.date)} · <span class="badge badge-${r.status}">${getStatusLabel(r.status)}</span></div>
           ${r.comment ? `<div class="req-note">"${escapeHtml(r.comment)}"</div>` : ''}
           <div class="req-actions">
             ${r.status === 'pending' ? `
-              <button class="btn-sm btn-accept" onclick="updateRequest('planningRequests', '${r.id}', 'accepted')">✅ Confirmer</button>
-              <button class="btn-sm btn-decline" onclick="updateRequest('planningRequests', '${r.id}', 'declined')">❌ Refuser</button>
+              <button class="btn-sm btn-accept" onclick="updateStatus('planningRequests', '${r.id}', 'accepted')">✅ Accepter</button>
+              <button class="btn-sm btn-decline" onclick="updateStatus('planningRequests', '${r.id}', 'declined')">❌ Refuser</button>
             ` : ''}
           </div>
         </div>
@@ -379,20 +465,22 @@
 
   function renderActivities() {
     const container = document.getElementById('activityList');
-    if (!currentRequests.activities.length) {
-      container.innerHTML = '<div class="empty-state">✨ Aucune idée</div>';
+    if (!allActivities.length) {
+      container.innerHTML = '<div class="empty-state"><div class="big">✨</div><p>Aucune idée d\'activité</p></div>';
       return;
     }
-    container.innerHTML = currentRequests.activities.map(r => `
+    
+    container.innerHTML = allActivities.map(r => `
       <div class="request-card">
+        <div class="req-icon">✨</div>
         <div class="req-body">
           <div class="req-title">${escapeHtml(r.activity)}</div>
-          <div class="req-meta">${r.date ? formatDateFr(r.date) + ' · ' : ''}<span class="badge badge-${r.status}">${r.status === 'pending' ? 'En attente' : r.status === 'accepted' ? 'Accepté' : 'Refusé'}</span></div>
+          <div class="req-meta">${r.date ? formatDateFr(r.date) + ' · ' : ''}<span class="badge badge-${r.status}">${getStatusLabel(r.status)}</span></div>
           ${r.note ? `<div class="req-note">"${escapeHtml(r.note)}"</div>` : ''}
           <div class="req-actions">
             ${r.status === 'pending' ? `
-              <button class="btn-sm btn-accept" onclick="updateRequest('activityRequests', '${r.id}', 'accepted')">✅ Accepter</button>
-              <button class="btn-sm btn-decline" onclick="updateRequest('activityRequests', '${r.id}', 'declined')">❌ Refuser</button>
+              <button class="btn-sm btn-accept" onclick="updateStatus('activityRequests', '${r.id}', 'accepted')">✅ Accepter</button>
+              <button class="btn-sm btn-decline" onclick="updateStatus('activityRequests', '${r.id}', 'declined')">❌ Refuser</button>
             ` : ''}
           </div>
         </div>
@@ -400,35 +488,55 @@
     `).join('');
   }
 
+  function getStatusLabel(status) {
+    if (status === 'pending') return '⏳ En attente';
+    if (status === 'accepted') return '✅ Accepté';
+    if (status === 'declined') return '❌ Refusé';
+    return status;
+  }
+
   function updateStats() {
-    const all = [...currentRequests.meals, ...currentRequests.planning, ...currentRequests.activities];
-    document.getElementById('statMeals').textContent = currentRequests.meals.length;
-    document.getElementById('statPlanning').textContent = currentRequests.planning.length;
-    document.getElementById('statActivities').textContent = currentRequests.activities.length;
-    document.getElementById('statPending').textContent = all.filter(r => r.status === 'pending').length;
+    const totalMeals = allMeals.length;
+    const totalPlanning = allPlanning.length;
+    const totalActivities = allActivities.length;
+    const pending = [...allMeals, ...allPlanning, ...allActivities].filter(r => r.status === 'pending').length;
+    
+    document.getElementById('statMeals').textContent = totalMeals;
+    document.getElementById('statPlanning').textContent = totalPlanning;
+    document.getElementById('statActivities').textContent = totalActivities;
+    document.getElementById('statPending').textContent = pending;
   }
 
   // ========== MISE À JOUR STATUT ==========
-  async function updateRequest(collectionName, id, newStatus) {
+  async function updateStatus(collectionName, id, newStatus) {
     if (!window.db) {
-      showToast('Mode démo', 'error');
+      showToast('Mode démo - action non disponible', 'error');
       return;
     }
     
     try {
       await updateDoc(doc(db, collectionName, id), { status: newStatus });
+      console.log(`✅ Statut mis à jour: ${collectionName}/${id} -> ${newStatus}`);
       
       // Mettre à jour localement
-      const collectionKey = collectionName.replace('Requests', '');
-      const targetArray = currentRequests[collectionKey === 'meal' ? 'meals' : collectionKey === 'planning' ? 'planning' : 'activities'];
-      const item = targetArray.find(r => r.id === id);
-      if (item) item.status = newStatus;
-      
-      renderAll();
-      showToast(newStatus === 'accepted' ? '✅ Accepté !' : '❌ Refusé', newStatus === 'accepted' ? 'success' : '');
+      if (collectionName === 'mealRequests') {
+        const item = allMeals.find(r => r.id === id);
+        if (item) item.status = newStatus;
+        renderMeals();
+      } else if (collectionName === 'planningRequests') {
+        const item = allPlanning.find(r => r.id === id);
+        if (item) item.status = newStatus;
+        renderPlanning();
+      } else if (collectionName === 'activityRequests') {
+        const item = allActivities.find(r => r.id === id);
+        if (item) item.status = newStatus;
+        renderActivities();
+      }
+      updateStats();
+      showToast(newStatus === 'accepted' ? '✅ Proposition acceptée avec amour ❤️' : '❌ Proposition refusée', newStatus === 'accepted' ? 'success' : '');
     } catch(e) {
-      console.error(e);
-      showToast('Erreur', 'error');
+      console.error("❌ Erreur mise à jour:", e);
+      showToast('Erreur lors de la mise à jour', 'error');
     }
   }
 
@@ -436,56 +544,63 @@
   async function loadChat() {
     const container = document.getElementById('adminChatMessages');
     if (!window.db) {
-      container.innerHTML = '<div class="empty-state">💬 Mode démo</div>';
+      container.innerHTML = '<div class="empty-state"><div class="big">💬</div><p>Mode démo - chat non disponible</p></div>';
       return;
     }
     
     try {
       const q = query(collection(db, 'messages'), orderBy('createdAt', 'asc'));
       const snap = await getDocs(q);
-      const msgs = snap.docs.map(d => d.data());
+      const messages = snap.docs.map(d => d.data());
       
-      if (!msgs.length) {
-        container.innerHTML = '<div class="empty-state">💬 Aucun message</div>';
+      if (!messages.length) {
+        container.innerHTML = '<div class="empty-state"><div class="big">💬</div><p>Pas encore de messages</p></div>';
         return;
       }
       
       let html = '';
       let lastDate = '';
-      msgs.forEach(m => {
-        const isMe = m.sender === 'me';
-        const d = new Date(m.createdAt);
+      
+      for (const msg of messages) {
+        const isMe = msg.sender === 'me';
+        const d = new Date(msg.createdAt);
         const dateKey = d.toDateString();
+        
         if (dateKey !== lastDate) {
           html += `<div class="chat-date-sep">${d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' })}</div>`;
           lastDate = dateKey;
         }
+        
         const time = d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
         html += `
           <div class="msg-row ${isMe ? 'me' : 'lui'}">
             <div class="msg-avatar">${isMe ? '👨' : '👩'}</div>
-            <div class="msg-group">
-              <div class="msg-bubble">${escapeHtml(m.text)}<span class="msg-time">${time}</span></div>
+            <div class="msg-bubble">
+              ${escapeHtml(msg.text)}
+              <span class="msg-time">${time}</span>
             </div>
           </div>
         `;
-      });
+      }
+      
       container.innerHTML = html;
       container.scrollTop = container.scrollHeight;
     } catch(e) {
-      console.error(e);
-      container.innerHTML = '<div class="empty-state">😔 Erreur chargement</div>';
+      console.error("❌ Erreur chargement chat:", e);
+      container.innerHTML = '<div class="empty-state"><div class="big">😔</div><p>Erreur de chargement du chat</p></div>';
     }
   }
 
-  async function adminSendMessage() {
+  async function sendAdminMessage() {
     const input = document.getElementById('adminChatInput');
     const text = input.value.trim();
     if (!text) return;
     
     input.value = '';
+    input.style.height = 'auto';
+    
     if (!window.db) {
-      showToast('Mode démo', 'error');
+      showToast('Mode démo - message non envoyé', 'error');
       return;
     }
     
@@ -496,18 +611,47 @@
         createdAt: new Date().toISOString()
       });
       await loadChat();
-      showToast('Message envoyé', 'success');
+      showToast('Message envoyé ❤️', 'success');
     } catch(e) {
-      showToast('Erreur', 'error');
+      console.error("❌ Erreur envoi message:", e);
+      showToast('Erreur lors de l\'envoi', 'error');
       input.value = text;
     }
   }
 
-  // ========== FEEDBACK ==========
+  function handleChatKey(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendAdminMessage();
+    }
+  }
+
+  function autoResizeTextarea(textarea) {
+    textarea.style.height = 'auto';
+    textarea.style.height = Math.min(textarea.scrollHeight, 100) + 'px';
+  }
+
+  function startChatPolling() {
+    if (chatPollingInterval) clearInterval(chatPollingInterval);
+    chatPollingInterval = setInterval(() => {
+      if (document.getElementById('adminScreen').style.display !== 'none') {
+        loadChat();
+      }
+    }, 10000);
+  }
+
+  function stopChatPolling() {
+    if (chatPollingInterval) {
+      clearInterval(chatPollingInterval);
+      chatPollingInterval = null;
+    }
+  }
+
+  // ========== FEEDBACKS ==========
   async function loadFeedbacks() {
     const container = document.getElementById('feedbackList');
     if (!window.db) {
-      container.innerHTML = '<div class="empty-state">💬 Mode démo</div>';
+      container.innerHTML = '<div class="empty-state"><div class="big">💬</div><p>Mode démo - feedbacks non disponibles</p></div>';
       return;
     }
     
@@ -517,7 +661,7 @@
       const feedbacks = snap.docs.map(d => ({ id: d.id, ...d.data() }));
       
       if (!feedbacks.length) {
-        container.innerHTML = '<div class="empty-state">🌸 Aucun feedback</div>';
+        container.innerHTML = '<div class="empty-state"><div class="big">🌸</div><p>Aucun feedback pour le moment</p></div>';
         return;
       }
       
@@ -526,44 +670,50 @@
         <div class="feedback-card">
           <div class="feedback-card-header">
             <span class="feedback-mood-emoji">${moodEmoji[f.mood] || '😊'}</span>
-            <div><strong>${formatDateFr(f.date)}</strong><br><small>${new Date(f.createdAt).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}</small></div>
-            <button class="btn-sm btn-decline" style="margin-left:auto;" onclick="deleteFeedback('${f.id}')">🗑️</button>
+            <div style="flex:1">
+              <strong>${formatDateFr(f.date)}</strong><br>
+              <small style="color: var(--text-muted);">${new Date(f.createdAt).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}</small>
+            </div>
+            <button class="btn-sm btn-decline" onclick="deleteFeedback('${f.id}')">🗑️ Supprimer</button>
           </div>
-          <div class="feedback-text">${f.text || '<em>Aucun commentaire</em>'}</div>
+          <div class="feedback-text">${escapeHtml(f.text) || '<em>Aucun commentaire</em>'}</div>
         </div>
       `).join('');
     } catch(e) {
-      console.error(e);
-      container.innerHTML = '<div class="empty-state">😔 Erreur</div>';
+      console.error("❌ Erreur chargement feedbacks:", e);
+      container.innerHTML = '<div class="empty-state"><div class="big">😔</div><p>Erreur de chargement des feedbacks</p></div>';
     }
   }
 
   async function deleteFeedback(id) {
     if (!confirm('Supprimer ce feedback ?')) return;
     if (!window.db) return;
+    
     try {
       await deleteDoc(doc(db, 'feedbacks', id));
       await loadFeedbacks();
       showToast('Feedback supprimé', 'success');
     } catch(e) {
-      showToast('Erreur', 'error');
+      console.error("❌ Erreur suppression feedback:", e);
+      showToast('Erreur lors de la suppression', 'error');
     }
   }
 
-  // Exposer les fonctions
+  // Attacher les fonctions à window pour les appels inline
   window.login = login;
   window.logout = logout;
-  window.updateRequest = updateRequest;
-  window.adminSendMessage = adminSendMessage;
+  window.updateStatus = updateStatus;
+  window.sendAdminMessage = sendAdminMessage;
+  window.handleChatKey = handleChatKey;
   window.deleteFeedback = deleteFeedback;
   
-  // Attendre que Firebase soit prêt
-  setTimeout(() => {
-    if (window.db) {
-      loadFeedbacks();
-      setInterval(() => { if (document.getElementById('adminScreen').style.display !== 'none') loadChat(); }, 10000);
+  // Initialiser l'auto-resize sur le textarea
+  document.addEventListener('DOMContentLoaded', () => {
+    const textarea = document.getElementById('adminChatInput');
+    if (textarea) {
+      textarea.addEventListener('input', () => autoResizeTextarea(textarea));
     }
-  }, 1000);
+  });
 </script>
 </body>
 </html>
