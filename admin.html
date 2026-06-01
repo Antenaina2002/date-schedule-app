@@ -1,1423 +1,718 @@
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin — Date avec mon amour ❤️</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-    <style>
-      :root {
-        --rose: #f2a7b8;
-        --rose-deep: #d4688a;
-        --rose-light: #fce8ef;
-        --rose-pale: #fff5f8;
-        --blush: #f7d6e0;
-        --cream: #fdf8f5;
-        --mauve: #c9a0b0;
-        --text: #3d2535;
-        --text-soft: #8a6070;
-        --text-muted: #c4a8b4;
-        --white: #ffffff;
-        --shadow: rgba(180, 100, 130, 0.12);
-        --green: #5aac6e;
-        --green-light: #edf7f0;
-        --red: #c45050;
-        --red-light: #fdeaea;
-      }
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
-      body {
-        font-family: 'DM Sans', sans-serif;
-        background: var(--cream);
-        color: var(--text);
-        min-height: 100vh;
-      }
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Date avec mon amour ❤️</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rose: #f2a7b8;
+    --rose-deep: #d4688a;
+    --rose-light: #fce8ef;
+    --rose-pale: #fff5f8;
+    --blush: #f7d6e0;
+    --cream: #fdf8f5;
+    --mauve: #c9a0b0;
+    --text: #3d2535;
+    --text-soft: #8a6070;
+    --text-muted: #c4a8b4;
+    --white: #ffffff;
+    --shadow: rgba(180, 100, 130, 0.12);
+    --green: #5aac6e;
+    --green-light: #edf7f0;
+    --red: #c45050;
+    --red-light: #fdeaea;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
 
-      /* LOGIN */
-      #loginScreen {
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: linear-gradient(135deg, #fce8ef 0%, #f7d6e0 100%);
-        padding: 2rem;
-      }
-      .login-box {
-        background: white;
-        border-radius: 24px;
-        padding: 3rem;
-        max-width: 420px;
-        width: 100%;
-        box-shadow: 0 25px 50px rgba(212, 104, 138, 0.15);
-        text-align: center;
-        position: relative;
-        overflow: hidden;
-      }
-      .login-box::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 8px;
-        background: linear-gradient(90deg, #d4688a, #f2a7b8);
-      }
-      .login-emoji {
-        font-size: 3rem;
-        margin-bottom: 1.5rem;
-        display: block;
-      }
-      .login-box h1 {
-        font-family: 'Cormorant Garamond', serif;
-        font-size: 2.2rem;
-        font-weight: 400;
-        margin-bottom: 0.5rem;
-        color: var(--text);
-      }
-      .login-box h1 span {
-        color: var(--rose-deep);
-        font-style: italic;
-      }
-      .login-box p {
-        font-size: 0.95rem;
-        color: var(--text-soft);
-        margin-bottom: 2rem;
-        line-height: 1.5;
-      }
+  /* LOGIN */
+  #loginScreen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #fce8ef 0%, #f7d6e0 100%);
+    padding: 2rem;
+  }
+  .login-box {
+    background: white;
+    border-radius: 24px;
+    padding: 3rem;
+    max-width: 420px;
+    width: 100%;
+    box-shadow: 0 25px 50px rgba(212, 104, 138, 0.15);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .login-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 8px;
+    background: linear-gradient(90deg, #d4688a, #f2a7b8);
+  }
+  .login-emoji { font-size: 3rem; margin-bottom: 1.5rem; display: block; }
+  .login-box h1 { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 400; margin-bottom: 0.5rem; color: var(--text); }
+  .login-box h1 span { color: var(--rose-deep); font-style: italic; }
+  .login-box p { font-size: 0.95rem; color: var(--text-soft); margin-bottom: 2rem; line-height: 1.5; }
 
-      /* Inputs */
-      .login-input-group {
-        margin-bottom: 1.5rem;
-        text-align: left;
-      }
-      .login-input-group label {
-        display: block;
-        font-size: 0.85rem;
-        color: var(--text-soft);
-        margin-bottom: 0.5rem;
-        font-weight: 500;
-      }
-      input[type="email"],
-      input[type="password"] {
-        width: 100%;
-        padding: 0.9rem 1rem;
-        border: 1.5px solid var(--blush);
-        border-radius: 12px;
-        font-family: 'DM Sans', sans-serif;
-        font-size: 0.95rem;
-        color: var(--text);
-        background: var(--rose-pale);
-        outline: none;
-        transition: border-color 0.3s, box-shadow 0.3s;
-      }
-      input[type="email"]:focus,
-      input[type="password"]:focus {
-        border-color: var(--rose-deep);
-        background: white;
-        box-shadow: 0 0 0 3px rgba(212, 104, 138, 0.15);
-      }
+  .login-input-group { margin-bottom: 1.5rem; text-align: left; }
+  .login-input-group label { display: block; font-size: 0.85rem; color: var(--text-soft); margin-bottom: 0.5rem; font-weight: 500; }
+  input[type="email"], input[type="password"] {
+    width: 100%; padding: 0.9rem 1rem; border: 1.5px solid var(--blush); border-radius: 12px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.95rem; color: var(--text); background: var(--rose-pale);
+    outline: none; transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  input[type="email"]:focus, input[type="password"]:focus { border-color: var(--rose-deep); background: white; box-shadow: 0 0 0 3px rgba(212, 104, 138, 0.15); }
 
-      /* Bouton */
-      .btn-primary {
-        width: 100%;
-        padding: 1rem;
-        background: linear-gradient(135deg, var(--rose-deep), #c45580);
-        color: white;
-        border: none;
-        border-radius: 12px;
-        font-family: 'DM Sans', sans-serif;
-        font-size: 1rem;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.3s;
-        box-shadow: 0 4px 15px rgba(212, 104, 138, 0.3);
-        letter-spacing: 0.5px;
-      }
-      .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(212, 104, 138, 0.4);
-      }
-      .btn-primary:active {
-        transform: translateY(0);
-      }
+  .btn-primary {
+    width: 100%; padding: 1rem; background: linear-gradient(135deg, var(--rose-deep), #c45580); color: white;
+    border: none; border-radius: 12px; font-family: 'DM Sans', sans-serif; font-size: 1rem;
+    font-weight: 500; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(212, 104, 138, 0.3);
+    letter-spacing: 0.5px;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(212, 104, 138, 0.4); }
+  .login-error { color: var(--red); font-size: 0.85rem; margin-top: 0.75rem; padding: 0.5rem; background: rgba(196, 80, 80, 0.1); border-radius: 8px; display: none; }
 
-      /* Erreur */
-      .login-error {
-        color: var(--red);
-        font-size: 0.85rem;
-        margin-top: 0.75rem;
-        padding: 0.5rem;
-        background: rgba(196, 80, 80, 0.1);
-        border-radius: 8px;
-        display: none;
-      }
+  /* ADMIN LAYOUT */
+  #adminScreen { display: none; }
+  .admin-header {
+    background: white; border-bottom: 1px solid var(--blush); padding: 1rem 2rem;
+    display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10;
+    box-shadow: 0 2px 12px var(--shadow);
+  }
+  .admin-header h1 { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 400; color: var(--text); }
+  .admin-header h1 span { color: var(--rose-deep); font-style: italic; }
+  .logout-btn { background: transparent; border: 1px solid var(--blush); padding: 0.4rem 0.9rem; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 0.82rem; color: var(--text-soft); cursor: pointer; transition: all 0.2s; }
+  .logout-btn:hover { background: var(--rose-pale); }
+  .admin-body { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem; }
 
-      /* ADMIN LAYOUT */
-      #adminScreen {
-        display: none;
-      }
+  /* STATS */
+  .stats-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+  .stat-card { background: white; border-radius: 16px; padding: 1.25rem; text-align: center; box-shadow: 0 2px 12px var(--shadow); border: 1px solid rgba(242,167,184,0.2); }
+  .stat-num { font-size: 2rem; font-weight: 300; color: var(--rose-deep); }
+  .stat-label { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem; }
 
-      .admin-header {
-        background: white;
-        border-bottom: 1px solid var(--blush);
-        padding: 1rem 2rem;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        position: sticky;
-        top: 0;
-        z-index: 10;
-        box-shadow: 0 2px 12px var(--shadow);
-      }
-      .admin-header h1 {
-        font-family: 'Cormorant Garamond', serif;
-        font-size: 1.4rem;
-        font-weight: 400;
-        color: var(--text);
-      }
-      .admin-header h1 span {
-        color: var(--rose-deep);
-        font-style: italic;
-      }
-      .logout-btn {
-        background: transparent;
-        border: 1px solid var(--blush);
-        padding: 0.4rem 0.9rem;
-        border-radius: 8px;
-        font-family: 'DM Sans', sans-serif;
-        font-size: 0.82rem;
-        color: var(--text-soft);
-        cursor: pointer;
-        transition: all 0.2s;
-      }
-      .logout-btn:hover {
-        background: var(--rose-pale);
-      }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 400; color: var(--text);
+    margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--blush);
+    display: flex; align-items: center; gap: 0.5rem;
+  }
 
-      .admin-body {
-        max-width: 960px;
-        margin: 0 auto;
-        padding: 2rem 1.5rem;
-      }
+  /* REQUEST CARDS */
+  .request-card {
+    background: white; border-radius: 16px; padding: 1.25rem 1.5rem; margin-bottom: 0.75rem;
+    box-shadow: 0 2px 12px var(--shadow); border: 1px solid rgba(242,167,184,0.15);
+    display: flex; align-items: flex-start; gap: 1rem;
+  }
+  .req-icon { font-size: 1.75rem; flex-shrink: 0; }
+  .req-body { flex: 1; }
+  .req-title { font-size: 0.95rem; font-weight: 500; color: var(--text); }
+  .req-meta { font-size: 0.82rem; color: var(--text-muted); margin-top: 0.25rem; }
+  .req-note { background: var(--rose-pale); border-left: 3px solid var(--rose); padding: 0.5rem 0.75rem; border-radius: 0 8px 8px 0; font-size: 0.85rem; color: var(--text-soft); font-style: italic; margin-top: 0.5rem; }
+  .req-actions { display: flex; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap; }
 
-      /* STATS ROW */
-      .stats-row {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-        gap: 1rem;
-        margin-bottom: 2rem;
-      }
-      .stat-card {
-        background: white;
-        border-radius: 16px;
-        padding: 1.25rem;
-        text-align: center;
-        box-shadow: 0 2px 12px var(--shadow);
-        border: 1px solid rgba(242,167,184,0.2);
-      }
-      .stat-num {
-        font-size: 2rem;
-        font-weight: 300;
-        color: var(--rose-deep);
-      }
-      .stat-label {
-        font-size: 0.8rem;
-        color: var(--text-muted);
-        margin-top: 0.25rem;
-      }
+  .btn-sm { padding: 0.4rem 0.9rem; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 0.8rem; cursor: pointer; border: none; transition: all 0.2s; font-weight: 500; }
+  .btn-accept { background: var(--green-light); color: var(--green); }
+  .btn-accept:hover { background: #d2f0da; }
+  .btn-decline { background: var(--red-light); color: var(--red); }
+  .btn-decline:hover { background: #fad5d5; }
+  .btn-block { background: var(--rose-light); color: var(--rose-deep); }
+  .btn-block:hover { background: var(--blush); }
 
-      /* SECTION TITLES */
-      .section-title {
-        font-family: 'Cormorant Garamond', serif;
-        font-size: 1.5rem;
-        font-weight: 400;
-        color: var(--text);
-        margin-bottom: 1rem;
-        padding-bottom: 0.5rem;
-        border-bottom: 1px solid var(--blush);
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
+  .badge { display: inline-block; padding: 0.2rem 0.65rem; border-radius: 20px; font-size: 0.75rem; font-weight: 500; }
+  .badge-pending { background: #fff8e1; color: #b08000; }
+  .badge-accepted { background: var(--green-light); color: var(--green); }
+  .badge-declined { background: var(--red-light); color: var(--red); }
 
-      /* REQUEST CARDS */
-      .request-card {
-        background: white;
-        border-radius: 16px;
-        padding: 1.25rem 1.5rem;
-        margin-bottom: 0.75rem;
-        box-shadow: 0 2px 12px var(--shadow);
-        border: 1px solid rgba(242,167,184,0.15);
-        display: flex;
-        align-items: flex-start;
-        gap: 1rem;
-      }
-      .req-icon {
-        font-size: 1.75rem;
-        flex-shrink: 0;
-      }
-      .req-body {
-        flex: 1;
-      }
-      .req-title {
-        font-size: 0.95rem;
-        font-weight: 500;
-        color: var(--text);
-      }
-      .req-meta {
-        font-size: 0.82rem;
-        color: var(--text-muted);
-        margin-top: 0.25rem;
-      }
-      .req-note {
-        background: var(--rose-pale);
-        border-left: 3px solid var(--rose);
-        padding: 0.5rem 0.75rem;
-        border-radius: 0 8px 8px 0;
-        font-size: 0.85rem;
-        color: var(--text-soft);
-        font-style: italic;
-        margin-top: 0.5rem;
-      }
-      .req-actions {
-        display: flex;
-        gap: 0.5rem;
-        margin-top: 0.75rem;
-        flex-wrap: wrap;
-      }
+  /* CALENDAR ADMIN */
+  .admin-cal-wrap { background: white; border-radius: 16px; padding: 1.5rem; box-shadow: 0 2px 12px var(--shadow); margin-bottom: 2rem; }
+  .cal-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
+  .cal-nav button { background: var(--rose-pale); border: 1px solid var(--blush); border-radius: 8px; width: 32px; height: 32px; cursor: pointer; font-size: 1rem; color: var(--rose-deep); }
+  .cal-title { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; text-transform: capitalize; }
+  .admin-cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
+  .acal-label { font-size: 0.72rem; color: var(--text-muted); padding: 4px; }
+  .acal-day {
+    aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    border-radius: 8px; font-size: 0.82rem; cursor: pointer; transition: all 0.2s;
+    position: relative; border: 1px solid transparent;
+  }
+  .acal-day.empty { cursor: default; }
+  .acal-day.weekday { color: var(--text-muted); cursor: default; }
+  .acal-day.weekend { background: var(--rose-pale); border-color: var(--blush); }
+  .acal-day.weekend:hover { background: var(--rose-light); border-color: var(--rose); }
+  .acal-day.unavailable { background: #fdeaea !important; border-color: #f5a0a0 !important; color: var(--red) !important; }
+  .acal-day.has-request { background: var(--rose-light); border-color: var(--rose-deep); }
+  .acal-day .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--rose-deep); position: absolute; bottom: 4px; }
 
-      .btn-sm {
-        padding: 0.4rem 0.9rem;
-        border-radius: 8px;
-        font-family: 'DM Sans', sans-serif;
-        font-size: 0.8rem;
-        cursor: pointer;
-        border: none;
-        transition: all 0.2s;
-        font-weight: 500;
-      }
-      .btn-accept {
-        background: var(--green-light);
-        color: var(--green);
-      }
-      .btn-accept:hover {
-        background: #d2f0da;
-      }
-      .btn-decline {
-        background: var(--red-light);
-        color: var(--red);
-      }
-      .btn-decline:hover {
-        background: #fad5d5;
-      }
-      .btn-block {
-        background: var(--rose-light);
-        color: var(--rose-deep);
-      }
-      .btn-block:hover {
-        background: var(--blush);
-      }
+  .block-form { background: var(--rose-pale); border-radius: 12px; padding: 1.25rem; margin-top: 1rem; border: 1px solid var(--blush); }
+  .block-form label { font-size: 0.85rem; color: var(--text-soft); margin-bottom: 0.4rem; display: block; }
+  .block-form input[type="date"] { width: 100%; padding: 0.65rem 0.9rem; border: 1px solid var(--blush); border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; background: white; color: var(--text); outline: none; margin-bottom: 0.75rem; }
+  .block-form input:focus { border-color: var(--rose-deep); }
+  .form-row { display: flex; gap: 0.65rem; }
 
-      /* STATUS BADGES */
-      .badge {
-        display: inline-block;
-        padding: 0.2rem 0.65rem;
-        border-radius: 20px;
-        font-size: 0.75rem;
-        font-weight: 500;
-      }
-      .badge-pending {
-        background: #fff8e1;
-        color: #b08000;
-      }
-      .badge-accepted {
-        background: var(--green-light);
-        color: var(--green);
-      }
-      .badge-declined {
-        background: var(--red-light);
-        color: var(--red);
-      }
+  .empty-state { text-align: center; padding: 2.5rem; color: var(--text-muted); font-size: 0.9rem; }
+  .empty-state .big { font-size: 2.5rem; margin-bottom: 0.75rem; }
+  .mb2 { margin-bottom: 2rem; }
 
-      /* CALENDAR ADMIN */
-      .admin-cal-wrap {
-        background: white;
-        border-radius: 16px;
-        padding: 1.5rem;
-        box-shadow: 0 2px 12px var(--shadow);
-        margin-bottom: 2rem;
-      }
-      .cal-nav {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 1.25rem;
-      }
-      .cal-nav button {
-        background: var(--rose-pale);
-        border: 1px solid var(--blush);
-        border-radius: 8px;
-        width: 32px;
-        height: 32px;
-        cursor: pointer;
-        font-size: 1rem;
-        color: var(--rose-deep);
-      }
-      .cal-title {
-        font-family: 'Cormorant Garamond', serif;
-        font-size: 1.2rem;
-        text-transform: capitalize;
-      }
-      .admin-cal-grid {
-        display: grid;
-        grid-template-columns: repeat(7, 1fr);
-        gap: 4px;
-        text-align: center;
-      }
-      .acal-label {
-        font-size: 0.72rem;
-        color: var(--text-muted);
-        padding: 4px;
-      }
-      .acal-day {
-        aspect-ratio: 1;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        border-radius: 8px;
-        font-size: 0.82rem;
-        cursor: pointer;
-        transition: all 0.2s;
-        position: relative;
-        border: 1px solid transparent;
-      }
-      .acal-day.empty {
-        cursor: default;
-      }
-      .acal-day.weekday {
-        color: var(--text-muted);
-        cursor: default;
-      }
-      .acal-day.weekend {
-        background: var(--rose-pale);
-        border-color: var(--blush);
-      }
-      .acal-day.weekend:hover {
-        background: var(--rose-light);
-        border-color: var(--rose);
-      }
-      .acal-day.unavailable {
-        background: #fdeaea !important;
-        border-color: #f5a0a0 !important;
-        color: var(--red) !important;
-      }
-      .acal-day.has-request {
-        background: var(--rose-light);
-        border-color: var(--rose-deep);
-      }
-      .acal-day .dot {
-        width: 5px;
-        height: 5px;
-        border-radius: 50%;
-        background: var(--rose-deep);
-        position: absolute;
-        bottom: 4px;
-      }
+  /* ADMIN CHAT */
+  .admin-chat-wrap { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 2px 12px var(--shadow); margin-bottom: 2rem; border: 1px solid rgba(242,167,184,0.2); }
+  .chat-messages { height: 340px; overflow-y: auto; padding: 1.1rem; display: flex; flex-direction: column; gap: 0.55rem; background: var(--cream); scroll-behavior: smooth; }
+  .chat-loading-admin { text-align: center; color: var(--text-muted); font-size: 0.88rem; padding: 2rem; }
+  .msg-row { display: flex; align-items: flex-end; gap: 0.5rem; }
+  .msg-row.me { flex-direction: row-reverse; }
+  .msg-avatar { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; flex-shrink: 0; background: linear-gradient(135deg, var(--rose), var(--rose-deep)); }
+  .msg-row.me .msg-avatar { background: linear-gradient(135deg, #7ab8f5, #4a90d9); }
+  .msg-group { display: flex; flex-direction: column; max-width: 72%; gap: 0.15rem; }
+  .msg-row.me .msg-group { align-items: flex-end; }
+  .msg-row.lui .msg-group { align-items: flex-start; }
+  .msg-bubble { padding: 0.65rem 1rem; border-radius: 18px; font-size: 0.88rem; line-height: 1.5; word-break: break-word; }
+  .msg-row.lui .msg-bubble { background: white; color: var(--text); border: 1px solid var(--blush); border-bottom-left-radius: 4px; box-shadow: 0 2px 8px var(--shadow); }
+  .msg-row.me .msg-bubble { background: linear-gradient(135deg, var(--rose-deep), #c45580); color: white; border-bottom-right-radius: 4px; box-shadow: 0 2px 10px rgba(212, 104, 138, 0.3); }
+  .msg-time { font-size: 0.68rem; color: var(--text-muted); margin-top: 0.2rem; }
+  .msg-row.me .msg-time { text-align: right; }
+  .chat-date-sep { text-align: center; font-size: 0.7rem; color: var(--text-muted); margin: 0.4rem 0; position: relative; }
+  .chat-date-sep::before, .chat-date-sep::after { content: ''; position: absolute; top: 50%; width: 28%; height: 1px; background: var(--blush); }
+  .chat-date-sep::before { left: 0; }
+  .chat-date-sep::after { right: 0; }
+  .chat-empty-admin { text-align: center; color: var(--text-muted); font-size: 0.85rem; padding: 2rem; line-height: 1.6; }
 
-      /* BLOCK DATE FORM */
-      .block-form {
-        background: var(--rose-pale);
-        border-radius: 12px;
-        padding: 1.25rem;
-        margin-top: 1rem;
-        border: 1px solid var(--blush);
-      }
-      .block-form label {
-        font-size: 0.85rem;
-        color: var(--text-soft);
-        margin-bottom: 0.4rem;
-        display: block;
-      }
-      .block-form input[type="date"] {
-        width: 100%;
-        padding: 0.65rem 0.9rem;
-        border: 1px solid var(--blush);
-        border-radius: 8px;
-        font-family: 'DM Sans', sans-serif;
-        font-size: 0.88rem;
-        background: white;
-        color: var(--text);
-        outline: none;
-        margin-bottom: 0.75rem;
-      }
-      .block-form input:focus {
-        border-color: var(--rose-deep);
-      }
-      .form-row {
-        display: flex;
-        gap: 0.65rem;
-      }
+  .admin-chat-composer { display: flex; align-items: flex-end; gap: 0.65rem; padding: 0.85rem 1rem; border-top: 1px solid var(--blush); background: white; }
+  .admin-chat-textarea { flex: 1; border: 1.5px solid var(--blush); border-radius: 20px; padding: 0.6rem 1rem; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; color: var(--text); background: var(--rose-pale); outline: none; resize: none; max-height: 100px; overflow-y: auto; transition: border-color 0.2s; line-height: 1.4; }
+  .admin-chat-textarea:focus { border-color: var(--rose-deep); background: white; }
+  .admin-chat-send { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, var(--rose-deep), #c45580); color: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.2s; box-shadow: 0 3px 10px rgba(212, 104, 138, 0.3); }
+  .admin-chat-send:hover { transform: scale(1.08); }
 
-      /* EMPTY STATE */
-      .empty-state {
-        text-align: center;
-        padding: 2.5rem;
-        color: var(--text-muted);
-        font-size: 0.9rem;
-      }
-      .empty-state .big {
-        font-size: 2.5rem;
-        margin-bottom: 0.75rem;
-      }
+  /* FEEDBACK CARDS */
+  .feedback-card { background: white; border-radius: 14px; padding: 1.1rem 1.25rem; margin-bottom: 0.75rem; border: 1px solid rgba(242,167,184,0.2); box-shadow: 0 2px 8px var(--shadow); }
+  .feedback-card-header { display: flex; align-items: center; gap: 0.85rem; margin-bottom: 0.65rem; }
+  .feedback-mood-emoji { font-size: 1.5rem; flex-shrink: 0; }
+  .feedback-card-date { font-weight: 500; color: var(--text); font-size: 0.9rem; }
+  .feedback-card-time { font-size: 0.78rem; color: var(--text-muted); }
+  .feedback-text { background: var(--rose-pale); border-left: 3px solid var(--rose); padding: 0.7rem 0.9rem; border-radius: 0 8px 8px 0; font-size: 0.88rem; color: var(--text-soft); line-height: 1.55; }
 
-      .mb2 {
-        margin-bottom: 2rem;
-      }
+  .toast {
+    position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px);
+    background: var(--text); color: white; padding: 0.9rem 1.75rem; border-radius: 14px;
+    font-size: 0.9rem; z-index: 1000; transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    white-space: nowrap;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast.success { background: #3d7d5a; }
+  .toast.error { background: #b04040; }
+</style>
+</head>
+<body>
 
-      /* ══ ADMIN CHAT ══ */
-      .admin-chat-wrap {
-        background: white;
-        border-radius: 16px;
-        overflow: hidden;
-        box-shadow: 0 2px 12px var(--shadow);
-        margin-bottom: 2rem;
-        border: 1px solid rgba(242,167,184,0.2);
-      }
-      .chat-messages {
-        height: 340px;
-        overflow-y: auto;
-        padding: 1.1rem;
-        display: flex;
-        flex-direction: column;
-        gap: 0.55rem;
-        background: var(--cream);
-        scroll-behavior: smooth;
-      }
-      .chat-loading-admin {
-        text-align: center;
-        color: var(--text-muted);
-        font-size: 0.88rem;
-        padding: 2rem;
-      }
-      .msg-row {
-        display: flex;
-        align-items: flex-end;
-        gap: 0.5rem;
-      }
-      .msg-row.me {
-        flex-direction: row-reverse;
-      }
-      .msg-avatar {
-        width: 28px;
-        height: 28px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 0.8rem;
-        flex-shrink: 0;
-        background: linear-gradient(135deg,var(--rose),var(--rose-deep));
-      }
-      .msg-row.me .msg-avatar {
-        background: linear-gradient(135deg,#7ab8f5,#4a90d9);
-      }
-      .msg-group {
-        display: flex;
-        flex-direction: column;
-        max-width: 72%;
-        gap: 0.15rem;
-      }
-      .msg-row.me .msg-group {
-        align-items: flex-end;
-      }
-      .msg-row.lui .msg-group {
-        align-items: flex-start;
-      }
-      .msg-bubble {
-        padding: 0.65rem 1rem;
-        border-radius: 18px;
-        font-size: 0.88rem;
-        line-height: 1.5;
-        word-break: break-word;
-      }
-      .msg-row.lui .msg-bubble {
-        background: white;
-        color: var(--text);
-        border: 1px solid var(--blush);
-        border-bottom-left-radius: 4px;
-        box-shadow: 0 2px 8px var(--shadow);
-      }
-      .msg-row.me .msg-bubble {
-        background: linear-gradient(135deg,var(--rose-deep),#c45580);
-        color: white;
-        border-bottom-right-radius: 4px;
-        box-shadow: 0 2px 10px rgba(212,104,138,0.3);
-      }
-      .msg-time {
-        font-size: 0.68rem;
-        color: var(--text-muted);
-        margin-top: 0.2rem;
-      }
-      .msg-row.me .msg-time {
-        text-align: right;
-      }
-      .chat-date-sep {
-        text-align: center;
-        font-size: 0.7rem;
-        color: var(--text-muted);
-        margin: 0.4rem 0;
-        position: relative;
-      }
-      .chat-date-sep::before,
-      .chat-date-sep::after {
-        content: '';
-        position: absolute;
-        top: 50%;
-        width: 28%;
-        height: 1px;
-        background: var(--blush);
-      }
-      .chat-date-sep::before {
-        left: 0;
-      }
-      .chat-date-sep::after {
-        right: 0;
-      }
-      .chat-empty-admin {
-        text-align: center;
-        color: var(--text-muted);
-        font-size: 0.85rem;
-        padding: 2rem;
-        line-height: 1.6;
-      }
+<!-- LOGIN SCREEN -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-emoji">🔐</div>
+    <h1>Espace <span>Admin</span></h1>
+    <p>Accès réservé pour gérer nos moments spéciaux</p>
+    <div class="login-input-group">
+      <label for="emailInput">Adresse email</label>
+      <input type="email" id="emailInput" placeholder="ton@email.com" autocomplete="email">
+    </div>
+    <div class="login-input-group">
+      <label for="passwordInput">Mot de passe</label>
+      <input type="password" id="passwordInput" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter') login()">
+    </div>
+    <button class="btn-primary" id="loginBtn" onclick="login()">Se connecter ❤️</button>
+    <div class="login-error" id="loginError"></div>
+  </div>
+</div>
 
-      .admin-chat-composer {
-        display: flex;
-        align-items: flex-end;
-        gap: 0.65rem;
-        padding: 0.85rem 1rem;
-        border-top: 1px solid var(--blush);
-        background: white;
-      }
-      .admin-chat-textarea {
-        flex: 1;
-        border: 1.5px solid var(--blush);
-        border-radius: 20px;
-        padding: 0.6rem 1rem;
-        font-family: 'DM Sans',sans-serif;
-        font-size: 0.88rem;
-        color: var(--text);
-        background: var(--rose-pale);
-        outline: none;
-        resize: none;
-        max-height: 100px;
-        overflow-y: auto;
-        transition: border-color 0.2s;
-        line-height: 1.4;
-      }
-      .admin-chat-textarea:focus {
-        border-color: var(--rose-deep);
-        background: white;
-      }
-      .admin-chat-send {
-        width: 38px;
-        height: 38px;
-        border-radius: 50%;
-        background: linear-gradient(135deg,var(--rose-deep),#c45580);
-        color: white;
-        border: none;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-        transition: all 0.2s;
-        box-shadow: 0 3px 10px rgba(212,104,138,0.3);
-      }
-      .admin-chat-send:hover {
-        transform: scale(1.08);
-      }
+<!-- ADMIN SCREEN -->
+<div id="adminScreen">
+  <div class="admin-header">
+    <h1>Admin — <span>mes propositions</span> 💌</h1>
+    <div style="display:flex;align-items:center;gap:0.75rem;">
+      <span style="font-size:0.82rem;color:var(--text-muted);">Connecté : <strong id="adminEmail"></strong></span>
+      <button class="logout-btn" onclick="logout()">Déconnexion</button>
+    </div>
+  </div>
 
-      /* ══ FEEDBACK CARDS ══ */
-      .feedback-card {
-        background: white;
-        border-radius: 14px;
-        padding: 1.1rem 1.25rem;
-        margin-bottom: 0.75rem;
-        border: 1px solid rgba(242,167,184,0.2);
-        box-shadow: 0 2px 8px var(--shadow);
-      }
-      .feedback-card-header {
-        display: flex;
-        align-items: center;
-        gap: 0.85rem;
-        margin-bottom: 0.65rem;
-      }
-      .feedback-mood-emoji {
-        font-size: 1.5rem;
-        flex-shrink: 0;
-      }
-      .feedback-card-date {
-        font-weight: 500;
-        color: var(--text);
-        font-size: 0.9rem;
-      }
-      .feedback-card-time {
-        font-size: 0.78rem;
-        color: var(--text-muted);
-      }
-      .feedback-text {
-        background: var(--rose-pale);
-        border-left: 3px solid var(--rose);
-        padding: 0.7rem 0.9rem;
-        border-radius: 0 8px 8px 0;
-        font-size: 0.88rem;
-        color: var(--text-soft);
-        line-height: 1.55;
-      }
-
-      /* Toast */
-      .toast {
-        position: fixed;
-        bottom: 2rem;
-        left: 50%;
-        transform: translateX(-50%) translateY(100px);
-        background: var(--text);
-        color: white;
-        padding: 0.9rem 1.75rem;
-        border-radius: 14px;
-        font-size: 0.9rem;
-        z-index: 1000;
-        transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        white-space: nowrap;
-      }
-      .toast.show {
-        transform: translateX(-50%) translateY(0);
-      }
-      .toast.success {
-        background: #3d7d5a;
-      }
-      .toast.error {
-        background: #b04040;
-      }
-    </style>
-  </head>
-  <body>
-
-    <!-- ═══════════════════ LOGIN ═══════════════════ -->
-    <div id="loginScreen">
-      <div class="login-box">
-        <div class="login-emoji">🔐</div>
-        <h1>Espace <span>Admin</span></h1>
-        <p>Accès réservé pour gérer nos moments spéciaux</p>
-
-        <div class="login-input-group">
-          <label for="emailInput">Adresse email</label>
-          <input type="email" id="emailInput" placeholder="ton@email.com" autocomplete="email">
-        </div>
-
-        <div class="login-input-group">
-          <label for="passwordInput">Mot de passe</label>
-          <input type="password" id="passwordInput" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter') login()">
-        </div>
-
-        <button class="btn-primary" id="loginBtn" onclick="login()">Se connecter ❤️</button>
-        <div class="login-error" id="loginError"></div>
-      </div>
+  <div class="admin-body">
+    <!-- STATS -->
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-num" id="statMeals">0</div><div class="stat-label">Propositions repas</div></div>
+      <div class="stat-card"><div class="stat-num" id="statPlanning">0</div><div class="stat-label">Moments réservés</div></div>
+      <div class="stat-card"><div class="stat-num" id="statActivities">0</div><div class="stat-label">Idées d'activités</div></div>
+      <div class="stat-card"><div class="stat-num" id="statPending">0</div><div class="stat-label">En attente</div></div>
     </div>
 
-    <!-- ═══════════════════ ADMIN SCREEN ═══════════════════ -->
-    <div id="adminScreen">
-      <div class="admin-header">
-        <h1>Admin — <span>mes propositions</span> 💌</h1>
-        <div style="display:flex;align-items:center;gap:0.75rem;">
-          <span style="font-size:0.82rem;color:var(--text-muted);">Connecté : <strong id="adminEmail"></strong></span>
-          <button class="logout-btn" onclick="logout()">Déconnexion</button>
-        </div>
+    <!-- CALENDAR -->
+    <div class="section-title">📅 Calendrier global</div>
+    <div class="admin-cal-wrap">
+      <div class="cal-nav">
+        <button onclick="prevAdminMonth()">‹</button>
+        <div class="cal-title" id="adminCalMonth"></div>
+        <button onclick="nextAdminMonth()">›</button>
       </div>
-
-      <div class="admin-body">
-        <!-- STATS -->
-        <div class="stats-row">
-          <div class="stat-card">
-            <div class="stat-num" id="statMeals">0</div>
-            <div class="stat-label">Propositions repas</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-num" id="statPlanning">0</div>
-            <div class="stat-label">Moments réservés</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-num" id="statActivities">0</div>
-            <div class="stat-label">Idées d'activités</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-num" id="statPending">0</div>
-            <div class="stat-label">En attente</div>
-          </div>
-        </div>
-
-        <!-- CALENDAR -->
-        <div class="section-title">📅 Calendrier global</div>
-        <div class="admin-cal-wrap">
-          <div class="cal-nav">
-            <button onclick="prevAdminMonth()">‹</button>
-            <div class="cal-title" id="adminCalMonth"></div>
-            <button onclick="nextAdminMonth()">›</button>
-          </div>
-          <div class="admin-cal-grid" id="adminCalGrid"></div>
-          <div class="block-form">
-            <label>Bloquer / débloquer une date</label>
-            <input type="date" id="blockDateInput">
-            <div class="form-row">
-              <button class="btn-sm btn-block" onclick="blockDate()" style="flex:1;padding:0.6rem">🚫 Marquer indisponible</button>
-              <button class="btn-sm btn-accept" onclick="unblockDate()" style="flex:1;padding:0.6rem">✅ Marquer disponible</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- MEAL REQUESTS -->
-        <div class="section-title mb2" id="mealSection">🍽️ Propositions repas</div>
-        <div id="mealList"></div>
-
-        <!-- PLANNING REQUESTS -->
-        <div class="section-title mb2" id="planningSection" style="margin-top:1.5rem">💕 Moments câlins</div>
-        <div id="planningList"></div>
-
-        <!-- ACTIVITY REQUESTS -->
-        <div class="section-title mb2" id="activitySection" style="margin-top:1.5rem">✨ Idées d'activités</div>
-        <div id="activityList"></div>
-
-        <!-- CHAT -->
-        <div class="section-title" style="margin-top:1.5rem">💬 Notre fil secret</div>
-        <div class="admin-chat-wrap">
-          <div class="chat-messages" id="adminChatMessages">
-            <div class="chat-loading-admin">💕 Chargement…</div>
-          </div>
-          <div class="admin-chat-composer">
-            <textarea id="adminChatInput" class="admin-chat-textarea" placeholder="Réponds-lui avec amour… 🌹" onkeydown="handleAdminChatKey(event)" oninput="autoResizeAdminChat(this)"></textarea>
-            <button class="admin-chat-send" onclick="adminSendMessage()">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
-              </svg>
-            </button>
-          </div>
-        </div>
-
-        <!-- FEEDBACK SECTION -->
-        <div class="section-title" style="margin-top: 1.5rem;">
-          💬 Feedback du mois
-          <span style="font-size: 0.8rem; color: var(--text-muted); margin-left: auto;">
-            <span id="feedbackCount">0</span> feedbacks
-          </span>
-        </div>
-        <div class="admin-cal-wrap">
-          <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
-            <select id="feedbackMonthFilter" onchange="filterFeedbacks()" style="padding: 0.5rem 1rem; border: 1px solid var(--blush); border-radius: 8px; background: white; font-family: 'DM Sans', sans-serif; font-size: 0.85rem;">
-              <option value="">Tous les mois</option>
-            </select>
-            <button class="btn-sm btn-block" onclick="clearFeedbacks()" style="flex-shrink: 0;">🗑️ Vider les feedbacks</button>
-          </div>
-          <div id="feedbackList">
-            <div class="chat-loading-admin">💕 Chargement des feedbacks...</div>
-          </div>
+      <div class="admin-cal-grid" id="adminCalGrid"></div>
+      <div class="block-form">
+        <label>Bloquer / débloquer une date</label>
+        <input type="date" id="blockDateInput">
+        <div class="form-row">
+          <button class="btn-sm btn-block" onclick="blockDate()" style="flex:1;padding:0.6rem">🚫 Marquer indisponible</button>
+          <button class="btn-sm btn-accept" onclick="unblockDate()" style="flex:1;padding:0.6rem">✅ Marquer disponible</button>
         </div>
       </div>
     </div>
 
-    <div class="toast" id="toast"></div>
+    <!-- MEAL REQUESTS -->
+    <div class="section-title mb2" id="mealSection">🍽️ Propositions repas</div>
+    <div id="mealList"></div>
 
-    <script type="module">
-      import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-      import {
-        getFirestore,
-        collection,
-        addDoc,
-        getDocs,
-        doc,
-        updateDoc,
-        deleteDoc,
-        query,
-        orderBy,
-        where
-      } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
-      import {
-        getAuth,
-        signInWithEmailAndPassword,
-        signOut,
-        onAuthStateChanged
-      } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+    <!-- PLANNING REQUESTS -->
+    <div class="section-title mb2" id="planningSection" style="margin-top:1.5rem">💕 Moments câlins</div>
+    <div id="planningList"></div>
 
-      const firebaseConfig = {
-        apiKey: "AIzaSyB-GZDMMGGCsoxAgVHBuWG0Z9UGsVVx4x8",
-        authDomain: "date-schedule-app.firebaseapp.com",
-        projectId: "date-schedule-app",
-        storageBucket: "date-schedule-app.firebasestorage.app",
-        messagingSenderId: "340648368652",
-        appId: "1:340648368652:web:e96efe6100d45a39846c29"
-      };
+    <!-- ACTIVITY REQUESTS -->
+    <div class="section-title mb2" id="activitySection" style="margin-top:1.5rem">✨ Idées d'activités</div>
+    <div id="activityList"></div>
 
-      const app = initializeApp(firebaseConfig);
-      const db = getFirestore(app);
-      const auth = getAuth(app);
+    <!-- CHAT -->
+    <div class="section-title" style="margin-top:1.5rem">💬 Notre fil secret</div>
+    <div class="admin-chat-wrap">
+      <div class="chat-messages" id="adminChatMessages"><div class="chat-loading-admin">💕 Chargement…</div></div>
+      <div class="admin-chat-composer">
+        <textarea id="adminChatInput" class="admin-chat-textarea" placeholder="Réponds-lui avec amour… 🌹" onkeydown="handleAdminChatKey(event)" oninput="autoResizeAdminChat(this)"></textarea>
+        <button class="admin-chat-send" onclick="adminSendMessage()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+        </button>
+      </div>
+    </div>
 
-      window._db = db;
-      window._auth = auth;
-      window._fb = {
-        collection,
-        addDoc,
-        getDocs,
-        doc,
-        updateDoc,
-        deleteDoc,
-        query,
-        orderBy,
-        where,
-        signInWithEmailAndPassword,
-        signOut,
-        onAuthStateChanged
-      };
+    <!-- FEEDBACK SECTION -->
+    <div class="section-title" style="margin-top: 1.5rem;">
+      💬 Feedback du mois
+      <span style="font-size: 0.8rem; color: var(--text-muted); margin-left: auto;"><span id="feedbackCount">0</span> feedbacks</span>
+    </div>
+    <div class="admin-cal-wrap">
+      <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+        <select id="feedbackMonthFilter" onchange="filterFeedbacks()" style="padding: 0.5rem 1rem; border: 1px solid var(--blush); border-radius: 8px; background: white; font-family: 'DM Sans', sans-serif; font-size: 0.85rem;">
+          <option value="">Tous les mois</option>
+        </select>
+        <button class="btn-sm btn-block" onclick="clearFeedbacks()" style="flex-shrink: 0;">🗑️ Vider les feedbacks</button>
+      </div>
+      <div id="feedbackList"><div class="chat-loading-admin">💕 Chargement des feedbacks...</div></div>
+    </div>
+  </div>
+</div>
 
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          document.getElementById('loginScreen').style.display = 'none';
-          document.getElementById('adminScreen').style.display = 'block';
-          document.getElementById('adminEmail').textContent = user.email;
-          initAdmin();
-        } else {
-          document.getElementById('loginScreen').style.display = 'flex';
-          document.getElementById('adminScreen').style.display = 'none';
+<div class="toast" id="toast"></div>
+
+<script type="module">
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+  import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, orderBy, where } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+  import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyB-GZDMMGGCsoxAgVHBuWG0Z9UGsVVx4x8",
+    authDomain: "date-schedule-app.firebaseapp.com",
+    projectId: "date-schedule-app",
+    storageBucket: "date-schedule-app.firebasestorage.app",
+    messagingSenderId: "340648368652",
+    appId: "1:340648368652:web:e96efe6100d45a39846c29"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const auth = getAuth(app);
+
+  window._db = db;
+  window._auth = auth;
+  window._fb = { collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, orderBy, where, signInWithEmailAndPassword, signOut, onAuthStateChanged };
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('adminScreen').style.display = 'block';
+      document.getElementById('adminEmail').textContent = user.email;
+      initAdmin();
+    } else {
+      document.getElementById('loginScreen').style.display = 'flex';
+      document.getElementById('adminScreen').style.display = 'none';
+    }
+  });
+</script>
+
+<script>
+  // ==================== AUTH HELPERS ====================
+  function validateLoginForm({ email, password }) {
+    if (!email || email.trim() === '') return 'Email requis';
+    if (!email.includes('@')) return 'Email invalide';
+    if (!password || password.trim() === '') return 'Mot de passe requis';
+    if (password.length < 6) return 'Mot de passe trop court (min. 6 caractères)';
+    return null;
+  }
+
+  function getAuthErrorMessage(errorCode) {
+    const messages = {
+      'auth/user-not-found': 'Aucun compte avec cet email 😕',
+      'auth/wrong-password': 'Mot de passe incorrect 😕',
+      'auth/invalid-email': 'Email invalide',
+      'auth/too-many-requests': 'Trop de tentatives, réessaie plus tard',
+      'auth/network-request-failed': 'Problème de connexion réseau',
+      'auth/invalid-credential': 'Email ou mot de passe incorrect 😕',
+    };
+    return messages[errorCode] ?? 'Une erreur est survenue, réessaie';
+  }
+
+  async function login() {
+    const email = document.getElementById('emailInput').value.trim();
+    const pw = document.getElementById('passwordInput').value;
+    const btn = document.getElementById('loginBtn');
+    const err = document.getElementById('loginError');
+
+    const formError = validateLoginForm({ email, password: pw });
+    if (formError) {
+      err.textContent = formError;
+      err.style.display = 'block';
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Connexion…';
+    err.style.display = 'none';
+
+    try {
+      await signInWithEmailAndPassword(window._auth, email, pw);
+    } catch (e) {
+      err.textContent = getAuthErrorMessage(e.code);
+      err.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Entrer ❤️';
+    }
+  }
+
+  async function logout() {
+    await signOut(window._auth);
+  }
+
+  // ==================== ADMIN CALENDAR ====================
+  let adminDate = new Date();
+  let adminUnavailable = [];
+  let adminBooked = [];
+  let adminRequests = { meals: [], planning: [], activities: [] };
+  let adminChatPolling = null;
+  const CHAT_SENDER_ADMIN = 'me';
+  let allFeedbacks = [];
+
+  function formatDate(d) { return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
+  function formatDateFr(dateStr) { if (!dateStr) return ''; const d = new Date(dateStr + 'T00:00:00'); return d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }); }
+  function statusLabel(s) { return { pending: '⏳ En attente', accepted: '✅ Accepté', declined: '❌ Refusé' }[s] || s; }
+  function escapeHtml(text) { if (!text) return ''; return text.replace(/[&<>]/g, function(m) { if (m === '&') return '&amp;'; if (m === '<') return '&lt;'; if (m === '>') return '&gt;'; return m; }); }
+  function showToast(msg, type='') { const t = document.getElementById('toast'); t.textContent = msg; t.className = 'toast ' + type; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000); }
+
+  function prevAdminMonth() { adminDate = new Date(adminDate.getFullYear(), adminDate.getMonth() - 1, 1); buildAdminCalendar(); }
+  function nextAdminMonth() { adminDate = new Date(adminDate.getFullYear(), adminDate.getMonth() + 1, 1); buildAdminCalendar(); }
+
+  function buildAdminCalendar() {
+    const year = adminDate.getFullYear();
+    const month = adminDate.getMonth();
+    document.getElementById('adminCalMonth').textContent = adminDate.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
+
+    const holidays = ['01-01','04-01','05-01','05-08','05-09','05-20','07-14','08-15','11-01','11-11','12-25'];
+    const labels = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+    let html = labels.map(l => `<div class="acal-label">${l}</div>`).join('');
+
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const offset = (firstDay + 6) % 7;
+
+    for (let i = 0; i < offset; i++) html += '<div class="acal-day empty"></div>';
+
+    for (let day = 1; day <= daysInMonth; day++) {
+      const date = new Date(year, month, day);
+      const dow = date.getDay();
+      const dateStr = formatDate(date);
+      const isWeekend = dow === 0 || dow === 6;
+      const isHoliday = holidays.includes(`${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`);
+      const isUnavail = adminUnavailable.includes(dateStr);
+      const hasReq = adminBooked.includes(dateStr);
+
+      let cls = 'acal-day';
+      if (!isWeekend && !isHoliday) cls += ' weekday';
+      else cls += ' weekend';
+      if (isUnavail) cls += ' unavailable';
+      if (hasReq) cls += ' has-request';
+
+      const dot = hasReq ? '<div class="dot"></div>' : '';
+      html += `<div class="${cls}" onclick="adminDayClick('${dateStr}')">${day}${dot}</div>`;
+    }
+    document.getElementById('adminCalGrid').innerHTML = html;
+  }
+
+  function adminDayClick(dateStr) { document.getElementById('blockDateInput').value = dateStr; }
+
+  async function blockDate() {
+    const date = document.getElementById('blockDateInput').value;
+    if (!date) { showToast('Choisis une date', 'error'); return; }
+    try {
+      if (window._db) {
+        await addDoc(collection(window._db, 'unavailableDates'), { date, createdAt: new Date().toISOString() });
+      }
+      if (!adminUnavailable.includes(date)) adminUnavailable.push(date);
+      buildAdminCalendar();
+      showToast(`${formatDateFr(date)} marqué indisponible 🚫`, 'success');
+    } catch(e) { showToast('Erreur', 'error'); }
+  }
+
+  async function unblockDate() {
+    const date = document.getElementById('blockDateInput').value;
+    if (!date) { showToast('Choisis une date', 'error'); return; }
+    try {
+      if (window._db) {
+        const q = query(collection(window._db, 'unavailableDates'), where('date', '==', date));
+        const snap = await getDocs(q);
+        snap.forEach(d => deleteDoc(doc(window._db, 'unavailableDates', d.id)));
+      }
+      adminUnavailable = adminUnavailable.filter(d => d !== date);
+      buildAdminCalendar();
+      showToast(`${formatDateFr(date)} est maintenant disponible ✅`, 'success');
+    } catch(e) { showToast('Erreur', 'error'); }
+  }
+
+  // ==================== LOAD DATA ====================
+  async function initAdmin() {
+    buildAdminCalendar();
+    if (!window._db) {
+      loadDemoData();
+      loadFeedbacks();
+      loadAdminChat();
+      return;
+    }
+    await loadAllRequests();
+    loadFeedbacks();
+    loadAdminChat();
+  }
+
+  async function loadAllRequests() {
+    try {
+      const uSnap = await getDocs(collection(window._db, 'unavailableDates'));
+      adminUnavailable = uSnap.docs.map(d => d.data().date);
+
+      const mSnap = await getDocs(query(collection(window._db, 'mealRequests'), orderBy('createdAt', 'desc')));
+      adminRequests.meals = mSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+      const pSnap = await getDocs(query(collection(window._db, 'planningRequests'), orderBy('createdAt', 'desc')));
+      adminRequests.planning = pSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+      adminBooked = adminRequests.planning.filter(r => r.status === 'accepted').map(r => r.date);
+
+      const aSnap = await getDocs(query(collection(window._db, 'activityRequests'), orderBy('createdAt', 'desc')));
+      adminRequests.activities = aSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+      renderAll();
+      buildAdminCalendar();
+    } catch(e) { console.error(e); showToast('Erreur chargement', 'error'); }
+  }
+
+  function loadDemoData() {
+    adminRequests.meals = [{ id: '1', food: 'Sushi', date: formatDate(new Date()), slot: 'soir', note: 'J\'ai envie de sushis avec toi 🍣', status: 'pending', createdAt: new Date().toISOString() }];
+    adminRequests.planning = [{ id: '2', date: formatDate(new Date(Date.now() + 86400000)), comment: 'Mode doux 🕯️', status: 'pending', createdAt: new Date().toISOString() }];
+    adminRequests.activities = [{ id: '3', activity: 'Bain moussant', note: 'J\'adorerais ça', date: formatDate(new Date()), status: 'pending', createdAt: new Date().toISOString() }];
+    renderAll();
+  }
+
+  function renderAll() { renderMeals(); renderPlanning(); renderActivities(); updateStats(); }
+
+  function renderMeals() {
+    const list = document.getElementById('mealList');
+    if (!adminRequests.meals.length) { list.innerHTML = '<div class="empty-state"><div class="big">🍽️</div><p>Aucune proposition de repas</p></div>'; return; }
+    list.innerHTML = adminRequests.meals.map(r => `
+      <div class="request-card"><div class="req-icon">🍽️</div><div class="req-body">
+        <div class="req-title">${escapeHtml(r.food)} · ${r.slot === 'midi' ? '🌞 Déjeuner' : '🌙 Dîner'}</div>
+        <div class="req-meta">${formatDateFr(r.date)} · <span class="badge badge-${r.status}">${statusLabel(r.status)}</span></div>
+        ${r.note ? `<div class="req-note">"${escapeHtml(r.note)}"</div>` : ''}
+        <div class="req-actions">${r.status === 'pending' ? `<button class="btn-sm btn-accept" onclick="updateStatus('mealRequests','${r.id}','accepted','meals')">✅ Accepter</button><button class="btn-sm btn-decline" onclick="updateStatus('mealRequests','${r.id}','declined','meals')">❌ Refuser</button>` : ''}</div>
+      </div></div>
+    `).join('');
+  }
+
+  function renderPlanning() {
+    const list = document.getElementById('planningList');
+    if (!adminRequests.planning.length) { list.innerHTML = '<div class="empty-state"><div class="big">💕</div><p>Aucun moment réservé</p></div>'; return; }
+    list.innerHTML = adminRequests.planning.map(r => `
+      <div class="request-card"><div class="req-icon">💕</div><div class="req-body">
+        <div class="req-title">Moment réservé</div>
+        <div class="req-meta">${formatDateFr(r.date)} · <span class="badge badge-${r.status}">${statusLabel(r.status)}</span></div>
+        ${r.comment ? `<div class="req-note">"${escapeHtml(r.comment)}"</div>` : ''}
+        <div class="req-actions">${r.status === 'pending' ? `<button class="btn-sm btn-accept" onclick="updateStatus('planningRequests','${r.id}','accepted','planning')">✅ Confirmer</button><button class="btn-sm btn-decline" onclick="updateStatus('planningRequests','${r.id}','declined','planning')">❌ Reporter</button>` : ''}</div>
+      </div></div>
+    `).join('');
+  }
+
+  function renderActivities() {
+    const list = document.getElementById('activityList');
+    if (!adminRequests.activities.length) { list.innerHTML = '<div class="empty-state"><div class="big">✨</div><p>Aucune idée d\'activité</p></div>'; return; }
+    list.innerHTML = adminRequests.activities.map(r => `
+      <div class="request-card"><div class="req-icon">✨</div><div class="req-body">
+        <div class="req-title">${escapeHtml(r.activity)}</div>
+        <div class="req-meta">${r.date ? formatDateFr(r.date) + ' · ' : ''}<span class="badge badge-${r.status}">${statusLabel(r.status)}</span></div>
+        ${r.note ? `<div class="req-note">"${escapeHtml(r.note)}"</div>` : ''}
+        <div class="req-actions">${r.status === 'pending' ? `<button class="btn-sm btn-accept" onclick="updateStatus('activityRequests','${r.id}','accepted','activities')">✅ Accepter</button><button class="btn-sm btn-decline" onclick="updateStatus('activityRequests','${r.id}','declined','activities')">❌ Refuser</button>` : ''}</div>
+      </div></div>
+    `).join('');
+  }
+
+  async function updateStatus(collectionName, id, status, localKey) {
+    try {
+      if (window._db) { await updateDoc(doc(window._db, collectionName, id), { status }); }
+      const req = adminRequests[localKey].find(r => r.id === id);
+      if (req) req.status = status;
+      renderAll();
+      showToast(status === 'accepted' ? '✅ Accepté avec amour ❤️' : '❌ Refusé', status === 'accepted' ? 'success' : '');
+    } catch(e) { showToast('Erreur', 'error'); }
+  }
+
+  function updateStats() {
+    const allReqs = [...adminRequests.meals, ...adminRequests.planning, ...adminRequests.activities];
+    document.getElementById('statMeals').textContent = adminRequests.meals.length;
+    document.getElementById('statPlanning').textContent = adminRequests.planning.length;
+    document.getElementById('statActivities').textContent = adminRequests.activities.length;
+    document.getElementById('statPending').textContent = allReqs.filter(r => r.status === 'pending').length;
+  }
+
+  // ==================== ADMIN CHAT ====================
+  async function loadAdminChat() {
+    const container = document.getElementById('adminChatMessages');
+    if (!window._db) { container.innerHTML = '<div class="chat-empty-admin">💕 Aucun message pour l\'instant</div>'; return; }
+    try {
+      const q = query(collection(window._db, 'messages'), orderBy('createdAt', 'asc'));
+      const snap = await getDocs(q);
+      const msgs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      if (!msgs.length) { container.innerHTML = '<div class="chat-empty-admin">💬 Pas encore de messages</div>'; return; }
+      let html = '', lastDate = null;
+      msgs.forEach(m => {
+        const isMe = m.sender === CHAT_SENDER_ADMIN;
+        const d = new Date(m.createdAt);
+        const dateStr = d.toDateString();
+        if (dateStr !== lastDate) {
+          html += `<div class="chat-date-sep">${d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})}</div>`;
+          lastDate = dateStr;
         }
+        const time = d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+        html += `<div class="msg-row ${isMe ? 'me' : 'lui'}"><div class="msg-avatar">${isMe ? '👨' : '👩'}</div><div class="msg-group"><div class="msg-bubble">${escapeHtml(m.text)}</div><div class="msg-time">${time}</div></div></div>`;
       });
-    </script>
+      container.innerHTML = html;
+      setTimeout(() => { container.scrollTop = container.scrollHeight; }, 50);
+    } catch(e) { container.innerHTML = '<div class="chat-empty-admin">😔 Erreur de chargement</div>'; }
+  }
 
-    <script>
-      // ══════════════════════════════════════════════
-      //  AUTH HELPERS (inline, plus d'import admin.utils.js)
-      // ══════════════════════════════════════════════
-      function validateLoginForm({ email, password }) {
-        if (!email || email.trim() === '') return 'Email requis';
-        if (!email.includes('@')) return 'Email invalide';
-        if (!password || password.trim() === '') return 'Mot de passe requis';
-        if (password.length < 6) return 'Mot de passe trop court (min. 6 caractères)';
-        return null;
-      }
+  async function adminSendMessage() {
+    const input = document.getElementById('adminChatInput');
+    const text = input.value.trim();
+    if (!text) return;
+    const btn = document.querySelector('.admin-chat-send');
+    btn.disabled = true;
+    input.value = '';
+    input.style.height = 'auto';
+    try {
+      if (window._db) { await addDoc(collection(window._db, 'messages'), { sender: CHAT_SENDER_ADMIN, text, createdAt: new Date().toISOString() }); }
+      await loadAdminChat();
+      showToast('Message envoyé ❤️', 'success');
+    } catch(e) { showToast('Message non envoyé', 'error'); input.value = text; }
+    btn.disabled = false;
+  }
 
-      function getAuthErrorMessage(errorCode) {
-        const messages = {
-          'auth/user-not-found': 'Aucun compte avec cet email 😕',
-          'auth/wrong-password': 'Mot de passe incorrect 😕',
-          'auth/invalid-email': 'Email invalide',
-          'auth/too-many-requests': 'Trop de tentatives, réessaie plus tard',
-          'auth/network-request-failed': 'Problème de connexion réseau',
-          'auth/invalid-credential': 'Email ou mot de passe incorrect 😕',
-        };
-        const msg = messages[errorCode];
-        return msg == null ? 'Une erreur est survenue, réessaie' : msg;
-      }
+  function handleAdminChatKey(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); adminSendMessage(); } }
+  function autoResizeAdminChat(el) { el.style.height = 'auto'; el.style.height = Math.min(el.scrollHeight, 100) + 'px'; }
 
-      async function login() {
-        const email = document.getElementById('emailInput').value.trim();
-        const pw = document.getElementById('passwordInput').value;
-        const btn = document.getElementById('loginBtn');
-        const err = document.getElementById('loginError');
+  // ==================== FEEDBACK ====================
+  async function loadFeedbacks() {
+    const list = document.getElementById('feedbackList');
+    const count = document.getElementById('feedbackCount');
+    list.innerHTML = '<div class="chat-loading-admin">💕 Chargement…</div>';
+    if (!window._db) {
+      allFeedbacks = [{ id: 'demo1', date: formatDate(new Date()), mood: 'love', text: 'Super soirée hier ! ❤️', createdAt: new Date().toISOString() }];
+      renderFeedbacks(allFeedbacks);
+      count.textContent = allFeedbacks.length;
+      return;
+    }
+    try {
+      const q = query(collection(window._db, 'feedbacks'), orderBy('createdAt', 'desc'));
+      const snap = await getDocs(q);
+      allFeedbacks = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      count.textContent = allFeedbacks.length;
+      const months = [...new Set(allFeedbacks.map(f => new Date(f.date + 'T00:00:00').toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' })))];
+      const filter = document.getElementById('feedbackMonthFilter');
+      filter.innerHTML = '<option value="">Tous les mois</option>';
+      months.forEach(m => { const o = document.createElement('option'); o.value = m; o.textContent = m; filter.appendChild(o); });
+      renderFeedbacks(allFeedbacks);
+    } catch(e) { list.innerHTML = '<div class="empty-state"><div class="big">😔</div><p>Erreur de chargement</p></div>'; }
+  }
 
-        const formError = validateLoginForm({ email, password: pw });
-        if (formError) {
-          err.textContent = formError;
-          err.style.display = 'block';
-          return;
-        }
+  function filterFeedbacks() {
+    const month = document.getElementById('feedbackMonthFilter').value;
+    if (!month) { renderFeedbacks(allFeedbacks); return; }
+    const filtered = allFeedbacks.filter(f => new Date(f.date + 'T00:00:00').toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' }) === month);
+    renderFeedbacks(filtered);
+  }
 
-        btn.disabled = true;
-        btn.textContent = 'Connexion…';
-        err.style.display = 'none';
-
-        try {
-          const { signInWithEmailAndPassword } = window._fb;
-          await signInWithEmailAndPassword(window._auth, email, pw);
-        } catch (e) {
-          err.textContent = getAuthErrorMessage(e.code);
-          err.style.display = 'block';
-          btn.disabled = false;
-          btn.textContent = 'Entrer ❤️';
-        }
-      }
-
-      // UNIQUE logout() — déconnecte Firebase + pas de sessionStorage obsolète
-      async function logout() {
-        const { signOut } = window._fb;
-        await signOut(window._auth);
-        // onAuthStateChanged s'occupe du reste automatiquement
-      }
-
-      // ══════════════════════════════════════════════
-      //  ADMIN CALENDAR
-      // ══════════════════════════════════════════════
-      let adminDate = new Date();
-      let adminUnavailable = [];
-      let adminBooked = [];
-      let adminRequests = { meals: [], planning: [], activities: [] };
-
-      function prevAdminMonth() {
-        adminDate = new Date(adminDate.getFullYear(), adminDate.getMonth() - 1, 1);
-        buildAdminCalendar();
-      }
-      function nextAdminMonth() {
-        adminDate = new Date(adminDate.getFullYear(), adminDate.getMonth() + 1, 1);
-        buildAdminCalendar();
-      }
-
-      function buildAdminCalendar() {
-        const year = adminDate.getFullYear();
-        const month = adminDate.getMonth();
-        document.getElementById('adminCalMonth').textContent = adminDate.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
-
-        const HOLIDAYS = ['01-01','04-01','05-01','05-08','05-09','05-20','07-14','08-15','11-01','11-11','12-25'];
-        const labels = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
-        let html = labels.map(l => `<div class="acal-label">${l}</div>`).join('');
-
-        const firstDay = new Date(year, month, 1).getDay();
-        const daysInMonth = new Date(year, month + 1, 0).getDate();
-        const offset = (firstDay + 6) % 7;
-
-        for (let i = 0; i < offset; i++) html += '<div class="acal-day empty"></div>';
-
-        for (let day = 1; day <= daysInMonth; day++) {
-          const date = new Date(year, month, day);
-          const dow = date.getDay();
-          const dateStr = formatDate(date);
-          const isWeekend = dow === 0 || dow === 6;
-          const isHoliday = HOLIDAYS.includes(`${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`);
-          const isUnavail = adminUnavailable.includes(dateStr);
-          const hasReq = adminBooked.includes(dateStr);
-
-          let cls = 'acal-day';
-          if (!isWeekend && !isHoliday) cls += ' weekday';
-          else cls += ' weekend';
-          if (isUnavail) cls += ' unavailable';
-          if (hasReq) cls += ' has-request';
-
-          const dot = hasReq ? '<div class="dot"></div>' : '';
-          html += `<div class="${cls}" onclick="adminDayClick('${dateStr}')">${day}${dot}</div>`;
-        }
-        document.getElementById('adminCalGrid').innerHTML = html;
-      }
-
-      function adminDayClick(dateStr) {
-        document.getElementById('blockDateInput').value = dateStr;
-      }
-
-      async function blockDate() {
-        const date = document.getElementById('blockDateInput').value;
-        if (!date) {
-          showToast('Choisis une date', 'error');
-          return;
-        }
-        try {
-          if (window._db) {
-            const { collection, addDoc } = window._fb;
-            await addDoc(collection(window._db, 'unavailableDates'), { date, createdAt: new Date().toISOString() });
-          }
-          if (!adminUnavailable.includes(date))
-            adminUnavailable.push(date);
-          buildAdminCalendar();
-          showToast(`${formatDateFr(date)} marqué indisponible 🚫`, 'success');
-        } catch(e) {
-          showToast('Erreur', 'error');
-        }
-      }
-
-      async function unblockDate() {
-        const date = document.getElementById('blockDateInput').value;
-        if (!date) {
-          showToast('Choisis une date', 'error');
-          return;
-        }
-        try {
-          if (window._db) {
-            const { collection, getDocs, query, where, doc, deleteDoc } = window._fb;
-            const q = query(collection(window._db, 'unavailableDates'), where('date', '==', date));
-            const snap = await getDocs(q);
-            snap.forEach(d => deleteDoc(doc(window._db, 'unavailableDates', d.id)));
-          }
-          adminUnavailable = adminUnavailable.filter(d => d !== date);
-          buildAdminCalendar();
-          showToast(`${formatDateFr(date)} est maintenant disponible ✅`, 'success');
-        } catch(e) {
-          showToast('Erreur', 'error');
-        }
-      }
-
-      // ══════════════════════════════════════════════
-      //  LOAD ALL DATA
-      // ══════════════════════════════════════════════
-      async function initAdmin() {
-        buildAdminCalendar();
-        if (!window._db) {
-          loadDemoData();
-          loadFeedbacks();
-          loadAdminChat();
-          return;
-        }
-        await loadAllRequests();
-        loadFeedbacks();
-        loadAdminChat();
-      }
-
-      async function loadAllRequests() {
-        const { collection, getDocs, query, orderBy } = window._fb;
-        const db = window._db;
-        try {
-          const uSnap = await getDocs(collection(db, 'unavailableDates'));
-          adminUnavailable = uSnap.docs.map(d => d.data().date);
-
-          const mSnap = await getDocs(query(collection(db, 'mealRequests'), orderBy('createdAt', 'desc')));
-          adminRequests.meals = mSnap.docs.map(d => ({ id: d.id, ...d.data() }));
-
-          const pSnap = await getDocs(query(collection(db, 'planningRequests'), orderBy('createdAt', 'desc')));
-          adminRequests.planning = pSnap.docs.map(d => ({ id: d.id, ...d.data() }));
-          adminBooked = adminRequests.planning.filter(r => r.status !== 'declined').map(r => r.date);
-
-          const aSnap = await getDocs(query(collection(db, 'activityRequests'), orderBy('createdAt', 'desc')));
-          adminRequests.activities = aSnap.docs.map(d => ({ id: d.id, ...d.data() }));
-
-          renderAll();
-          buildAdminCalendar();
-        } catch(e) {
-          console.error(e);
-          showToast('Erreur chargement', 'error');
-        }
-      }
-
-      function loadDemoData() {
-        adminRequests.meals = [
-          { id: '1', food: 'Sushi', date: formatDate(new Date()), slot: 'soir', note: 'J\'ai envie de sushis avec toi 🍣', status: 'pending', createdAt: new Date().toISOString() }
-        ];
-        adminRequests.planning = [
-          { id: '2', date: formatDate(new Date(Date.now() + 86400000)), comment: 'Mode doux 🕯️', status: 'pending', createdAt: new Date().toISOString() }
-        ];
-        adminRequests.activities = [
-          { id: '3', activity: 'Bain moussant', note: 'J\'adorerais ça', date: formatDate(new Date()), status: 'pending', createdAt: new Date().toISOString() }
-        ];
-        renderAll();
-      }
-
-      function renderAll() {
-        renderMeals();
-        renderPlanning();
-        renderActivities();
-        updateStats();
-      }
-
-      function renderMeals() {
-        const list = document.getElementById('mealList');
-        if (!adminRequests.meals.length) {
-          list.innerHTML = '<div class="empty-state"><div class="big">🍽️</div><p>Aucune proposition de repas</p></div>';
-          return;
-        }
-        list.innerHTML = adminRequests.meals.map(r => `
-          <div class="request-card">
-            <div class="req-icon">🍽️</div>
-            <div class="req-body">
-              <div class="req-title">${escapeHtml(r.food)} · ${r.slot === 'midi' ? '🌞 Déjeuner' : '🌙 Dîner'}</div>
-              <div class="req-meta">${formatDateFr(r.date)} · <span class="badge badge-${r.status}">${statusLabel(r.status)}</span></div>
-              ${r.note ? `<div class="req-note">"${escapeHtml(r.note)}"</div>` : ''}
-              <div class="req-actions">
-                ${r.status === 'pending'
-                  ? `<button class="btn-sm btn-accept" onclick="updateStatus('mealRequests','${r.id}','accepted','meals')">✅ Accepter</button><button class="btn-sm btn-decline" onclick="updateStatus('mealRequests','${r.id}','declined','meals')">❌ Refuser</button>`
-                  : ''}
-              </div>
-            </div>
+  function renderFeedbacks(feedbacks) {
+    const list = document.getElementById('feedbackList');
+    if (!feedbacks.length) { list.innerHTML = '<div class="empty-state"><div class="big">🌸</div><p>Aucun feedback ce mois-ci</p></div>'; return; }
+    const moodEmoji = { happy: '😊', love: '😍', neutral: '😐', sad: '😢' };
+    list.innerHTML = feedbacks.map(f => `
+      <div class="feedback-card" data-id="${f.id}">
+        <div class="feedback-card-header">
+          <span class="feedback-mood-emoji">${moodEmoji[f.mood] || '😊'}</span>
+          <div style="flex:1">
+            <div class="feedback-card-date">${formatDateFr(f.date)}</div>
+            <div class="feedback-card-time">${new Date(f.createdAt).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})}</div>
           </div>
-        `).join('');
-      }
+          <button class="btn-sm btn-decline" onclick="deleteFeedback('${f.id}')">🗑️</button>
+        </div>
+        <div class="feedback-text">${f.text || '<em>Aucun commentaire</em>'}</div>
+      </div>
+    `).join('');
+  }
 
-      function renderPlanning() {
-        const list = document.getElementById('planningList');
-        if (!adminRequests.planning.length) {
-          list.innerHTML = '<div class="empty-state"><div class="big">💕</div><p>Aucun moment réservé</p></div>';
-          return;
-        }
-        list.innerHTML = adminRequests.planning.map(r => `
-          <div class="request-card">
-            <div class="req-icon">💕</div>
-            <div class="req-body">
-              <div class="req-title">Moment réservé</div>
-              <div class="req-meta">${formatDateFr(r.date)} · <span class="badge badge-${r.status}">${statusLabel(r.status)}</span></div>
-              ${r.comment ? `<div class="req-note">"${escapeHtml(r.comment)}"</div>` : ''}
-              <div class="req-actions">
-                ${r.status === 'pending'
-                  ? `<button class="btn-sm btn-accept" onclick="updateStatus('planningRequests','${r.id}','accepted','planning')">✅ Confirmer</button><button class="btn-sm btn-decline" onclick="updateStatus('planningRequests','${r.id}','declined','planning')">❌ Reporter</button>`
-                  : ''}
-              </div>
-            </div>
-          </div>
-        `).join('');
-      }
+  async function deleteFeedback(id) {
+    if (!confirm('Voulez-vous vraiment supprimer ce feedback ?')) return;
+    try {
+      if (window._db) { await deleteDoc(doc(window._db, 'feedbacks', id)); }
+      await loadFeedbacks();
+      showToast('Feedback supprimé', 'success');
+    } catch(e) { showToast('Erreur lors de la suppression', 'error'); }
+  }
 
-      function renderActivities() {
-        const list = document.getElementById('activityList');
-        if (!adminRequests.activities.length) {
-          list.innerHTML = '<div class="empty-state"><div class="big">✨</div><p>Aucune idée d\'activité</p></div>';
-          return;
-        }
-        list.innerHTML = adminRequests.activities.map(r => `
-          <div class="request-card">
-            <div class="req-icon">✨</div>
-            <div class="req-body">
-              <div class="req-title">${escapeHtml(r.activity)}</div>
-              <div class="req-meta">${r.date ? formatDateFr(r.date) + ' · ' : ''}<span class="badge badge-${r.status}">${statusLabel(r.status)}</span></div>
-              ${r.note ? `<div class="req-note">"${escapeHtml(r.note)}"</div>` : ''}
-              <div class="req-actions">
-                ${r.status === 'pending'
-                  ? `<button class="btn-sm btn-accept" onclick="updateStatus('activityRequests','${r.id}','accepted','activities')">✅ Accepter</button><button class="btn-sm btn-decline" onclick="updateStatus('activityRequests','${r.id}','declined','activities')">❌ Refuser</button>`
-                  : ''}
-              </div>
-            </div>
-          </div>
-        `).join('');
+  async function clearFeedbacks() {
+    if (!confirm('Voulez-vous vraiment supprimer TOUS les feedbacks ?')) return;
+    try {
+      if (window._db) {
+        const snap = await getDocs(collection(window._db, 'feedbacks'));
+        await Promise.all(snap.docs.map(d => deleteDoc(d.ref)));
       }
+      await loadFeedbacks();
+      showToast('Tous les feedbacks ont été supprimés', 'success');
+    } catch(e) { showToast('Erreur lors du vidage', 'error'); }
+  }
 
-      async function updateStatus(collectionName, id, status, localKey) {
-        try {
-          if (window._db) {
-            const { doc, updateDoc } = window._fb;
-            await updateDoc(doc(window._db, collectionName, id), { status });
-          }
-          const req = adminRequests[localKey].find(r => r.id === id);
-          if (req) req.status = status;
-          renderAll();
-          showToast(
-            status === 'accepted' ? '✅ Accepté avec amour ❤️' : '❌ Refusé',
-            status === 'accepted' ? 'success' : ''
-          );
-        } catch(e) {
-          showToast('Erreur', 'error');
-        }
-      }
-
-      function updateStats() {
-        const allReqs = [
-          ...adminRequests.meals,
-          ...adminRequests.planning,
-          ...adminRequests.activities
-        ];
-        document.getElementById('statMeals').textContent = adminRequests.meals.length;
-        document.getElementById('statPlanning').textContent = adminRequests.planning.length;
-        document.getElementById('statActivities').textContent = adminRequests.activities.length;
-        document.getElementById('statPending').textContent = allReqs.filter(r => r.status === 'pending').length;
-      }
-
-      // ══════════════════════════════════════════════
-      //  CHAT ADMIN
-      // ══════════════════════════════════════════════
-      const CHAT_SENDER_ME = 'me';
-      let adminChatPolling = null;
-
-      async function loadAdminChat() {
-        const container = document.getElementById('adminChatMessages');
-        if (!window._db) {
-          container.innerHTML = '<div class="chat-empty-admin">💕 Aucun message pour l\'instant</div>';
-          return;
-        }
-        try {
-          const { collection, getDocs, query, orderBy } = window._fb;
-          const snap = await getDocs(query(collection(window._db, 'messages'), orderBy('createdAt', 'asc')));
-          const msgs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-          if (!msgs.length) {
-            container.innerHTML = '<div class="chat-empty-admin">💬 Pas encore de messages</div>';
-            return;
-          }
-          let html = '', lastDate = null;
-          msgs.forEach(m => {
-            const isMe = m.sender === CHAT_SENDER_ME;
-            const d = new Date(m.createdAt);
-            const dateStr = d.toDateString();
-            if (dateStr !== lastDate) {
-              html += `<div class="chat-date-sep">${d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})}</div>`;
-              lastDate = dateStr;
-            }
-            const time = d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
-            html += `<div class="msg-row ${isMe ? 'me' : 'lui'}"><div class="msg-avatar">${isMe ? '👨' : '👩'}</div><div class="msg-group"><div class="msg-bubble">${escapeHtml(m.text)}</div><div class="msg-time">${time}</div></div></div>`;
-          });
-          container.innerHTML = html;
-          setTimeout(() => {
-            container.scrollTop = container.scrollHeight;
-          }, 50);
-        } catch(e) {
-          container.innerHTML = '<div class="chat-empty-admin">😔 Erreur de chargement</div>';
-        }
-      }
-
-      async function adminSendMessage() {
-        const input = document.getElementById('adminChatInput');
-        const text = input.value.trim();
-        if (!text) return;
-        const btn = document.querySelector('.admin-chat-send');
-        btn.disabled = true;
-        input.value = '';
-        input.style.height = 'auto';
-        try {
-          if (window._db) {
-            const { collection, addDoc } = window._fb;
-            await addDoc(collection(window._db, 'messages'), { sender: CHAT_SENDER_ME, text, createdAt: new Date().toISOString() });
-          }
-          await loadAdminChat();
-        } catch(e) {
-          showToast('Message non envoyé', 'error');
-          input.value = text;
-        }
-        btn.disabled = false;
-      }
-
-      function handleAdminChatKey(e) {
-        if (e.key === 'Enter' && !e.shiftKey) {
-          e.preventDefault();
-          adminSendMessage();
-        }
-      }
-      function autoResizeAdminChat(el) {
-        el.style.height = 'auto';
-        el.style.height = Math.min(el.scrollHeight, 100) + 'px';
-      }
-
-      // ══════════════════════════════════════════════
-      //  FEEDBACK (avec cache mémoire)
-      // ══════════════════════════════════════════════
-      let _allFeedbacks = [];
-
-      async function loadFeedbacks() {
-        const list = document.getElementById('feedbackList');
-        const count = document.getElementById('feedbackCount');
-        list.innerHTML = '<div class="chat-loading-admin">💕 Chargement…</div>';
-        if (!window._db) {
-          _allFeedbacks = [{ id: 'demo1', date: formatDate(new Date()), mood: 'love', text: 'Super soirée hier ! ❤️', createdAt: new Date().toISOString() }];
-          renderFeedbacks(_allFeedbacks);
-          count.textContent = _allFeedbacks.length;
-          return;
-        }
-        try {
-          const { collection, getDocs, query, orderBy } = window._fb;
-          const snap = await getDocs(query(collection(window._db, 'feedbacks'), orderBy('createdAt', 'desc')));
-          _allFeedbacks = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-          count.textContent = _allFeedbacks.length;
-          const months = [...new Set(_allFeedbacks.map(f => new Date(f.date + 'T00:00:00').toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' })))];
-          const filter = document.getElementById('feedbackMonthFilter');
-          filter.innerHTML = '<option value="">Tous les mois</option>';
-          months.forEach(m => {
-            const o = document.createElement('option');
-            o.value = m;
-            o.textContent = m;
-            filter.appendChild(o);
-          });
-          renderFeedbacks(_allFeedbacks);
-        } catch(e) {
-          list.innerHTML = '<div class="empty-state"><div class="big">😔</div><p>Erreur de chargement</p></div>';
-        }
-      }
-
-      function filterFeedbacks() {
-        const month = document.getElementById('feedbackMonthFilter').value;
-        if (!month) {
-          renderFeedbacks(_allFeedbacks);
-          return;
-        }
-        const filtered = _allFeedbacks.filter(f =>
-          new Date(f.date + 'T00:00:00').toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' }) === month
-        );
-        renderFeedbacks(filtered);
-      }
-
-      function renderFeedbacks(feedbacks) {
-        const list = document.getElementById('feedbackList');
-        if (!feedbacks.length) {
-          list.innerHTML = '<div class="empty-state"><div class="big">🌸</div><p>Aucun feedback ce mois-ci</p></div>';
-          return;
-        }
-        const moodEmoji = { happy: '😊', love: '😍', neutral: '😐', sad: '😢' };
-        list.innerHTML = feedbacks.map(f => `
-          <div class="feedback-card" data-id="${f.id}">
-            <div class="feedback-card-header">
-              <span class="feedback-mood-emoji">${moodEmoji[f.mood] || '😊'}</span>
-              <div style="flex:1">
-                <div class="feedback-card-date">${formatDateFr(f.date)}</div>
-                <div class="feedback-card-time">${new Date(f.createdAt).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})}</div>
-              </div>
-              <button class="btn-sm btn-decline" onclick="deleteFeedback('${f.id}')">🗑️</button>
-            </div>
-            <div class="feedback-text">${f.text || '<em>Aucun commentaire</em>'}</div>
-          </div>
-        `).join('');
-      }
-
-      async function deleteFeedback(id) {
-        if (!confirm('Voulez-vous vraiment supprimer ce feedback ?')) return;
-        try {
-          if (window._db) {
-            const { doc, deleteDoc } = window._fb;
-            await deleteDoc(doc(window._db, 'feedbacks', id));
-          }
-          await loadFeedbacks();
-          showToast('Feedback supprimé', 'success');
-        } catch(e) {
-          showToast('Erreur lors de la suppression', 'error');
-        }
-      }
-
-      async function clearFeedbacks() {
-        if (!confirm('Voulez-vous vraiment supprimer TOUS les feedbacks ?')) return;
-        try {
-          if (window._db) {
-            const { collection, getDocs, deleteDoc } = window._fb;
-            const snap = await getDocs(collection(window._db, 'feedbacks'));
-            await Promise.all(snap.docs.map(d => deleteDoc(d.ref)));
-          }
-          await loadFeedbacks();
-          showToast('Tous les feedbacks ont été supprimés', 'success');
-        } catch(e) {
-          showToast('Erreur lors du vidage', 'error');
-        }
-      }
-
-      // ══════════════════════════════════════════════
-      //  HELPERS
-      // ══════════════════════════════════════════════
-      function formatDate(d) {
-        return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-      }
-      function formatDateFr(dateStr) {
-        if (!dateStr) return '';
-        const d = new Date(dateStr + 'T00:00:00');
-        return d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-      }
-      function statusLabel(s) {
-        return {
-          pending: '⏳ En attente',
-          accepted: '✅ Accepté',
-          declined: '❌ Refusé'
-        }[s] || s;
-      }
-      function escapeHtml(text) {
-        if (!text) return '';
-        return text.replace(/[&<>]/g, function(m) {
-          if (m === '&') return '&amp;';
-          if (m === '<') return '&lt;';
-          if (m === '>') return '&gt;';
-          return m;
-        });
-      }
-      function showToast(msg, type='') {
-        const t = document.getElementById('toast');
-        t.textContent = msg;
-        t.className = 'toast ' + type;
-        t.classList.add('show');
-        setTimeout(() => t.classList.remove('show'), 3000);
-      }
-    </script>
-  </body>
+  // Exposer les fonctions globales
+  window.login = login;
+  window.logout = logout;
+  window.prevAdminMonth = prevAdminMonth;
+  window.nextAdminMonth = nextAdminMonth;
+  window.adminDayClick = adminDayClick;
+  window.blockDate = blockDate;
+  window.unblockDate = unblockDate;
+  window.updateStatus = updateStatus;
+  window.loadAdminChat = loadAdminChat;
+  window.adminSendMessage = adminSendMessage;
+  window.handleAdminChatKey = handleAdminChatKey;
+  window.autoResizeAdminChat = autoResizeAdminChat;
+  window.filterFeedbacks = filterFeedbacks;
+  window.deleteFeedback = deleteFeedback;
+  window.clearFeedbacks = clearFeedbacks;
+</script>
+</body>
 </html>
