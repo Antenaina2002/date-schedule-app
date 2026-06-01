@@ -1,1544 +1,1232 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Date avec mon amour ❤️</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --rose: #f2a7b8;
-    --rose-deep: #d4688a;
-    --rose-light: #fce8ef;
-    --rose-pale: #fff5f8;
-    --blush: #f7d6e0;
-    --cream: #fdf8f5;
-    --mauve: #c9a0b0;
-    --text: #3d2535;
-    --text-soft: #8a6070;
-    --text-muted: #c4a8b4;
-    --white: #ffffff;
-    --shadow: rgba(180, 100, 130, 0.12);
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Date avec mon amour ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --rose: #f2a7b8;
+        --rose-deep: #d4688a;
+        --rose-light: #fce8ef;
+        --rose-pale: #fff5f8;
+        --blush: #f7d6e0;
+        --cream: #fdf8f5;
+        --mauve: #c9a0b0;
+        --text: #3d2535;
+        --text-soft: #8a6070;
+        --text-muted: #c4a8b4;
+        --white: #ffffff;
+        --shadow: rgba(180, 100, 130, 0.12);
+        --green: #5aac6e;
+        --green-light: #edf7f0;
+        --red: #c45050;
+        --red-light: #fdeaea;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: 'DM Sans', sans-serif;
+        background: var(--cream);
+        color: var(--text);
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+      body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background:
+          radial-gradient(ellipse 60% 40% at 10% 20%, rgba(242,167,184,0.18) 0%, transparent 60%),
+          radial-gradient(ellipse 50% 60% at 90% 80%, rgba(212,104,138,0.12) 0%, transparent 60%),
+          radial-gradient(ellipse 80% 30% at 50% 100%, rgba(247,214,224,0.25) 0%, transparent 50%);
+        pointer-events: none;
+        z-index: 0;
+      }
+      .container {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+        position: relative;
+        z-index: 1;
+      }
+      header {
+        text-align: center;
+        padding: 2rem 0 1.5rem;
+      }
+      .header-hearts {
+        font-size: 1.8rem;
+        letter-spacing: 6px;
+        margin-bottom: 0.5rem;
+      }
+      header h1 {
+        font-family: 'Cormorant Garamond', serif;
+        font-weight: 300;
+        font-size: 2.5rem;
+        line-height: 1.2;
+        color: var(--text);
+      }
+      header h1 span {
+        color: var(--rose-deep);
+        font-style: italic;
+      }
+      header p {
+        color: var(--text-soft);
+        margin-top: 0.5rem;
+        font-size: 0.9rem;
+      }
+      .tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        background: white;
+        padding: 0.75rem;
+        border-radius: 40px;
+        margin: 1rem 0 1.5rem;
+        box-shadow: 0 6px 20px var(--shadow);
+        border: 1px solid var(--blush);
+      }
+      .tab-btn {
+        flex: 1;
+        background: transparent;
+        border: none;
+        padding: 0.6rem 0;
+        border-radius: 30px;
+        font-family: 'DM Sans', sans-serif;
+        font-weight: 500;
+        color: var(--text-soft);
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: 0.85rem;
+      }
+      .tab-btn.active {
+        background: linear-gradient(135deg, var(--rose-deep), #c45580);
+        color: white;
+        box-shadow: 0 4px 12px rgba(212,104,138,0.3);
+      }
+      .section {
+        display: none;
+        animation: fade 0.25s ease;
+      }
+      .section.active {
+        display: block;
+      }
+      @keyframes fade {
+        from { opacity: 0; transform: translateY(6px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .card {
+        background: white;
+        border-radius: 28px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 8px 24px var(--shadow);
+        border: 1px solid rgba(242,167,184,0.3);
+      }
+      .card-title {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.5rem;
+        font-weight: 500;
+        color: var(--rose-deep);
+        margin-bottom: 0.25rem;
+      }
+      .card-sub {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        margin-bottom: 1.25rem;
+        border-left: 3px solid var(--rose);
+        padding-left: 0.75rem;
+      }
+      label {
+        display: block;
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: var(--text-soft);
+        margin: 1rem 0 0.3rem;
+      }
+      input, textarea, select {
+        width: 100%;
+        padding: 0.85rem 1rem;
+        border: 1.5px solid var(--blush);
+        border-radius: 16px;
+        font-family: 'DM Sans', sans-serif;
+        font-size: 0.9rem;
+        background: var(--rose-pale);
+        color: var(--text);
+        outline: none;
+        transition: all 0.2s;
+      }
+      input:focus, textarea:focus, select:focus {
+        border-color: var(--rose-deep);
+        background: white;
+      }
+      textarea {
+        resize: vertical;
+        min-height: 80px;
+      }
+      .btn-primary {
+        background: linear-gradient(135deg, var(--rose-deep), #c45580);
+        color: white;
+        border: none;
+        padding: 0.9rem 1.2rem;
+        border-radius: 40px;
+        font-weight: 500;
+        font-size: 0.95rem;
+        cursor: pointer;
+        transition: all 0.3s;
+        width: 100%;
+        margin-top: 1rem;
+        box-shadow: 0 4px 15px rgba(212,104,138,0.3);
+      }
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        filter: brightness(1.02);
+        box-shadow: 0 8px 22px rgba(212,104,138,0.4);
+      }
+      .food-grid, .activities-grid, .slot-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+        margin: 1rem 0;
+      }
+      .food-btn, .activity-btn, .slot-btn {
+        background: var(--rose-pale);
+        border: 1.5px solid var(--blush);
+        padding: 0.6rem 1rem;
+        border-radius: 40px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: var(--text-soft);
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .food-btn.selected, .activity-btn.selected, .slot-btn.selected {
+        background: var(--rose-light);
+        border-color: var(--rose-deep);
+        color: var(--rose-deep);
+      }
+      .quota-banner {
+        background: linear-gradient(135deg, var(--rose-pale), #fff0f5);
+        border-radius: 24px;
+        padding: 1rem;
+        margin: 1rem 0;
+        text-align: center;
+        border: 1px solid var(--blush);
+      }
+      .quota-dots {
+        display: flex;
+        justify-content: center;
+        gap: 0.75rem;
+        margin-bottom: 0.5rem;
+      }
+      .quota-dot {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--rose-light);
+        border: 2px solid var(--blush);
+        transition: all 0.2s;
+      }
+      .quota-dot.used {
+        background: var(--rose-deep);
+        border-color: var(--rose-deep);
+        box-shadow: 0 0 0 2px rgba(212,104,138,0.3);
+      }
+      .quota-text {
+        font-size: 0.8rem;
+        color: var(--text-soft);
+      }
+      .calendar-nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 1rem 0;
+      }
+      .calendar-nav button {
+        background: var(--rose-pale);
+        border: 1px solid var(--blush);
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        font-size: 1.2rem;
+        cursor: pointer;
+        color: var(--rose-deep);
+      }
+      .calendar-month {
+        font-weight: 500;
+        font-size: 1.1rem;
+        text-transform: capitalize;
+      }
+      .cal-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 6px;
+        text-align: center;
+      }
+      .cal-weekday {
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        padding: 6px 0;
+        font-weight: 500;
+      }
+      .cal-day {
+        aspect-ratio: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.85rem;
+        border-radius: 40px;
+        cursor: pointer;
+        transition: all 0.2s;
+        background: var(--rose-pale);
+        position: relative;
+      }
+      .cal-day.today {
+        border: 2px solid var(--rose-deep);
+        background: white;
+        font-weight: bold;
+      }
+      .cal-day.bookable {
+        background: var(--rose-light);
+        color: var(--text);
+      }
+      .cal-day.bookable:hover {
+        background: var(--rose);
+        color: white;
+      }
+      .cal-day.booked {
+        background: var(--text-muted);
+        color: white;
+        cursor: not-allowed;
+        opacity: 0.6;
+      }
+      .cal-day.unavailable {
+        background: var(--red-light);
+        color: var(--red);
+        cursor: not-allowed;
+        text-decoration: line-through;
+      }
+      .modal-bg {
+        position: fixed;
+        inset: 0;
+        background: rgba(61, 37, 53, 0.8);
+        backdrop-filter: blur(6px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        visibility: hidden;
+        opacity: 0;
+        transition: all 0.2s;
+      }
+      .modal-bg.open {
+        visibility: visible;
+        opacity: 1;
+      }
+      .modal {
+        background: white;
+        max-width: 380px;
+        width: 90%;
+        border-radius: 32px;
+        padding: 1.8rem;
+        text-align: center;
+        box-shadow: 0 30px 40px rgba(0,0,0,0.2);
+      }
+      .modal-date-badge {
+        background: var(--rose-light);
+        padding: 0.5rem;
+        border-radius: 40px;
+        margin: 0.75rem 0;
+        font-weight: 500;
+      }
+      .modal-btns {
+        display: flex;
+        gap: 0.75rem;
+        margin-top: 1.25rem;
+      }
+      .btn-secondary {
+        background: var(--rose-pale);
+        border: 1px solid var(--blush);
+        padding: 0.7rem 1rem;
+        border-radius: 40px;
+        cursor: pointer;
+        color: var(--text-soft);
+        font-weight: 500;
+      }
+      .toast {
+        position: fixed;
+        bottom: 2rem;
+        left: 50%;
+        transform: translateX(-50%) translateY(100px);
+        background: var(--text);
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: 40px;
+        font-size: 0.85rem;
+        z-index: 1100;
+        transition: transform 0.3s ease;
+        white-space: nowrap;
+      }
+      .toast.show {
+        transform: translateX(-50%) translateY(0);
+      }
+      .toast.success {
+        background: var(--green);
+      }
+      .toast.error {
+        background: var(--red);
+      }
+      footer {
+        text-align: center;
+        padding: 2rem 0 2.5rem;
+        font-size: 0.75rem;
+        color: var(--text-muted);
+      }
+      footer a {
+        color: var(--rose-deep);
+        text-decoration: none;
+      }
+      .big-emoji {
+        font-size: 3rem;
+        display: block;
+        margin-bottom: 1rem;
+      }
+      .unavailable-msg {
+        text-align: center;
+      }
+      .feedback-mood-btn {
+        flex: 1;
+        padding: 0.75rem;
+        border: 2px solid var(--blush);
+        border-radius: 12px;
+        background: var(--rose-pale);
+        font-size: 1.5rem;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .feedback-mood-btn:hover {
+        border-color: var(--rose);
+        transform: translateY(-2px);
+      }
+      .feedback-mood-btn.selected {
+        border-color: var(--rose-deep);
+        background: var(--rose-light);
+        box-shadow: 0 4px 12px rgba(212, 104, 138, 0.2);
+      }
 
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--cream);
-    color: var(--text);
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+      /* ══ CHAT CLIENT ══ */
+      .chat-header {
+        display: flex;
+        align-items: center;
+        gap: 0.85rem;
+        padding: 1rem 1.25rem;
+        border-bottom: 1px solid var(--blush);
+        background: white;
+      }
+      .chat-header-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--rose), var(--rose-deep));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.1rem;
+        flex-shrink: 0;
+      }
+      .chat-header-name {
+        font-weight: 500;
+        font-size: 0.95rem;
+        color: var(--text);
+      }
+      .chat-header-sub {
+        font-size: 0.78rem;
+        color: var(--text-muted);
+        margin-top: 0.1rem;
+      }
+      .chat-refresh-btn {
+        margin-left: auto;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 1px solid var(--blush);
+        background: var(--rose-pale);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-soft);
+        transition: all 0.2s;
+      }
+      .chat-refresh-btn:hover {
+        background: var(--rose-light);
+        color: var(--rose-deep);
+      }
+      .chat-messages {
+        flex: 1;
+        overflow-y: auto;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        background: var(--cream);
+        min-height: 320px;
+        max-height: 380px;
+        scroll-behavior: smooth;
+      }
+      .chat-messages::-webkit-scrollbar {
+        width: 4px;
+      }
+      .chat-messages::-webkit-scrollbar-thumb {
+        background: var(--blush);
+        border-radius: 2px;
+      }
+      .chat-composer {
+        display: flex;
+        align-items: flex-end;
+        gap: 0.6rem;
+        padding: 0.85rem 1rem;
+        border-top: 1px solid var(--blush);
+        background: white;
+      }
+      .chat-textarea {
+        flex: 1;
+        border: 1.5px solid var(--blush);
+        border-radius: 20px;
+        padding: 0.6rem 1rem;
+        font-family: 'DM Sans', sans-serif;
+        font-size: 0.9rem;
+        color: var(--text);
+        background: var(--rose-pale);
+        outline: none;
+        resize: none;
+        max-height: 120px;
+        overflow-y: auto;
+        transition: border-color 0.2s;
+        line-height: 1.4;
+      }
+      .chat-textarea:focus {
+        border-color: var(--rose-deep);
+        background: white;
+      }
+      .chat-send-btn {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--rose-deep), #c45580);
+        border: none;
+        color: white;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        transition: all 0.2s;
+        box-shadow: 0 3px 10px rgba(212,104,138,0.3);
+      }
+      .chat-send-btn:hover {
+        transform: scale(1.08);
+      }
+      .chat-send-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+      }
+      .chat-empty {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        flex: 1;
+        color: var(--text-muted);
+        gap: 0.5rem;
+        font-size: 0.88rem;
+        padding: 2rem;
+      }
+      .chat-empty .ce-emoji {
+        font-size: 2rem;
+      }
+      .msg-bubble {
+        max-width: 78%;
+        padding: 0.65rem 0.95rem;
+        border-radius: 18px;
+        font-size: 0.88rem;
+        line-height: 1.5;
+        word-break: break-word;
+      }
+      .msg-bubble.from-her {
+        background: white;
+        color: var(--text);
+        border: 1px solid var(--blush);
+        border-bottom-left-radius: 4px;
+        align-self: flex-start;
+      }
+      .msg-bubble.from-me {
+        background: linear-gradient(135deg, var(--rose-deep), #c45580);
+        color: white;
+        border-bottom-right-radius: 4px;
+        align-self: flex-end;
+      }
+      .msg-time {
+        font-size: 0.68rem;
+        opacity: 0.6;
+        margin-top: 0.25rem;
+        display: block;
+      }
+      .msg-bubble.from-her .msg-time {
+        color: var(--text-muted);
+      }
+      .msg-bubble.from-me .msg-time {
+        color: rgba(255,255,255,0.7);
+        text-align: right;
+      }
+      .chat-loading {
+        text-align: center;
+        padding: 2rem;
+        color: var(--text-muted);
+        font-size: 0.88rem;
+      }
+      .loading-hearts {
+        font-size: 1.8rem;
+        animation: float 1.5s ease-in-out infinite;
+        margin-bottom: 0.5rem;
+      }
+      @keyframes float {
+        0%, 100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-8px);
+        }
+      }
 
-  /* Background petals */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background:
-      radial-gradient(ellipse 60% 40% at 10% 20%, rgba(242,167,184,0.18) 0%, transparent 60%),
-      radial-gradient(ellipse 50% 60% at 90% 80%, rgba(212,104,138,0.12) 0%, transparent 60%),
-      radial-gradient(ellipse 80% 30% at 50% 100%, rgba(247,214,224,0.25) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: 0;
-  }
+      /* ══ WEEKDAY INFO BANNER ══ */
+      .weekday-info-banner {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+        background: white;
+        border: 1.5px solid var(--blush);
+        border-radius: 16px;
+        padding: 1rem 1.25rem;
+        margin-bottom: 1.25rem;
+        box-shadow: 0 2px 10px var(--shadow);
+        line-height: 1.5;
+        color: var(--text);
+        font-size: 0.88rem;
+      }
+      .wib-emoji {
+        font-size: 1.4rem;
+        flex-shrink: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <div class="header-hearts">🌸 ✨ 💕</div>
+        <h1>Date avec<br><span>mon amour</span></h1>
+        <p>Un espace rien que pour toi, ma chérie 🌹</p>
+      </header>
 
-  .container { max-width: 720px; margin: 0 auto; padding: 0 1.5rem; position: relative; z-index: 1; }
-
-  /* HEADER */
-  header {
-    text-align: center;
-    padding: 3.5rem 1rem 2rem;
-    position: relative;
-  }
-  .header-hearts {
-    font-size: 1.5rem;
-    letter-spacing: 0.5rem;
-    margin-bottom: 1rem;
-    animation: float 3s ease-in-out infinite;
-  }
-  @keyframes float {
-    0%,100% { transform: translateY(0); }
-    50% { transform: translateY(-6px); }
-  }
-  header h1 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 2.8rem;
-    font-weight: 300;
-    color: var(--text);
-    line-height: 1.2;
-    letter-spacing: -0.02em;
-  }
-  header h1 span { color: var(--rose-deep); font-style: italic; }
-  header p {
-    font-size: 0.95rem;
-    color: var(--text-soft);
-    margin-top: 0.75rem;
-    font-weight: 300;
-  }
-
-  /* TABS */
-  .tabs {
-    display: flex;
-    gap: 0.75rem;
-    margin: 1.5rem 0 2rem;
-    background: var(--white);
-    padding: 0.4rem;
-    border-radius: 20px;
-    box-shadow: 0 2px 20px var(--shadow);
-  }
-  .tab-btn {
-    flex: 1;
-    padding: 0.85rem 1rem;
-    border: none;
-    border-radius: 16px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 400;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    background: transparent;
-    color: var(--text-soft);
-  }
-  .tab-btn.active {
-    background: linear-gradient(135deg, var(--rose-deep), #c45580);
-    color: white;
-    box-shadow: 0 4px 15px rgba(212,104,138,0.35);
-    font-weight: 500;
-  }
-  .tab-btn:not(.active):hover { background: var(--rose-light); color: var(--rose-deep); }
-
-  /* SECTION */
-  .section { display: none; animation: fadeIn 0.4s ease; }
-  .section.active { display: block; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-
-  /* CARD */
-  .card {
-    background: var(--white);
-    border-radius: 20px;
-    padding: 1.75rem;
-    margin-bottom: 1.25rem;
-    box-shadow: 0 4px 24px var(--shadow);
-    border: 1px solid rgba(242,167,184,0.2);
-  }
-  .card-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.4rem;
-    font-weight: 600;
-    color: var(--text);
-    margin-bottom: 0.4rem;
-  }
-  .card-sub {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    margin-bottom: 1.25rem;
-  }
-
-  /* FOOD GRID */
-  .food-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 0.75rem;
-    margin-bottom: 1.25rem;
-  }
-  .food-item {
-    border: 2px solid var(--blush);
-    border-radius: 14px;
-    padding: 0.9rem 0.5rem;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    background: var(--rose-pale);
-  }
-  .food-item:hover { border-color: var(--rose); transform: translateY(-2px); }
-  .food-item.selected {
-    border-color: var(--rose-deep);
-    background: var(--rose-light);
-    box-shadow: 0 4px 12px rgba(212,104,138,0.2);
-    transform: translateY(-2px);
-  }
-  .food-item .emoji { font-size: 2rem; display: block; margin-bottom: 0.4rem; }
-  .food-item .label { font-size: 0.78rem; color: var(--text-soft); font-weight: 400; }
-  .food-item.selected .label { color: var(--rose-deep); font-weight: 500; }
-
-  /* FORM ELEMENTS */
-  label {
-    display: block;
-    font-size: 0.85rem;
-    color: var(--text-soft);
-    margin-bottom: 0.4rem;
-    font-weight: 500;
-  }
-  input[type="text"], input[type="date"], textarea, select {
-    width: 100%;
-    padding: 0.75rem 1rem;
-    border: 1.5px solid var(--blush);
-    border-radius: 12px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
-    color: var(--text);
-    background: var(--rose-pale);
-    outline: none;
-    transition: border-color 0.2s;
-    margin-bottom: 1rem;
-  }
-  input:focus, textarea:focus, select:focus { border-color: var(--rose-deep); background: white; }
-  textarea { resize: vertical; min-height: 80px; }
-
-  .slot-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.65rem;
-    margin-bottom: 1rem;
-  }
-  .slot-btn {
-    padding: 0.75rem;
-    border: 1.5px solid var(--blush);
-    border-radius: 12px;
-    background: var(--rose-pale);
-    cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.88rem;
-    color: var(--text-soft);
-    transition: all 0.2s;
-  }
-  .slot-btn:hover { border-color: var(--rose); }
-  .slot-btn.selected {
-    border-color: var(--rose-deep);
-    background: var(--rose-light);
-    color: var(--rose-deep);
-    font-weight: 500;
-  }
-
-  /* SUBMIT BTN */
-  .btn-primary {
-    width: 100%;
-    padding: 1rem;
-    background: linear-gradient(135deg, var(--rose-deep), #c45580);
-    color: white;
-    border: none;
-    border-radius: 14px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s;
-    box-shadow: 0 4px 20px rgba(212,104,138,0.3);
-    letter-spacing: 0.02em;
-  }
-  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(212,104,138,0.4); }
-  .btn-primary:active { transform: translateY(0); }
-  .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-
-  /* CALENDAR */
-  .calendar-nav {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 1.25rem;
-  }
-  .calendar-nav button {
-    background: var(--rose-pale);
-    border: 1.5px solid var(--blush);
-    border-radius: 10px;
-    width: 36px; height: 36px;
-    cursor: pointer;
-    font-size: 1rem;
-    color: var(--rose-deep);
-    transition: all 0.2s;
-  }
-  .calendar-nav button:hover { background: var(--rose-light); }
-  .calendar-month {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.3rem;
-    font-weight: 600;
-    color: var(--text);
-    text-transform: capitalize;
-  }
-  .cal-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 4px;
-    text-align: center;
-  }
-  .cal-day-label {
-    font-size: 0.72rem;
-    color: var(--text-muted);
-    padding: 0.4rem 0;
-    font-weight: 500;
-  }
-  .cal-day {
-    aspect-ratio: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 10px;
-    font-size: 0.88rem;
-    cursor: default;
-    transition: all 0.2s;
-  }
-  .cal-day.empty { background: transparent; }
-  .cal-day.weekday { color: var(--text-muted); background: transparent; font-size: 0.82rem; }
-  .cal-day.weekend, .cal-day.holiday {
-    background: var(--rose-pale);
-    color: var(--text);
-    cursor: pointer;
-    border: 1.5px solid var(--blush);
-  }
-  .cal-day.weekend:hover, .cal-day.holiday:hover {
-    background: var(--rose-light);
-    border-color: var(--rose);
-    transform: scale(1.08);
-  }
-  .cal-day.selected-day {
-    background: var(--rose-deep) !important;
-    color: white !important;
-    border-color: var(--rose-deep) !important;
-    font-weight: 500;
-    box-shadow: 0 3px 10px rgba(212,104,138,0.35);
-  }
-  .cal-day.booked {
-    background: var(--blush) !important;
-    color: var(--mauve) !important;
-    cursor: not-allowed;
-    border-color: var(--blush) !important;
-    text-decoration: line-through;
-  }
-  .cal-day.today { font-weight: 600; }
-
-  /* QUOTA */
-  .quota-banner {
-    background: var(--rose-light);
-    border: 1.5px solid var(--rose);
-    border-radius: 14px;
-    padding: 1rem 1.25rem;
-    margin-bottom: 1.25rem;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-  }
-  .quota-dots { display: flex; gap: 6px; }
-  .quota-dot {
-    width: 12px; height: 12px;
-    border-radius: 50%;
-    background: var(--blush);
-    border: 1.5px solid var(--mauve);
-    transition: all 0.3s;
-  }
-  .quota-dot.used { background: var(--rose-deep); border-color: var(--rose-deep); }
-  .quota-text { font-size: 0.85rem; color: var(--text-soft); }
-
-  /* ACTIVITIES */
-  .activities-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.65rem;
-  }
-  .activity-card {
-    background: var(--rose-pale);
-    border: 1.5px solid var(--blush);
-    border-radius: 14px;
-    padding: 1rem;
-    cursor: pointer;
-    transition: all 0.25s;
-    text-align: left;
-  }
-  .activity-card:hover { border-color: var(--rose); background: var(--rose-light); transform: translateY(-2px); }
-  .activity-card .act-emoji { font-size: 1.6rem; margin-bottom: 0.4rem; display: block; }
-  .activity-card .act-name { font-size: 0.85rem; color: var(--text); font-weight: 500; }
-  .activity-card .act-desc { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.2rem; }
-
-  /* TOAST */
-  .toast {
-    position: fixed;
-    bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%) translateY(100px);
-    background: var(--text);
-    color: white;
-    padding: 0.9rem 1.75rem;
-    border-radius: 14px;
-    font-size: 0.9rem;
-    z-index: 1000;
-    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    white-space: nowrap;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
-  }
-  .toast.show { transform: translateX(-50%) translateY(0); }
-  .toast.success { background: #3d7d5a; }
-  .toast.error { background: #b04040; }
-
-  /* MODAL */
-  .modal-bg {
-    position: fixed;
-    inset: 0;
-    background: rgba(61,37,53,0.5);
-    backdrop-filter: blur(4px);
-    z-index: 100;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 1.5rem;
-  }
-  .modal-bg.open { display: flex; }
-  .modal {
-    background: white;
-    border-radius: 20px;
-    padding: 2rem;
-    max-width: 420px;
-    width: 100%;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-    animation: modalIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-  @keyframes modalIn { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-  .modal h3 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
-    color: var(--text);
-  }
-  .modal p { font-size: 0.9rem; color: var(--text-soft); margin-bottom: 1.25rem; line-height: 1.6; }
-  .modal-date-badge {
-    background: var(--rose-light);
-    color: var(--rose-deep);
-    padding: 0.4rem 1rem;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: 500;
-    display: inline-block;
-    margin-bottom: 1rem;
-  }
-  .modal-btns { display: flex; gap: 0.65rem; margin-top: 1rem; }
-  .btn-secondary {
-    flex: 1;
-    padding: 0.85rem;
-    border: 1.5px solid var(--blush);
-    border-radius: 12px;
-    background: transparent;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
-    color: var(--text-soft);
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .btn-secondary:hover { background: var(--rose-pale); }
-
-  /* UNAVAILABLE MODAL */
-  .unavailable-msg {
-    text-align: center;
-    padding: 2rem;
-  }
-  .unavailable-msg .big-emoji { font-size: 3rem; margin-bottom: 1rem; display: block; }
-  .unavailable-msg h3 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.6rem;
-    color: var(--text);
-    margin-bottom: 0.75rem;
-  }
-  .unavailable-msg p { font-size: 0.9rem; color: var(--text-soft); line-height: 1.65; margin-bottom: 1.25rem; }
-
-  /* FOOTER */
-  footer {
-    text-align: center;
-    padding: 2.5rem 1rem;
-    color: var(--text-muted);
-    font-size: 0.8rem;
-  }
-  footer a { color: var(--rose-deep); text-decoration: none; }
-
-  .divider { height: 1px; background: var(--blush); margin: 1.25rem 0; }
-
-  /* Confetti */
-  .confetti-piece {
-    position: fixed;
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    animation: confettiFall linear forwards;
-    z-index: 999;
-    pointer-events: none;
-  }
-  @keyframes confettiFall {
-    0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
-    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
-  }
-
-  /* ══ BANNIÈRE SEMAINE (planning) ══ */
-  .weekday-info-banner {
-    display: flex;
-    align-items: center;
-    gap: 0.9rem;
-    background: var(--rose-light);
-    border: 1.5px solid var(--rose);
-    border-radius: 16px;
-    padding: 1rem 1.25rem;
-    margin-bottom: 1.25rem;
-    font-size: 0.88rem;
-    color: var(--text);
-    line-height: 1.5;
-  }
-  .wib-emoji { font-size: 1.6rem; flex-shrink: 0; }
-
-  /* ══ SECTION RÉPONSES ══ */
-  .response-item {
-    border-radius: 16px;
-    padding: 1.2rem 1.4rem;
-    margin-bottom: 0.85rem;
-    border: 1.5px solid var(--blush);
-    background: var(--rose-pale);
-  }
-  .response-item.accepted { background: #f0faf4; border-color: #a8dbb8; }
-  .response-item.declined { background: #fff5f5; border-color: #f5b8b8; }
-  .resp-top { display: flex; align-items: flex-start; gap: 0.9rem; }
-  .resp-icon { font-size: 1.8rem; flex-shrink: 0; line-height: 1; }
-  .resp-body { flex: 1; min-width: 0; }
-  .resp-type-tag { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.2rem; }
-  .resp-title { font-size: 0.95rem; font-weight: 500; color: var(--text); margin-bottom: 0.2rem; }
-  .resp-date { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem; }
-  .resp-status { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.25rem 0.7rem; border-radius: 20px; font-size: 0.78rem; font-weight: 500; }
-  .resp-status.accepted { background: #d4f0de; color: #2d7a4a; }
-  .resp-status.declined { background: #fdd8d8; color: #a03030; }
-  .resp-status.pending  { background: var(--blush); color: var(--mauve); }
-  .resp-accepted-msg {
-    margin-top: 0.85rem; padding: 0.85rem 1rem;
-    background: linear-gradient(135deg, #f0fdf6, #e6f9ee);
-    border-left: 3px solid #5aac6e; border-radius: 0 12px 12px 0;
-    display: flex; align-items: center; gap: 0.6rem;
-  }
-  .resp-accepted-msg .acc-emoji { font-size: 1.4rem; flex-shrink: 0; }
-  .resp-accepted-msg .acc-text { font-size: 0.88rem; color: #2d5a3a; font-style: italic; line-height: 1.5; }
-  .resp-declined-msg {
-    margin-top: 0.85rem; padding: 0.85rem 1rem;
-    background: #fff8f8; border-left: 3px solid #e08080; border-radius: 0 12px 12px 0;
-  }
-  .resp-declined-msg .dec-label { font-size: 0.72rem; color: #b06060; font-weight: 500; margin-bottom: 0.25rem; text-transform: uppercase; letter-spacing: 0.05em; }
-  .resp-declined-msg .dec-reason { font-size: 0.88rem; color: #7a3535; font-style: italic; line-height: 1.5; }
-  .responses-empty { text-align: center; padding: 2.5rem 1rem; color: var(--text-muted); }
-  .responses-empty .big { font-size: 2.5rem; margin-bottom: 0.75rem; }
-  .chat-loading { text-align: center; padding: 2rem; color: var(--text-muted); }
-  .loading-hearts { font-size: 1.8rem; animation: float 1.5s ease-in-out infinite; margin-bottom: 0.5rem; }
-
-  /* ══ CHAT ══ */
-  .chat-header {
-    display: flex;
-    align-items: center;
-    gap: 0.85rem;
-    padding: 1.1rem 1.4rem;
-    border-bottom: 1px solid var(--blush);
-    background: white;
-  }
-  .chat-header-avatar {
-    width: 40px; height: 40px;
-    background: linear-gradient(135deg, var(--rose), var(--rose-deep));
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.1rem; flex-shrink: 0;
-  }
-  .chat-header-name { font-size: 0.95rem; font-weight: 500; color: var(--text); }
-  .chat-header-sub  { font-size: 0.75rem; color: var(--text-muted); }
-  .chat-refresh-btn {
-    margin-left: auto;
-    background: var(--rose-pale);
-    border: 1px solid var(--blush);
-    border-radius: 8px;
-    width: 32px; height: 32px;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer; color: var(--rose-deep);
-    transition: all 0.2s; flex-shrink: 0;
-  }
-  .chat-refresh-btn:hover { background: var(--rose-light); }
-
-  .chat-messages {
-    height: 380px;
-    overflow-y: auto;
-    padding: 1.25rem 1.1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-    background: var(--cream);
-    scroll-behavior: smooth;
-  }
-
-  /* Bulles */
-  .msg-row { display: flex; align-items: flex-end; gap: 0.5rem; }
-  .msg-row.me { flex-direction: row-reverse; }
-
-  .msg-avatar {
-    width: 28px; height: 28px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--rose), var(--rose-deep));
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.8rem; flex-shrink: 0;
-  }
-  .msg-row.me .msg-avatar { background: linear-gradient(135deg, #a0c4ff, #6a9fd8); }
-
-  .msg-bubble {
-    max-width: 72%;
-    padding: 0.7rem 1rem;
-    border-radius: 18px;
-    font-size: 0.9rem;
-    line-height: 1.5;
-    word-break: break-word;
-    position: relative;
-  }
-  /* Lui → bulle rose à gauche */
-  .msg-row.lui .msg-bubble {
-    background: white;
-    color: var(--text);
-    border: 1px solid var(--blush);
-    border-bottom-left-radius: 4px;
-    box-shadow: 0 2px 8px var(--shadow);
-  }
-  /* Elle → bulle rose profond à droite */
-  .msg-row.me .msg-bubble {
-    background: linear-gradient(135deg, var(--rose-deep), #c45580);
-    color: white;
-    border-bottom-right-radius: 4px;
-    box-shadow: 0 2px 10px rgba(212,104,138,0.3);
-  }
-  .msg-time {
-    font-size: 0.68rem;
-    color: var(--text-muted);
-    margin-top: 0.25rem;
-    text-align: right;
-  }
-  .msg-row.lui .msg-time { text-align: left; }
-
-  .msg-group { display: flex; flex-direction: column; max-width: 72%; gap: 0.15rem; }
-  .msg-row.me .msg-group { align-items: flex-end; }
-  .msg-row.lui .msg-group { align-items: flex-start; }
-
-  /* Zone de saisie */
-  .chat-composer {
-    display: flex;
-    align-items: flex-end;
-    gap: 0.65rem;
-    padding: 0.9rem 1.1rem;
-    border-top: 1px solid var(--blush);
-    background: white;
-  }
-  .chat-textarea {
-    flex: 1;
-    border: 1.5px solid var(--blush);
-    border-radius: 20px;
-    padding: 0.65rem 1rem;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
-    color: var(--text);
-    background: var(--rose-pale);
-    outline: none;
-    resize: none;
-    max-height: 120px;
-    overflow-y: auto;
-    transition: border-color 0.2s;
-    line-height: 1.4;
-  }
-  .chat-textarea:focus { border-color: var(--rose-deep); background: white; }
-  .chat-send-btn {
-    width: 40px; height: 40px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--rose-deep), #c45580);
-    color: white;
-    border: none;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-    transition: all 0.25s;
-    box-shadow: 0 3px 12px rgba(212,104,138,0.35);
-  }
-  .chat-send-btn:hover { transform: scale(1.08); box-shadow: 0 5px 16px rgba(212,104,138,0.5); }
-  .chat-send-btn:active { transform: scale(0.96); }
-
-  .chat-date-sep {
-    text-align: center;
-    font-size: 0.72rem;
-    color: var(--text-muted);
-    margin: 0.5rem 0;
-    position: relative;
-  }
-  .chat-date-sep::before, .chat-date-sep::after {
-    content: '';
-    position: absolute;
-    top: 50%; width: 30%;
-    height: 1px; background: var(--blush);
-  }
-  .chat-date-sep::before { left: 0; }
-  .chat-date-sep::after  { right: 0; }
-
-  .chat-empty {
-    flex: 1; display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    color: var(--text-muted); text-align: center; gap: 0.5rem; padding: 2rem;
-  }
-  .chat-empty .big { font-size: 2.5rem; }
-  .chat-empty p { font-size: 0.85rem; line-height: 1.6; }
-
-  /* Scrollbar */
-  ::-webkit-scrollbar { width: 6px; }
-  ::-webkit-scrollbar-track { background: var(--cream); }
-  ::-webkit-scrollbar-thumb { background: var(--blush); border-radius: 3px; }
-</style>
-</head>
-<body>
-
-<div class="container">
-  <header>
-    <div class="header-hearts">🌸 ✨ 💕</div>
-    <h1>Date avec<br><span>mon amour</span></h1>
-    <p>Un espace rien que pour toi, ma chérie 🌹</p>
-  </header>
-
-  <div class="tabs">
-    <button class="tab-btn active" onclick="switchTab('repas')">🍽️ Repas</button>
-    <button class="tab-btn" onclick="switchTab('planning')">🔥 Câlins</button>
-    <button class="tab-btn" onclick="switchTab('activites')">✨ Activités</button>
-    <button class="tab-btn" onclick="switchTab('reponses')">💌 Réponses</button>
-    <button class="tab-btn" onclick="switchTab('chat')">💬 Nous</button>
-  </div>
-
-  <!-- ═══════════════════ SECTION REPAS ═══════════════════ -->
-  <div id="section-repas" class="section active">
-    <div class="card">
-      <div class="card-title">🍽️ Qu'est-ce qui te ferait plaisir ?</div>
-      <div class="card-sub">Choisis un plat qui te fait envie ce soir…</div>
-
-      <div class="food-grid" id="foodGrid">
-        <!-- generated by JS -->
+      <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('repas')">🍽️ Repas</button>
+        <button class="tab-btn" onclick="switchTab('planning')">🔥 Câlins</button>
+        <button class="tab-btn" onclick="switchTab('activites')">✨ Activités</button>
+        <button class="tab-btn" onclick="switchTab('reponses')">💌 Réponses</button>
+        <button class="tab-btn" onclick="switchTab('chat')">💬 Nous</button>
       </div>
 
-      <label>Ou un autre plat dont tu rêves ?</label>
-      <input type="text" id="customFood" placeholder="Ex : Fondue savoyarde, dim sum…">
-    </div>
-
-    <div class="card">
-      <div class="card-title">📅 Quand on se retrouve ?</div>
-      <div class="card-sub">Choisis une date et un moment</div>
-
-      <label>La date</label>
-      <input type="date" id="mealDate">
-
-      <label>Le moment</label>
-      <div class="slot-grid">
-        <button class="slot-btn" data-slot="midi" onclick="selectSlot(this)">🌞 Déjeuner · Midi</button>
-        <button class="slot-btn" data-slot="soir" onclick="selectSlot(this)">🌙 Dîner · Soir</button>
-      </div>
-
-      <label>Un petit mot pour moi ? (optionnel)</label>
-      <textarea id="mealNote" placeholder="Ce soir j'ai envie qu'on…"></textarea>
-
-      <button class="btn-primary" onclick="submitMealRequest()">
-        Envoyer ma proposition 💌
-      </button>
-    </div>
-  </div>
-
-  <!-- ═══════════════════ SECTION PLANNING ═══════════════════ -->
-  <div id="section-planning" class="section">
-
-    <div id="weekdayBanner" class="weekday-info-banner" style="display:none">
-      <span class="wib-emoji">🌸</span>
-      <div>
-        <strong>Tu peux planifier quand tu veux !</strong><br>
-        <span style="font-size:0.82rem;color:var(--text-soft);">Seuls les week-ends et jours fériés sont réservables 💕</span>
-      </div>
-    </div>
-
-    <div id="planningContent">
-      <div class="card">
-        <div class="card-title">💕 Nos moments précieux</div>
-        <div class="card-sub" id="quotaText">Tu as 2 créneaux disponibles ce mois-ci</div>
-
-        <div class="quota-banner">
-          <div class="quota-dots">
-            <div class="quota-dot" id="dot1"></div>
-            <div class="quota-dot" id="dot2"></div>
+      <!-- ═══════════════════ SECTION REPAS ═══════════════════ -->
+      <div id="section-repas" class="section active">
+        <div class="card">
+          <div class="card-title">🍽️ Qu'est-ce qui te ferait plaisir ?</div>
+          <div class="card-sub">Choisis un plat qui te fait envie ce soir…</div>
+          <div class="food-grid" id="foodGrid"></div>
+          <label>Ou un autre plat dont tu rêves ?</label>
+          <input type="text" id="customFood" placeholder="Ex : Fondue savoyarde, dim sum…">
+        </div>
+        <div class="card">
+          <div class="card-title">📅 Quand on se retrouve ?</div>
+          <div class="card-sub">Choisis une date et un moment</div>
+          <label>La date</label>
+          <input type="date" id="mealDate">
+          <label>Le moment</label>
+          <div class="slot-grid">
+            <button class="slot-btn" data-slot="midi" onclick="selectSlot(this)">🌞 Déjeuner · Midi</button>
+            <button class="slot-btn" data-slot="soir" onclick="selectSlot(this)">🌙 Dîner · Soir</button>
           </div>
-          <div class="quota-text" id="quotaSubtext">Choisis un moment qui te ferait plaisir 🌹</div>
-        </div>
-
-        <div class="calendar-nav">
-          <button onclick="prevMonth()">‹</button>
-          <div class="calendar-month" id="calMonth"></div>
-          <button onclick="nextMonth()">›</button>
-        </div>
-        <div class="cal-grid" id="calGrid"><!-- generated --></div>
-
-        <p style="font-size:0.78rem;color:var(--text-muted);margin-top:1rem;text-align:center;">
-          🌸 Week-ends et jours fériés uniquement &nbsp;·&nbsp; 🔴 Déjà réservé
-        </p>
-      </div>
-    </div>
-  </div>
-
-  <!-- ═══════════════════ SECTION ACTIVITÉS ═══════════════════ -->
-  <div id="section-activites" class="section">
-    <div class="card">
-      <div class="card-title">✨ Des idées pour nous</div>
-      <div class="card-sub">Clique sur une idée qui t'inspire, je préparerai tout 🌹</div>
-      <div class="activities-grid" id="activitiesGrid"><!-- generated --></div>
-    </div>
-
-    <div class="card" id="activityWishCard" style="display:none">
-      <div class="card-title">🌸 Mon envie</div>
-      <p style="font-size:0.9rem;color:var(--text-soft);margin-bottom:1rem;">Tu as choisi : <strong id="selectedActivity"></strong></p>
-      <label>Un message pour moi ?</label>
-      <textarea id="activityNote" placeholder="Je voudrais qu'on fasse ça parce que…"></textarea>
-      <label>Quand tu imagines ça ?</label>
-      <input type="date" id="activityDate">
-      <button class="btn-primary" onclick="submitActivityRequest()">Envoyer mon envie 💌</button>
-    </div>
-  </div>
-
-  <!-- ═══════════════════ SECTION RÉPONSES ═══════════════════ -->
-  <div id="section-reponses" class="section">
-    <div class="card">
-      <div class="card-title">💌 Ses réponses pour moi</div>
-      <div class="card-sub">Voilà ce qu'il a décidé pour nos moments ❤️</div>
-      <div id="reponsesList">
-        <div class="chat-loading">
-          <div class="loading-hearts">💕</div><p>Chargement…</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ═══════════════════ SECTION CHAT ═══════════════════ -->
-  <div id="section-chat" class="section">
-    <div class="card" style="padding:0; overflow:hidden;">
-      <div class="chat-header">
-        <div class="chat-header-avatar">💕</div>
-        <div>
-          <div class="chat-header-name">Notre fil secret</div>
-          <div class="chat-header-sub">Juste nous deux ici 🌹</div>
-        </div>
-        <button class="chat-refresh-btn" onclick="loadChat()" title="Rafraîchir">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-        </button>
-      </div>
-
-      <div class="chat-messages" id="chatMessages">
-        <div class="chat-loading">
-          <div class="loading-hearts">💕</div><p>Chargement…</p>
+          <label>Un petit mot pour moi ? (optionnel)</label>
+          <textarea id="mealNote" placeholder="Ce soir j'ai envie qu'on…"></textarea>
+          <button class="btn-primary" onclick="submitMealRequest()">Envoyer ma proposition 💌</button>
         </div>
       </div>
 
-      <div class="chat-composer">
+      <!-- ═══════════════════ SECTION PLANNING ═══════════════════ -->
+      <div id="section-planning" class="section">
+        <div id="weekdayBanner" class="weekday-info-banner">
+          <span class="wib-emoji">🌸</span>
+          <div>
+            <strong>Planifie nos moments quand tu veux !</strong><br>
+            <span style="font-size:0.82rem;color:var(--text-soft);">
+              Les week-ends et jours fériés sont réservables 💕<br>
+              Tu peux préparer nos moments à l'avance
+            </span>
+          </div>
+        </div>
+        <div id="planningContent">
+          <div class="card">
+            <div class="card-title">💕 Nos moments précieux</div>
+            <div class="card-sub" id="quotaText">Tu as 2 créneaux disponibles ce mois-ci</div>
+            <div class="quota-banner">
+              <div class="quota-dots">
+                <div class="quota-dot" id="dot1"></div>
+                <div class="quota-dot" id="dot2"></div>
+              </div>
+              <div class="quota-text" id="quotaSubtext">Choisis un moment qui te ferait plaisir 🌹</div>
+            </div>
+            <div class="calendar-nav">
+              <button onclick="prevMonth()">‹</button>
+              <div class="calendar-month" id="calMonth"></div>
+              <button onclick="nextMonth()">›</button>
+            </div>
+            <div class="cal-grid" id="calGrid"></div>
+            <p style="font-size:0.78rem;color:var(--text-muted);margin-top:1rem;text-align:center;">
+              🌸 Week-ends et jours fériés uniquement &nbsp;·&nbsp; 🔴 Déjà réservé
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════ SECTION ACTIVITÉS ═══════════════════ -->
+      <div id="section-activites" class="section">
+        <div class="card">
+          <div class="card-title">✨ Des idées pour nous</div>
+          <div class="card-sub">Clique sur une idée qui t'inspire, je préparerai tout 🌹</div>
+          <div class="activities-grid" id="activitiesGrid"></div>
+        </div>
+        <div class="card" id="activityWishCard" style="display:none">
+          <div class="card-title">🌸 Mon envie</div>
+          <p style="font-size:0.9rem;color:var(--text-soft);margin-bottom:1rem;">
+            Tu as choisi : <strong id="selectedActivity"></strong>
+          </p>
+          <label>Un message pour moi ?</label>
+          <textarea id="activityNote" placeholder="Je voudrais qu'on fasse ça parce que…"></textarea>
+          <label>Quand tu imagines ça ?</label>
+          <input type="date" id="activityDate">
+          <button class="btn-primary" onclick="submitActivityRequest()">Envoyer mon envie 💌</button>
+        </div>
+      </div>
+
+      <!-- ═══════════════════ SECTION RÉPONSES ═══════════════════ -->
+      <div id="section-reponses" class="section">
+        <div class="card">
+          <div class="card-title">💌 Ses réponses pour moi</div>
+          <div class="card-sub">Voilà ce qu'il a décidé pour nos moments ❤️</div>
+          <div id="reponsesList">
+            <div class="chat-loading">
+              <div class="loading-hearts">💕</div>
+              <p>Chargement…</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════ SECTION CHAT ═══════════════════ -->
+      <div id="section-chat" class="section">
+        <div class="card" style="padding:0; overflow:hidden;">
+          <div class="chat-header">
+            <div class="chat-header-avatar">💕</div>
+            <div>
+              <div class="chat-header-name">Notre fil secret</div>
+              <div class="chat-header-sub">Juste nous deux ici 🌹</div>
+            </div>
+            <button class="chat-refresh-btn" onclick="loadChat()" title="Rafraîchir">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="23 4 23 10 17 10"/>
+                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+              </svg>
+            </button>
+          </div>
+          <div class="chat-messages" id="chatMessages">
+            <div class="chat-loading">
+              <div class="loading-hearts">💕</div>
+              <p>Chargement…</p>
+            </div>
+          </div>
+          <div class="chat-composer">
+            <textarea
+              id="chatInput"
+              class="chat-textarea"
+              placeholder="Écris-lui quelque chose… 🌸"
+              onkeydown="handleChatKey(event)"
+              oninput="autoResizeChat(this)"
+            ></textarea>
+            <button class="chat-send-btn" onclick="sendMessage()">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── MODAL : choix créneau planning ─── -->
+    <div class="modal-bg" id="planningModal">
+      <div class="modal">
+        <h3>Un moment pour nous 💕</h3>
+        <p>Tu as sélectionné le :</p>
+        <div class="modal-date-badge" id="modalDateBadge"></div>
+        <label>Ton petit secret pour ce moment… 🌸</label>
+        <textarea id="planningComment" placeholder='Ex : "Mode doux 🕯️", "Surprise...", "Le truc dont on a parlé 😏"'></textarea>
+        <div class="modal-btns">
+          <button class="btn-secondary" onclick="closeModal()">Annuler</button>
+          <button class="btn-primary" style="flex:1" onclick="submitPlanningRequest()">Valider 💌</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── MODAL : date indisponible ─── -->
+    <div class="modal-bg" id="unavailableModal">
+      <div class="modal">
+        <div class="unavailable-msg">
+          <span class="big-emoji">😔</span>
+          <h3>Je ne serai pas là ce jour-là…</h3>
+          <p>Désolé mon amour, je ne suis pas disponible à cette date. Tu veux qu'on trouve un autre moment rien que pour nous ? 🌹</p>
+          <button class="btn-primary" onclick="document.getElementById('unavailableModal').classList.remove('open')">
+            On cherche une autre date 💕
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── MODAL FEEDBACK ─── -->
+    <div class="modal-bg" id="feedbackModal">
+      <div class="modal">
+        <div style="text-align: center; margin-bottom: 1.5rem;">
+          <div style="font-size: 3rem; margin-bottom: 0.5rem;">🌹</div>
+          <h3>Comment s'est passée ta journée ?</h3>
+          <p style="color: var(--text-soft); margin-top: 0.5rem;">
+            Partage avec moi tes impressions sur notre moment spécial
+          </p>
+        </div>
+        <div style="margin-bottom: 1.5rem;">
+          <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Ton ressenti</label>
+          <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+            <button class="feedback-mood-btn" data-mood="happy" onclick="selectMood(this)">😊</button>
+            <button class="feedback-mood-btn" data-mood="love" onclick="selectMood(this)">😍</button>
+            <button class="feedback-mood-btn" data-mood="neutral" onclick="selectMood(this)">😐</button>
+            <button class="feedback-mood-btn" data-mood="sad" onclick="selectMood(this)">😢</button>
+          </div>
+        </div>
         <textarea
-          id="chatInput"
-          class="chat-textarea"
-          placeholder="Écris-lui quelque chose… 🌸"
-          onkeydown="handleChatKey(event)"
-          oninput="autoResizeChat(this)"
+          id="feedbackText"
+          placeholder="Dis-moi tout ce que tu as aimé, ce qui t'a manqué, tes suggestions..."
+          style="min-height: 120px; margin-bottom: 1rem;"
         ></textarea>
-        <button class="chat-send-btn" onclick="sendMessage()">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-        </button>
+        <div class="modal-btns">
+          <button class="btn-secondary" onclick="closeFeedbackModal()">Plus tard</button>
+          <button class="btn-primary" onclick="submitFeedback()">Envoyer mon feedback</button>
+        </div>
       </div>
     </div>
-  </div>
-
-</div>
-
-<!-- ─── MODAL : choix créneau planning ─── -->
-<div class="modal-bg" id="planningModal">
-  <div class="modal">
-    <h3>Un moment pour nous 💕</h3>
-    <p>Tu as sélectionné le :</p>
-    <div class="modal-date-badge" id="modalDateBadge"></div>
-    <label>Ton petit secret pour ce moment… 🌸</label>
-    <textarea id="planningComment" placeholder='Ex : "Mode doux 🕯️", "Surprise...", "Le truc dont on a parlé 😏"'></textarea>
-    <div class="modal-btns">
-      <button class="btn-secondary" onclick="closeModal()">Annuler</button>
-      <button class="btn-primary" style="flex:1" onclick="submitPlanningRequest()">Valider 💌</button>
-    </div>
-  </div>
-</div>
-
-<!-- ─── MODAL : date indisponible ─── -->
-<div class="modal-bg" id="unavailableModal">
-  <div class="modal">
-    <div class="unavailable-msg">
-      <span class="big-emoji">😔</span>
-      <h3>Je ne serai pas là ce jour-là…</h3>
-      <p>Désolé mon amour, je ne suis pas disponible à cette date. Tu veux qu'on trouve un autre moment rien que pour nous ? 🌹</p>
-      <button class="btn-primary" onclick="document.getElementById('unavailableModal').classList.remove('open')">
-        On cherche une autre date 💕
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- ─── TOAST ─── -->
-<div class="toast" id="toast"></div>
-
-<!-- ─── FIREBASE SDK ─── -->
-<script type="module">
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getFirestore, collection, addDoc, getDocs, query, where, Timestamp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
-
-// ╔══════════════════════════════════════════════════╗
-// ║  🔧 CONFIGURATION FIREBASE
-// ╚══════════════════════════════════════════════════╝
-const firebaseConfig = {
-  apiKey: "AIzaSyB-GZDMMGGCsoxAgVHBuWG0Z9UGsVVx4x8",
-  authDomain: "date-schedule-app.firebaseapp.com",
-  projectId: "date-schedule-app",
-  storageBucket: "date-schedule-app.firebasestorage.app",
-  messagingSenderId: "340648368652",
-  appId: "1:340648368652:web:e96efe6100d45a39846c29"
-};
-
-let db;
-try {
-  const app = initializeApp(firebaseConfig);
-  db = getFirestore(app);
-} catch(e) {
-  console.log('Firebase non configuré - mode démo');
-}
-
-// Exposer pour les fonctions globales
-window._db = db;
-window._fbFns = { collection, addDoc, getDocs, query, where, Timestamp };
-
-import {
-    isWeekend, isHoliday, isBookableDay,
-    canBook, getQuotaText, validateMealRequest,
-    validatePlanningRequest, formatDate, formatDateFr,
-    getMonthKey, getMonthOffset, getDaysInMonth,
-    HOLIDAYS, MAX_QUOTA
-  } from './Utils.js';
-
-  // Expose au script global si besoin
-  window._utils = {
-    isWeekend, isHoliday, isBookableDay, canBook,
-    getQuotaText, validateMealRequest, validatePlanningRequest,
-    formatDate, formatDateFr, getMonthKey,
-    getMonthOffset, getDaysInMonth, HOLIDAYS, MAX_QUOTA
-  };
-</script>
-
-<script>
-// ══════════════════════════════════════════════
-//  DATA
-// ══════════════════════════════════════════════
-const FOODS = [
-  { emoji: '🍕', label: 'Pizza' },
-  { emoji: '🍣', label: 'Sushi' },
-  { emoji: '🍔', label: 'Burger' },
-  { emoji: '🍝', label: 'Carbonara' },
-  { emoji: '🍜', label: 'Nouilles sautées' },
-  { emoji: '🌮', label: 'Tacos' },
-  { emoji: '🥗', label: 'Salade Bowl' },
-  { emoji: '🍱', label: 'Poké Bowl' },
-  { emoji: '🥩', label: 'Steak Frites' },
-  { emoji: '🥞', label: 'Crêpes' },
-  { emoji: '🍫', label: 'Fondant choco' },
-  { emoji: '🍜', label: 'Ramen' },
-];
-
-const ACTIVITIES = [
-  { emoji: '🌅', name: 'Balade au coucher du soleil', desc: 'Main dans la main' },
-  { emoji: '🎬', name: 'Soirée ciné câlins', desc: 'Plaid + pop-corn' },
-  { emoji: '💆', name: 'Massage mutuel', desc: 'Bougies et huile' },
-  { emoji: '🧺', name: 'Pique-nique', desc: 'Dans le parc' },
-  { emoji: '📸', name: 'Session photo', desc: 'Nos plus beaux souvenirs' },
-  { emoji: '🛁', name: 'Bain moussant', desc: 'Rien que nous deux' },
-  { emoji: '🎲', name: 'Jeu coquin', desc: 'Soirée jeux' },
-  { emoji: '💃', name: 'Danse dans le salon', desc: 'Playlist romantique' },
-  { emoji: '🍳', name: 'Cuisine ensemble', desc: 'On invente une recette' },
-  { emoji: '⭐', name: 'Observer les étoiles', desc: 'Sur le balcon' },
-];
-
-// Jours fériés France 2024-2025 (format MM-DD)
-const HOLIDAYS = [
-  '01-01','04-01','05-01','05-08','05-09','05-20','07-14',
-  '08-15','11-01','11-11','12-25','04-21','05-29','06-09',
-];
-
-// State
-let selectedFood = null;
-let selectedSlot = null;
-let selectedActivity = null;
-let currentDate = new Date();
-let selectedPlanningDate = null;
-let unavailableDates = [];
-let bookedDates = [];
-let quotaUsed = 0;
-const MAX_QUOTA = 2;
-
-// ══════════════════════════════════════════════
-//  INIT
-// ══════════════════════════════════════════════
-document.addEventListener('DOMContentLoaded', () => {
-  buildFoodGrid();
-  buildActivitiesGrid();
-  buildCalendar();
-  loadData();
-  setMinDate();
-  checkWeekendRestriction();
-});
-
-function setMinDate() {
-  const today = new Date().toISOString().split('T')[0];
-  document.getElementById('mealDate').min = today;
-  document.getElementById('activityDate').min = today;
-}
-
-function checkWeekendRestriction() {
-  const day = new Date().getDay();
-  const isWeekday = day !== 0 && day !== 6;
-  const banner = document.getElementById('weekdayBanner');
-  if (banner) banner.style.display = isWeekday ? 'flex' : 'none';
-  // Le calendrier est toujours visible — on ne le cache plus jamais
-}
-
-// ══════════════════════════════════════════════
-//  FOOD GRID
-// ══════════════════════════════════════════════
-function buildFoodGrid() {
-  const grid = document.getElementById('foodGrid');
-  grid.innerHTML = FOODS.map(f => `
-    <div class="food-item" onclick="selectFood(this,'${f.label}')">
-      <span class="emoji">${f.emoji}</span>
-      <span class="label">${f.label}</span>
-    </div>
-  `).join('');
-}
-
-function selectFood(el, name) {
-  document.querySelectorAll('.food-item').forEach(e => e.classList.remove('selected'));
-  el.classList.add('selected');
-  selectedFood = name;
-  document.getElementById('customFood').value = '';
-}
-
-function selectSlot(el) {
-  document.querySelectorAll('.slot-btn').forEach(e => e.classList.remove('selected'));
-  el.classList.add('selected');
-  selectedSlot = el.dataset.slot;
-}
-
-// ══════════════════════════════════════════════
-//  ACTIVITIES GRID
-// ══════════════════════════════════════════════
-function buildActivitiesGrid() {
-  const grid = document.getElementById('activitiesGrid');
-  grid.innerHTML = ACTIVITIES.map(a => `
-    <div class="activity-card" onclick="selectActivity('${a.name}')">
-      <span class="act-emoji">${a.emoji}</span>
-      <div class="act-name">${a.name}</div>
-      <div class="act-desc">${a.desc}</div>
-    </div>
-  `).join('');
-}
-
-function selectActivity(name) {
-  selectedActivity = name;
-  document.getElementById('selectedActivity').textContent = name;
-  document.getElementById('activityWishCard').style.display = 'block';
-  document.getElementById('activityWishCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-}
-
-// ══════════════════════════════════════════════
-//  CALENDAR
-// ══════════════════════════════════════════════
-function buildCalendar() {
-  const d = currentDate;
-  const year = d.getFullYear();
-  const month = d.getMonth();
-
-  document.getElementById('calMonth').textContent =
-    d.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
-
-  const firstDay = new Date(year, month, 1).getDay();
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
-  const today = new Date();
-
-  const labels = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
-  let html = labels.map(l => `<div class="cal-day-label">${l}</div>`).join('');
-
-  // Offset (Mon = 0)
-  const offset = (firstDay + 6) % 7;
-  for (let i = 0; i < offset; i++) html += '<div class="cal-day empty"></div>';
-
-  for (let day = 1; day <= daysInMonth; day++) {
-    const date = new Date(year, month, day);
-    const dayOfWeek = date.getDay();
-    const dateStr = formatDate(date);
-    const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
-    const isHoliday = HOLIDAYS.includes(`${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`);
-    const isToday = date.toDateString() === today.toDateString();
-    const isUnavailable = unavailableDates.includes(dateStr);
-    const isBooked = bookedDates.includes(dateStr);
-    const isPast = date < today && !isToday;
-
-    let cls = 'cal-day';
-    let onclick = '';
-    let title = '';
-
-    if (isPast || !(isWeekend || isHoliday)) {
-      cls += ' weekday';
-    } else if (isBooked) {
-      cls += ' weekend booked';
-      title = 'Déjà réservé';
-    } else if (isUnavailable) {
-      cls += ' weekend';
-      onclick = `openUnavailableModal()`;
-    } else if (isWeekend || isHoliday) {
-      cls += ' weekend';
-      if (isHoliday) title = '🎉 Jour férié';
-      onclick = quotaUsed >= MAX_QUOTA ? '' : `openPlanningModal('${dateStr}')`;
-    }
-    if (isToday) cls += ' today';
-
-    html += `<div class="${cls}" onclick="${onclick}" title="${title}">${day}</div>`;
-  }
-
-  document.getElementById('calGrid').innerHTML = html;
-  updateQuotaDisplay();
-}
-
-function prevMonth() {
-  currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1);
-  buildCalendar();
-}
-function nextMonth() {
-  currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1);
-  buildCalendar();
-}
-
-function formatDate(d) {
-  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-}
-
-function updateQuotaDisplay() {
-  const remaining = MAX_QUOTA - quotaUsed;
-  document.getElementById('dot1').className = 'quota-dot' + (quotaUsed >= 1 ? ' used' : '');
-  document.getElementById('dot2').className = 'quota-dot' + (quotaUsed >= 2 ? ' used' : '');
-
-  if (quotaUsed >= MAX_QUOTA) {
-    document.getElementById('quotaText').textContent = 'Tes 2 moments sont déjà réservés ce mois-ci ❤️';
-    document.getElementById('quotaSubtext').textContent = 'On recommence le mois prochain mon amour…';
-  } else {
-    document.getElementById('quotaText').textContent = `Il te reste ${remaining} créneau${remaining > 1 ? 'x' : ''} ce mois-ci`;
-    document.getElementById('quotaSubtext').textContent = 'Choisis un moment qui te ferait plaisir 🌹';
-  }
-}
-
-// ══════════════════════════════════════════════
-//  MODALS
-// ══════════════════════════════════════════════
-function openPlanningModal(dateStr) {
-  if (quotaUsed >= MAX_QUOTA) {
-    showToast('Tu as déjà utilisé tes 2 moments ce mois-ci ❤️', 'error'); return;
-  }
-  selectedPlanningDate = dateStr;
-  const d = new Date(dateStr + 'T00:00:00');
-  document.getElementById('modalDateBadge').textContent =
-    d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
-  document.getElementById('planningComment').value = '';
-  document.getElementById('planningModal').classList.add('open');
-}
-
-function closeModal() {
-  document.getElementById('planningModal').classList.remove('open');
-}
-
-function openUnavailableModal() {
-  document.getElementById('unavailableModal').classList.add('open');
-}
-
-// ══════════════════════════════════════════════
-//  FIREBASE DATA LOAD
-// ══════════════════════════════════════════════
-async function loadData() {
-  const db = window._db;
-  if (!db) return; // demo mode
-
-  const { collection, getDocs, query, where } = window._fbFns;
-  const now = new Date();
-  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0];
-  const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0).toISOString().split('T')[0];
-
-  try {
-    // Unavailable dates
-    const uSnap = await getDocs(collection(db, 'unavailableDates'));
-    unavailableDates = uSnap.docs.map(d => d.data().date);
-
-    // Booked planning slots this month
-    const pSnap = await getDocs(query(
-      collection(db, 'planningRequests'),
-      where('month', '==', `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`)
-    ));
-    bookedDates = pSnap.docs.filter(d => d.data().status !== 'cancelled').map(d => d.data().date);
-    quotaUsed = bookedDates.length;
-
-    buildCalendar();
-  } catch(e) { console.log('Erreur chargement données:', e); }
-}
-
-// ══════════════════════════════════════════════
-//  SUBMIT FUNCTIONS
-// ══════════════════════════════════════════════
-async function submitMealRequest() {
-  const food = selectedFood || document.getElementById('customFood').value.trim();
-  const date = document.getElementById('mealDate').value;
-  const note = document.getElementById('mealNote').value.trim();
-
-  if (!food) { showToast('Choisis quelque chose à manger 😋', 'error'); return; }
-  if (!date) { showToast('Choisis une date mon amour 📅', 'error'); return; }
-  if (!selectedSlot) { showToast('Midi ou soir ? 🌞🌙', 'error'); return; }
-
-  const btn = event.target;
-  btn.disabled = true;
-  btn.textContent = 'Envoi en cours…';
-
-  const data = {
-    type: 'meal',
-    food, date, slot: selectedSlot, note,
-    status: 'pending',
-    createdAt: new Date().toISOString()
-  };
-
-  try {
-    if (window._db) {
-      const { collection, addDoc } = window._fbFns;
-      await addDoc(collection(window._db, 'mealRequests'), data);
-    }
-    showToast('Ta proposition a été envoyée 💌', 'success');
-    launchConfetti();
-    resetMealForm();
-  } catch(e) {
-    showToast('Oups, une erreur… Réessaie 💕', 'error');
-  }
-  btn.disabled = false;
-  btn.textContent = 'Envoyer ma proposition 💌';
-}
-
-async function submitPlanningRequest() {
-  const comment = document.getElementById('planningComment').value.trim();
-  if (!comment) { showToast('Dis-moi ce dont tu as envie… 🌸', 'error'); return; }
-
-  const now = new Date(selectedPlanningDate);
-  const month = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
-
-  const data = {
-    type: 'planning',
-    date: selectedPlanningDate,
-    month, comment,
-    status: 'pending',
-    createdAt: new Date().toISOString()
-  };
-
-  try {
-    if (window._db) {
-      const { collection, addDoc } = window._fbFns;
-      await addDoc(collection(window._db, 'planningRequests'), data);
-    }
-    quotaUsed++;
-    bookedDates.push(selectedPlanningDate);
-    closeModal();
-    buildCalendar();
-    showToast('Ton moment a été réservé 💕', 'success');
-    launchConfetti();
-  } catch(e) {
-    showToast('Oups, une erreur… Réessaie 💕', 'error');
-  }
-}
-
-async function submitActivityRequest() {
-  if (!selectedActivity) { showToast('Choisis une activité 🌸', 'error'); return; }
-  const note = document.getElementById('activityNote').value.trim();
-  const date = document.getElementById('activityDate').value;
-
-  const data = {
-    type: 'activity',
-    activity: selectedActivity, note, date,
-    status: 'pending',
-    createdAt: new Date().toISOString()
-  };
-
-  try {
-    if (window._db) {
-      const { collection, addDoc } = window._fbFns;
-      await addDoc(collection(window._db, 'activityRequests'), data);
-    }
-    showToast('Ton envie a été envoyée 💌', 'success');
-    launchConfetti();
-    document.getElementById('activityWishCard').style.display = 'none';
-    document.getElementById('activityNote').value = '';
-    document.getElementById('activityDate').value = '';
-  } catch(e) {
-    showToast('Oups… Réessaie 💕', 'error');
-  }
-}
-
-// ══════════════════════════════════════════════
-//  UI HELPERS
-// ══════════════════════════════════════════════
-function switchTab(tab) {
-  const tabs = ['repas', 'planning', 'activites', 'reponses', 'chat'];
-  document.querySelectorAll('.tab-btn').forEach((b, i) => {
-    b.classList.toggle('active', tabs[i] === tab);
-  });
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.getElementById('section-' + tab).classList.add('active');
-  if (tab === 'planning') checkWeekendRestriction();
-  if (tab === 'reponses') loadResponses();
-  if (tab === 'chat') loadChat();
-}
-
-function showToast(msg, type='') {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'toast ' + type;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3500);
-}
-
-function resetMealForm() {
-  selectedFood = null; selectedSlot = null;
-  document.querySelectorAll('.food-item').forEach(e => e.classList.remove('selected'));
-  document.querySelectorAll('.slot-btn').forEach(e => e.classList.remove('selected'));
-  document.getElementById('mealDate').value = '';
-  document.getElementById('mealNote').value = '';
-  document.getElementById('customFood').value = '';
-}
-
-function launchConfetti() {
-  const colors = ['#f2a7b8','#d4688a','#f7d6e0','#c9a0b0','#fce8ef'];
-  for (let i = 0; i < 40; i++) {
-    setTimeout(() => {
-      const c = document.createElement('div');
-      c.className = 'confetti-piece';
-      c.style.cssText = `
-        left: ${Math.random() * 100}vw;
-        top: 0;
-        background: ${colors[Math.floor(Math.random()*colors.length)]};
-        animation-duration: ${1.5 + Math.random() * 1.5}s;
-        animation-delay: ${Math.random() * 0.5}s;
-        width: ${6 + Math.random() * 8}px;
-        height: ${6 + Math.random() * 8}px;
-        border-radius: ${Math.random() > 0.5 ? '50%' : '0'};
-      `;
-      document.body.appendChild(c);
-      setTimeout(() => c.remove(), 3000);
-    }, i * 30);
-  }
-}
-
-// ══════════════════════════════════════════════
-//  SECTION RÉPONSES
-// ══════════════════════════════════════════════
-async function loadResponses() {
-  const container = document.getElementById('reponsesList');
-  container.innerHTML = '<div class="chat-loading"><div class="loading-hearts">💕</div><p>Chargement…</p></div>';
-
-  const db = window._db;
-  if (!db) {
-    renderResponses([
-      { id:'d1', type:'meal', food:'Sushi', date:'2025-06-08', slot:'soir', status:'accepted' },
-      { id:'d2', type:'planning', date:'2025-06-14', comment:'Mode doux', status:'declined', declineReason:'Je travaille ce jour-là mon amour 😔' },
-      { id:'d3', type:'activity', activity:'Bain moussant', date:'2025-06-21', status:'pending' },
-    ]);
-    return;
-  }
-  try {
-    const { collection, getDocs, query, orderBy } = window._fbFns;
-    const all = [];
-    const cols = ['mealRequests','planningRequests','activityRequests'];
-    const types = ['meal','planning','activity'];
-    for (let i = 0; i < cols.length; i++) {
-      const snap = await getDocs(query(collection(db, cols[i]), orderBy('createdAt','desc')));
-      snap.docs.forEach(d => all.push({ id: d.id, type: types[i], ...d.data() }));
-    }
-    all.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
-    renderResponses(all);
-  } catch(e) {
-    container.innerHTML = '<div class="responses-empty"><div class="big">😔</div><p>Impossible de charger les réponses.</p></div>';
-  }
-}
-
-function renderResponses(items) {
-  const container = document.getElementById('reponsesList');
-  if (!items.length) {
-    container.innerHTML = '<div class="responses-empty"><div class="big">🌸</div><p>Tu n\'as encore rien envoyé…<br>Propose quelque chose, je serai là ❤️</p></div>';
-    return;
-  }
-  const typeLabel = { meal:'🍽️ Repas', planning:'💕 Câlins', activity:'✨ Activité' };
-  const typeIcon  = { meal:'🍽️', planning:'💕', activity:'✨' };
-  container.innerHTML = items.map(r => {
-    const title = r.type==='meal' ? r.food : r.type==='planning' ? 'Moment câlins' : r.activity;
-    const dateFr = r.date ? new Date(r.date+'T00:00:00').toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'}) : '';
-    const slot = r.slot==='midi' ? '🌞 Déjeuner' : r.slot==='soir' ? '🌙 Dîner' : '';
-    const statusHtml = {
-      accepted:`<span class="resp-status accepted">✅ Validé</span>`,
-      declined:`<span class="resp-status declined">❌ Refusé</span>`,
-      pending: `<span class="resp-status pending">⏳ En attente…</span>`,
-    }[r.status] ?? '';
-    const acceptedMsg = r.status==='accepted' ? `<div class="resp-accepted-msg"><span class="acc-emoji">😉</span><span class="acc-text">Prépare-toi mon amour… ce moment va être parfait ❤️</span></div>` : '';
-    const declinedMsg = r.status==='declined' ? `<div class="resp-declined-msg"><div class="dec-label">Sa raison</div><div class="dec-reason">${r.declineReason||'Il n\'a pas laissé de message… 😔'}</div></div>` : '';
-    return `<div class="response-item ${r.status}">
-      <div class="resp-top">
-        <div class="resp-icon">${typeIcon[r.type]}</div>
-        <div class="resp-body">
-          <div class="resp-type-tag">${typeLabel[r.type]}</div>
-          <div class="resp-title">${title}${slot?' · '+slot:''}</div>
-          <div class="resp-date">${dateFr}</div>
-          ${statusHtml}
-        </div>
-      </div>${acceptedMsg}${declinedMsg}
-    </div>`;
-  }).join('');
-}
-
-// ══════════════════════════════════════════════
-//  CHAT
-// ══════════════════════════════════════════════
-let chatPollingInterval = null;
-let lastChatCount = 0;
-
-async function loadChat() {
-  const container = document.getElementById('chatMessages');
-  const db = window._db;
-
-  if (!db) {
-    renderChatMessages([
-      { id:'c1', sender:'lui', text:'Bonsoir mon amour ❤️', createdAt: new Date(Date.now()-3600000).toISOString() },
-      { id:'c2', sender:'elle', text:'Bonsoir toi 🌸 Tu vas bien ?', createdAt: new Date(Date.now()-1800000).toISOString() },
-      { id:'c3', sender:'lui', text:'Oui ! Je pensais à toi 😘', createdAt: new Date(Date.now()-900000).toISOString() },
-    ]);
-    return;
-  }
-
-  try {
-    const { collection, getDocs, query, orderBy } = window._fbFns;
-    const snap = await getDocs(query(collection(db, 'messages'), orderBy('createdAt','asc')));
-    const msgs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-    renderChatMessages(msgs);
-    lastChatCount = msgs.length;
-  } catch(e) {
-    container.innerHTML = '<div class="chat-empty"><div class="big">😔</div><p>Impossible de charger le chat.</p></div>';
-  }
-
-  // Polling toutes les 8s pour les nouveaux messages
-  if (chatPollingInterval) clearInterval(chatPollingInterval);
-  chatPollingInterval = setInterval(pollChat, 8000);
-}
-
-async function pollChat() {
-  const db = window._db;
-  if (!db) return;
-  try {
-    const { collection, getDocs, query, orderBy } = window._fbFns;
-    const snap = await getDocs(query(collection(db, 'messages'), orderBy('createdAt','asc')));
-    const msgs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-    if (msgs.length !== lastChatCount) {
-      renderChatMessages(msgs);
-      lastChatCount = msgs.length;
-    }
-  } catch(e) {}
-}
-
-function renderChatMessages(msgs) {
-  const container = document.getElementById('chatMessages');
-
-  if (!msgs.length) {
-    container.innerHTML = '<div class="chat-empty"><div class="big">💬</div><p>Pas encore de messages…<br>Dis-lui quelque chose de doux 🌸</p></div>';
-    return;
-  }
-
-  let html = '';
-  let lastDateStr = '';
-
-  msgs.forEach(msg => {
-    const d = new Date(msg.createdAt);
-    const dateStr = d.toLocaleDateString('fr-FR', { day:'numeric', month:'long' });
-    if (dateStr !== lastDateStr) {
-      html += `<div class="chat-date-sep">${dateStr}</div>`;
-      lastDateStr = dateStr;
-    }
-    const isMe = msg.sender === 'elle';
-    const timeStr = d.toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' });
-    const avatar = isMe ? '🌸' : '💕';
-    html += `
-      <div class="msg-row ${isMe ? 'me' : 'lui'}">
-        <div class="msg-avatar">${avatar}</div>
-        <div class="msg-group">
-          <div class="msg-bubble">${escapeHtml(msg.text)}</div>
-          <div class="msg-time">${timeStr}</div>
-        </div>
-      </div>`;
-  });
-
-  container.innerHTML = html;
-  container.scrollTop = container.scrollHeight;
-}
-
-async function sendMessage() {
-  const input = document.getElementById('chatInput');
-  const text = input.value.trim();
-  if (!text) return;
-
-  input.value = '';
-  autoResizeChat(input);
-
-  const db = window._db;
-  const msg = { sender: 'elle', text, createdAt: new Date().toISOString() };
-
-  // Affichage optimiste immédiat
-  const container = document.getElementById('chatMessages');
-  const d = new Date();
-  const timeStr = d.toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' });
-  const optimistic = document.createElement('div');
-  optimistic.className = 'msg-row me';
-  optimistic.innerHTML = `
-    <div class="msg-avatar">🌸</div>
-    <div class="msg-group">
-      <div class="msg-bubble">${escapeHtml(text)}</div>
-      <div class="msg-time">${timeStr}</div>
-    </div>`;
-  container.appendChild(optimistic);
-  container.scrollTop = container.scrollHeight;
-
-  if (db) {
-    try {
-      const { collection, addDoc } = window._fbFns;
-      await addDoc(collection(db, 'messages'), msg);
-      lastChatCount++;
-    } catch(e) {
-      showToast('Message non envoyé, réessaie 💕', 'error');
-    }
-  }
-}
-
-function handleChatKey(e) {
-  if (e.key === 'Enter' && !e.shiftKey) {
-    e.preventDefault();
-    sendMessage();
-  }
-}
-
-function autoResizeChat(el) {
-  el.style.height = 'auto';
-  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
-}
-
-function escapeHtml(str) {
-  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
-}
-
-// Close modals on bg click
-document.querySelectorAll('.modal-bg').forEach(bg => {
-  bg.addEventListener('click', e => {
-    if (e.target === bg) bg.classList.remove('open');
-  });
-});
-</script>
-
-<footer>
-  <p>Fait avec ❤️ rien que pour toi · <a href="admin.html">Admin</a></p>
-</footer>
-
-</body>
+
+    <!-- ─── TOAST ─── -->
+    <div class="toast" id="toast"></div>
+
+    <footer>
+      <p>Fait avec ❤️ rien que pour toi · <a href="admin.html">Admin</a></p>
+    </footer>
+
+    <script type="module">
+      import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+      import { getFirestore, collection, addDoc, getDocs, query, where, Timestamp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyB-GZDMMGGCsoxAgVHBuWG0Z9UGsVVx4x8",
+        authDomain: "date-schedule-app.firebaseapp.com",
+        projectId: "date-schedule-app",
+        storageBucket: "date-schedule-app.firebasestorage.app",
+        messagingSenderId: "340648368652",
+        appId: "1:340648368652:web:e96efe6100d45a39846c29"
+      };
+      let db;
+      try {
+        const app = initializeApp(firebaseConfig);
+        db = getFirestore(app);
+      } catch(e) {
+        console.log('Firebase non configuré - mode démo');
+      }
+      window._db = db;
+      window._fbFns = { collection, addDoc, getDocs, query, where, Timestamp };
+    </script>
+
+    <script>
+      // ══════════════════════════════════════════════
+      //  CONSTANTES & UTILITAIRES (inline)
+      // ══════════════════════════════════════════════
+      const HOLIDAYS = [
+        '01-01','04-01','05-01','05-08','05-09','05-20','07-14',
+        '08-15','11-01','11-11','12-25','04-21','05-29','06-09',
+      ];
+      const MAX_QUOTA = 2;
+
+      function formatDate(d) {
+        return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+      }
+      function formatDateFr(dateStr) {
+        if (!dateStr) return '';
+        const d = new Date(dateStr + 'T00:00:00');
+        return d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+      }
+      function isWeekend(date) { const d = date.getDay(); return d === 0 || d === 6; }
+      function isHoliday(date) {
+        const key = `${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+        return HOLIDAYS.includes(key);
+      }
+      function isBookableDay(date, today = new Date()) {
+        const minDate = new Date(today);
+        minDate.setDate(today.getDate() + 2);
+        minDate.setHours(0,0,0,0);
+        const d = new Date(date);
+        d.setHours(0,0,0,0);
+        if (d < minDate) return false;
+        return isWeekend(d) || isHoliday(d);
+      }
+      function canBook(quotaUsed) { return quotaUsed < MAX_QUOTA; }
+
+      // ══════════════════════════════════════════════
+      //  ÉTAT GLOBAL
+      // ══════════════════════════════════════════════
+      let selectedFood = null;
+      let selectedSlot = null;
+      let selectedActivity = null;
+      let currentMonth = new Date();
+      let bookedDates = [];
+      let unavailableDates = [];
+      let planningRequests = [];
+      let mealRequests = [];
+      let activityRequests = [];
+      let currentQuotaUsed = 0;
+
+      // Chat state
+      let chatPollingInterval = null;
+      const CHAT_SENDER_HER = 'her';
+
+      // ══════════════════════════════════════════════
+      //  CHAT FUNCTIONS
+      // ══════════════════════════════════════════════
+      async function loadChat() {
+        const container = document.getElementById('chatMessages');
+        if (!window._db) {
+          container.innerHTML = renderChatMessages([
+            { id:'1', sender:'me', text:'Bonjour mon amour 🌹', createdAt: new Date(Date.now()-3600000).toISOString() },
+            { id:'2', sender:'her', text:'Bonjour toi 💕 tu penses à moi ?', createdAt: new Date(Date.now()-1800000).toISOString() },
+          ]);
+          scrollChat();
+          return;
+        }
+
+        try {
+          const { collection, getDocs, query, orderBy } = window._fbFns;
+          const snap = await getDocs(query(collection(window._db, 'messages'), orderBy('createdAt', 'asc')));
+          const msgs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+          container.innerHTML = msgs.length
+            ? renderChatMessages(msgs)
+            : `<div class="chat-empty"><span class="ce-emoji">💬</span><p>Écris-lui le premier message… 🌸</p></div>`;
+          scrollChat();
+        } catch(e) {
+          container.innerHTML = `<div class="chat-empty"><span>😔</span><p>Impossible de charger le chat</p></div>`;
+        }
+      }
+
+      function renderChatMessages(msgs) {
+        return msgs.map((m, i) => {
+          const isMe = m.sender === CHAT_SENDER_HER;
+          const time = new Date(m.createdAt).toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' });
+          const prev = msgs[i-1];
+          const showDate = !prev || new Date(m.createdAt).toDateString() !== new Date(prev.createdAt).toDateString();
+          const dateSep = showDate ? `<div style="text-align:center;font-size:0.72rem;color:var(--text-muted);margin:0.75rem 0;">
+            ${new Date(m.createdAt).toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})}
+          </div>` : '';
+
+          return `${dateSep}
+            <div style="display:flex;flex-direction:column;align-items:${isMe ? 'flex-end' : 'flex-start'};">
+              <div class="msg-bubble ${isMe ? 'from-her' : 'from-me'}">
+                ${escapeHtml(m.text)}
+                <span class="msg-time">${time}</span>
+              </div>
+            </div>`;
+        }).join('');
+      }
+
+      function escapeHtml(text) {
+        if (!text) return '';
+        return text.replace(/[&<>]/g, function(m) {
+          if (m === '&') return '&amp;';
+          if (m === '<') return '&lt;';
+          if (m === '>') return '&gt;';
+          return m;
+        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+          return c;
+        });
+      }
+
+      function scrollChat() {
+        setTimeout(() => {
+          const c = document.getElementById('chatMessages');
+          if (c) c.scrollTop = c.scrollHeight;
+        }, 50);
+      }
+
+      async function sendMessage() {
+        const input = document.getElementById('chatInput');
+        const text = input.value.trim();
+        if (!text) return;
+
+        const btn = document.querySelector('.chat-send-btn');
+        btn.disabled = true;
+        input.value = '';
+        input.style.height = 'auto';
+
+        const msg = { sender: CHAT_SENDER_HER, text, createdAt: new Date().toISOString() };
+
+        try {
+          if (window._db) {
+            const { collection, addDoc } = window._fbFns;
+            await addDoc(collection(window._db, 'messages'), msg);
+          }
+          await loadChat();
+        } catch(e) {
+          showToast('Message non envoyé, réessaie 😔', 'error');
+          input.value = text;
+        }
+        btn.disabled = false;
+        input.focus();
+      }
+
+      function handleChatKey(e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          sendMessage();
+        }
+      }
+
+      function autoResizeChat(el) {
+        el.style.height = 'auto';
+        el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+      }
+
+      function startChatPolling() {
+        if (chatPollingInterval) return;
+        chatPollingInterval = setInterval(loadChat, 15000);
+      }
+
+      function stopChatPolling() {
+        if (chatPollingInterval) {
+          clearInterval(chatPollingInterval);
+          chatPollingInterval = null;
+        }
+      }
+
+      // ══════════════════════════════════════════════
+      //  FEEDBACK FUNCTIONS
+      // ══════════════════════════════════════════════
+      let selectedMood = null;
+
+      function checkFeedbackTime() {
+        const now = new Date();
+        const hour = now.getHours();
+        if (hour >= 19) {
+          const today = formatDate(now);
+          let hasValidatedPlanning = false;
+          if (bookedDates && bookedDates.includes(today)) {
+            hasValidatedPlanning = true;
+          }
+          const lastFeedbackDate = localStorage.getItem('lastFeedbackDate');
+          if (hasValidatedPlanning && lastFeedbackDate !== today) {
+            openFeedbackModal();
+          }
+        }
+      }
+
+      function openFeedbackModal() {
+        document.getElementById('feedbackModal').classList.add('open');
+        document.getElementById('feedbackText').value = '';
+        document.querySelectorAll('.feedback-mood-btn').forEach(btn => {
+          btn.classList.remove('selected');
+        });
+        selectedMood = null;
+      }
+
+      function closeFeedbackModal() {
+        document.getElementById('feedbackModal').classList.remove('open');
+      }
+
+      function selectMood(btn) {
+        document.querySelectorAll('.feedback-mood-btn').forEach(b => {
+          b.classList.remove('selected');
+        });
+        btn.classList.add('selected');
+        selectedMood = btn.dataset.mood;
+      }
+
+      async function submitFeedback() {
+        const text = document.getElementById('feedbackText').value.trim();
+        if (!text && !selectedMood) {
+          showToast('Dis-moi au moins comment tu te sens 😊', 'error');
+          return;
+        }
+
+        const now = new Date();
+        const today = formatDate(now);
+
+        const feedbackData = {
+          date: today,
+          mood: selectedMood,
+          text: text,
+          createdAt: now.toISOString()
+        };
+
+        try {
+          if (window._db) {
+            const { collection, addDoc } = window._fbFns;
+            await addDoc(collection(window._db, 'feedbacks'), feedbackData);
+          }
+          localStorage.setItem('lastFeedbackDate', today);
+          closeFeedbackModal();
+          showToast('Merci pour ton feedback ❤️', 'success');
+          if (typeof loadData === 'function') await loadData();
+        } catch(e) {
+          console.error("Erreur envoi feedback:", e);
+          showToast('Erreur lors de l\'envoi, réessaie plus tard', 'error');
+        }
+      }
+
+      // ══════════════════════════════════════════════
+      //  TAB MANAGEMENT
+      // ══════════════════════════════════════════════
+      function switchTab(tab) {
+        const tabs = ['repas', 'planning', 'activites', 'reponses', 'chat'];
+        document.querySelectorAll('.tab-btn').forEach((b, i) => {
+          b.classList.toggle('active', tabs[i] === tab);
+        });
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.getElementById('section-' + tab).classList.add('active');
+
+        stopChatPolling();
+        if (tab === 'reponses') loadResponses();
+        if (tab === 'chat') { loadChat(); startChatPolling(); }
+      }
+
+      // ══════════════════════════════════════════════
+      //  RESPONSES
+      // ══════════════════════════════════════════════
+      async function loadResponses() {
+        const container = document.getElementById('reponsesList');
+        container.innerHTML = '<div class="chat-loading"><div class="loading-hearts">💕</div><p>Chargement…</p></div>';
+
+        if (!window._db) {
+          container.innerHTML = `
+            <div class="empty-state"><div class="big">💌</div><p>Rien pour l'instant</p></div>
+          `;
+          return;
+        }
+
+        try {
+          const { collection, getDocs, query, where } = window._fbFns;
+          const [mealSnap, planningSnap, activitySnap] = await Promise.all([
+            getDocs(query(collection(window._db, 'mealRequests'), where('status', 'in', ['accepted', 'declined']))),
+            getDocs(query(collection(window._db, 'planningRequests'), where('status', 'in', ['accepted', 'declined']))),
+            getDocs(query(collection(window._db, 'activityRequests'), where('status', 'in', ['accepted', 'declined'])))
+          ]);
+
+          const meals = mealSnap.docs.map(d => ({ type: 'repas', ...d.data(), id: d.id }));
+          const plannings = planningSnap.docs.map(d => ({ type: 'planning', ...d.data(), id: d.id }));
+          const activities = activitySnap.docs.map(d => ({ type: 'activite', ...d.data(), id: d.id }));
+
+          const all = [...meals, ...plannings, ...activities].sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+          if (!all.length) {
+            container.innerHTML = '<div class="empty-state"><div class="big">💌</div><p>Aucune réponse pour l\'instant</p></div>';
+            return;
+          }
+
+          container.innerHTML = all.map(r => {
+            if (r.type === 'repas') {
+              return `<div class="card" style="margin-bottom:0.75rem;">
+                <div style="display:flex;align-items:center;gap:0.75rem;">
+                  <span style="font-size:1.5rem;">🍽️</span>
+                  <div><strong>${r.food}</strong> · ${r.slot === 'midi' ? 'Déjeuner' : 'Dîner'}</div>
+                  <div style="margin-left:auto;"><span class="badge ${r.status === 'accepted' ? 'badge-accepted' : 'badge-declined'}">${r.status === 'accepted' ? '✅ Accepté' : '❌ Refusé'}</span></div>
+                </div>
+                <div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.5rem;">${formatDateFr(r.date)}</div>
+                ${r.note ? `<div style="font-size:0.85rem;margin-top:0.5rem;color:var(--text-soft);">"${r.note}"</div>` : ''}
+              </div>`;
+            } else if (r.type === 'planning') {
+              return `<div class="card" style="margin-bottom:0.75rem;">
+                <div style="display:flex;align-items:center;gap:0.75rem;">
+                  <span style="font-size:1.5rem;">💕</span>
+                  <div><strong>Moment câlins</strong></div>
+                  <div style="margin-left:auto;"><span class="badge ${r.status === 'accepted' ? 'badge-accepted' : 'badge-declined'}">${r.status === 'accepted' ? '✅ Confirmé' : '❌ Reporté'}</span></div>
+                </div>
+                <div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.5rem;">${formatDateFr(r.date)}</div>
+                ${r.comment ? `<div style="font-size:0.85rem;margin-top:0.5rem;color:var(--text-soft);">"${r.comment}"</div>` : ''}
+              </div>`;
+            } else {
+              return `<div class="card" style="margin-bottom:0.75rem;">
+                <div style="display:flex;align-items:center;gap:0.75rem;">
+                  <span style="font-size:1.5rem;">✨</span>
+                  <div><strong>${r.activity}</strong></div>
+                  <div style="margin-left:auto;"><span class="badge ${r.status === 'accepted' ? 'badge-accepted' : 'badge-declined'}">${r.status === 'accepted' ? '✅ Accepté' : '❌ Refusé'}</span></div>
+                </div>
+                <div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.5rem;">${r.date ? formatDateFr(r.date) : 'Date à définir'}</div>
+                ${r.note ? `<div style="font-size:0.85rem;margin-top:0.5rem;color:var(--text-soft);">"${r.note}"</div>` : ''}
+              </div>`;
+            }
+          }).join('');
+        } catch(e) {
+          container.innerHTML = '<div class="empty-state"><div class="big">😔</div><p>Erreur de chargement</p></div>';
+        }
+      }
+
+      // ══════════════════════════════════════════════
+      //  TOAST
+      // ══════════════════════════════════════════════
+      function showToast(msg, type = '') {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.className = 'toast ' + type;
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 3000);
+      }
+
+      // ══════════════════════════════════════════════
+      //  INITIALISATION (simplifiée)
+      // ══════════════════════════════════════════════
+      window.switchTab = switchTab;
+      window.loadChat = loadChat;
+      window.sendMessage = sendMessage;
+      window.handleChatKey = handleChatKey;
+      window.autoResizeChat = autoResizeChat;
+      window.selectMood = selectMood;
+      window.submitFeedback = submitFeedback;
+      window.closeFeedbackModal = closeFeedbackModal;
+
+      // Démarrer
+      setTimeout(() => {
+        if (document.getElementById('section-chat').classList.contains('active')) {
+          loadChat();
+          startChatPolling();
+        }
+        checkFeedbackTime();
+        setInterval(checkFeedbackTime, 3600000);
+      }, 500);
+    </script>
+  </body>
 </html>
