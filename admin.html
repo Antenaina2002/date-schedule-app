@@ -285,30 +285,31 @@
 <script>
 // ========== CHARGEMENT DES DONNÉES EN TEMPS RÉEL ==========
 async function loadAllData() {
-    if (!window.db) return loadDemoData();
+    if (!window.db) return;
     
     try {
       const { collection, query, orderBy, onSnapshot } = window._fb;
+      const db = window.db; // IMPORTANT : on récupère la bonne instance de Firestore
       
       // Repas
       onSnapshot(query(collection(db, 'mealRequests'), orderBy('createdAt', 'desc')), (snap) => {
         allMeals = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-        renderMeals();
-        updateStats();
+        if (typeof renderMeals === 'function') renderMeals();
+        if (typeof updateStats === 'function') updateStats();
       });
       
       // Planning
       onSnapshot(query(collection(db, 'planningRequests'), orderBy('createdAt', 'desc')), (snap) => {
         allPlanning = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-        renderPlanning();
-        updateStats();
+        if (typeof renderPlanning === 'function') renderPlanning();
+        if (typeof updateStats === 'function') updateStats();
       });
       
       // Activités
       onSnapshot(query(collection(db, 'activityRequests'), orderBy('createdAt', 'desc')), (snap) => {
         allActivities = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-        renderActivities();
-        updateStats();
+        if (typeof renderActivities === 'function') renderActivities();
+        if (typeof updateStats === 'function') updateStats();
       });
       
     } catch(e) {
@@ -322,8 +323,9 @@ async function loadAllData() {
     if (!window.db) return;
     try {
       const { doc, updateDoc } = window._fb;
+      const db = window.db; // 👈 CORRECTION
+      
       await updateDoc(doc(db, collectionName, id), { status: newStatus });
-      // Plus besoin de mettre à jour manuellement l'interface, onSnapshot s'en occupe !
       showToast(newStatus === 'accepted' ? '✅ Proposition acceptée ❤️' : '❌ Proposition refusée', newStatus === 'accepted' ? 'success' : '');
     } catch(e) {
       console.error("❌ Erreur mise à jour:", e);
@@ -333,9 +335,10 @@ async function loadAllData() {
   // ========== CHAT TEMPS RÉEL ==========
   async function loadChat() {
     const container = document.getElementById('adminChatMessages');
-    if (!window.db) return;
+    if (!window.db || !container) return;
     
     const { collection, query, orderBy, onSnapshot } = window._fb;
+    const db = window.db; // IMPORTANT : on récupère la bonne instance de Firestore
     
     onSnapshot(query(collection(db, 'messages'), orderBy('createdAt', 'asc')), (snap) => {
       const messages = snap.docs.map(d => d.data());
@@ -385,12 +388,13 @@ async function loadAllData() {
     
     try {
       const { collection, addDoc } = window._fb;
+      const db = window.db; // 👈 CORRECTION
+      
       await addDoc(collection(db, 'messages'), {
         sender: 'me',
         text: text,
         createdAt: new Date().toISOString()
       });
-      // Plus besoin d'appeler loadChat(), c'est automatique !
     } catch(e) {
       console.error("❌ Erreur envoi message:", e);
       input.value = text;
@@ -400,9 +404,10 @@ async function loadAllData() {
   // ========== FEEDBACKS TEMPS RÉEL ==========
   async function loadFeedbacks() {
     const container = document.getElementById('feedbackList');
-    if (!window.db) return;
+    if (!window.db || !container) return;
     
     const { collection, query, orderBy, onSnapshot } = window._fb;
+    const db = window.db; // 👈 CORRECTION
     
     onSnapshot(query(collection(db, 'feedbacks'), orderBy('createdAt', 'desc')), (snap) => {
       const feedbacks = snap.docs.map(d => ({ id: d.id, ...d.data() }));
@@ -433,6 +438,8 @@ async function loadAllData() {
     if (!confirm('Supprimer ce feedback ?') || !window.db) return;
     try {
       const { doc, deleteDoc } = window._fb;
+      const db = window.db; // IMPORTANT : on récupère la bonne instance de Firestore
+      
       await deleteDoc(doc(db, 'feedbacks', id));
       showToast('Feedback supprimé', 'success');
     } catch(e) {
