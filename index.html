@@ -7,297 +7,120 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     :root {
-      --rose: #f2a7b8;
-      --rose-deep: #d4688a;
-      --rose-light: #fce8ef;
-      --rose-pale: #fff5f8;
-      --blush: #f7d6e0;
-      --cream: #fdf8f5;
-      --mauve: #c9a0b0;
-      --text: #3d2535;
-      --text-soft: #8a6070;
-      --text-muted: #c4a8b4;
-      --white: #ffffff;
-      --shadow: rgba(180, 100, 130, 0.12);
-      --green: #5aac6e;
-      --green-light: #edf7f0;
-      --red: #c45050;
-      --red-light: #fdeaea;
+      --rose: #f2a7b8; --rose-deep: #d4688a; --rose-light: #fce8ef; --rose-pale: #fff5f8;
+      --blush: #f7d6e0; --cream: #fdf8f5; --mauve: #c9a0b0; --text: #3d2535;
+      --text-soft: #8a6070; --text-muted: #c4a8b4; --white: #ffffff;
+      --shadow: rgba(180, 100, 130, 0.12); --green: #5aac6e; --green-light: #edf7f0;
+      --red: #c45050; --red-light: #fdeaea;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--cream);
-      color: var(--text);
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(ellipse 60% 40% at 10% 20%, rgba(242,167,184,0.18) 0%, transparent 60%),
-                  radial-gradient(ellipse 50% 60% at 90% 80%, rgba(212,104,138,0.12) 0%, transparent 60%),
-                  radial-gradient(ellipse 80% 30% at 50% 100%, rgba(247,214,224,0.25) 0%, transparent 50%);
-      pointer-events: none;
-      z-index: 0;
-    }
+    body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+    body::before { content: ''; position: fixed; inset: 0; background: radial-gradient(ellipse 60% 40% at 10% 20%, rgba(242,167,184,0.18) 0%, transparent 60%), radial-gradient(ellipse 50% 60% at 90% 80%, rgba(212,104,138,0.12) 0%, transparent 60%), radial-gradient(ellipse 80% 30% at 50% 100%, rgba(247,214,224,0.25) 0%, transparent 50%); pointer-events: none; z-index: 0; }
     .container { max-width: 720px; margin: 0 auto; padding: 0 1.5rem; position: relative; z-index: 1; }
+    
     header { text-align: center; padding: 2rem 0 1.5rem; }
-    .header-hearts { font-size: 1.8rem; letter-spacing: 6px; margin-bottom: 0.5rem; }
+    .header-hearts { font-size: 1.8rem; letter-spacing: 6px; margin-bottom: 0.5rem; animation: float 3s ease-in-out infinite;}
+    @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
     header h1 { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: 2.5rem; line-height: 1.2; color: var(--text); }
     header h1 span { color: var(--rose-deep); font-style: italic; }
     header p { color: var(--text-soft); margin-top: 0.5rem; font-size: 0.9rem; }
-    .tabs {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-      background: white;
-      padding: 0.75rem;
-      border-radius: 40px;
-      margin: 1rem 0 1.5rem;
-      box-shadow: 0 6px 20px var(--shadow);
-      border: 1px solid var(--blush);
-    }
-    .tab-btn {
-      flex: 1;
-      background: transparent;
-      border: none;
-      padding: 0.6rem 0;
-      border-radius: 30px;
-      font-family: 'DM Sans', sans-serif;
-      font-weight: 500;
-      color: var(--text-soft);
-      cursor: pointer;
-      transition: all 0.2s;
-      font-size: 0.85rem;
-    }
+    
+    .tabs { display: flex; flex-wrap: wrap; gap: 0.4rem; background: white; padding: 0.75rem; border-radius: 40px; margin: 1rem 0 1.5rem; box-shadow: 0 6px 20px var(--shadow); border: 1px solid var(--blush); }
+    .tab-btn { flex: 1; background: transparent; border: none; padding: 0.6rem 0; border-radius: 30px; font-family: 'DM Sans', sans-serif; font-weight: 500; color: var(--text-soft); cursor: pointer; transition: all 0.2s; font-size: 0.85rem; }
     .tab-btn.active { background: linear-gradient(135deg, var(--rose-deep), #c45580); color: white; box-shadow: 0 4px 12px rgba(212,104,138,0.3); }
+    
     .section { display: none; animation: fade 0.25s ease; }
     .section.active { display: block; }
     @keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-    .card {
-      background: white;
-      border-radius: 28px;
-      padding: 1.5rem;
-      margin-bottom: 1.5rem;
-      box-shadow: 0 8px 24px var(--shadow);
-      border: 1px solid rgba(242,167,184,0.3);
-    }
+    
+    .card { background: white; border-radius: 28px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 8px 24px var(--shadow); border: 1px solid rgba(242,167,184,0.3); }
     .card-title { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 500; color: var(--rose-deep); margin-bottom: 0.25rem; }
     .card-sub { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.25rem; border-left: 3px solid var(--rose); padding-left: 0.75rem; }
+    
     label { display: block; font-size: 0.85rem; font-weight: 500; color: var(--text-soft); margin: 1rem 0 0.3rem; }
-    input, textarea, select {
-      width: 100%;
-      padding: 0.85rem 1rem;
-      border: 1.5px solid var(--blush);
-      border-radius: 16px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.9rem;
-      background: var(--rose-pale);
-      color: var(--text);
-      outline: none;
-      transition: all 0.2s;
-    }
+    input, textarea, select { width: 100%; padding: 0.85rem 1rem; border: 1.5px solid var(--blush); border-radius: 16px; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; background: var(--rose-pale); color: var(--text); outline: none; transition: all 0.2s; }
     input:focus, textarea:focus, select:focus { border-color: var(--rose-deep); background: white; }
     textarea { resize: vertical; min-height: 80px; }
-    .btn-primary {
-      background: linear-gradient(135deg, var(--rose-deep), #c45580);
-      color: white;
-      border: none;
-      padding: 0.9rem 1.2rem;
-      border-radius: 40px;
-      font-weight: 500;
-      font-size: 0.95rem;
-      cursor: pointer;
-      transition: all 0.3s;
-      width: 100%;
-      margin-top: 1rem;
-      box-shadow: 0 4px 15px rgba(212,104,138,0.3);
-    }
+    
+    .btn-primary { background: linear-gradient(135deg, var(--rose-deep), #c45580); color: white; border: none; padding: 0.9rem 1.2rem; border-radius: 40px; font-weight: 500; font-size: 0.95rem; cursor: pointer; transition: all 0.3s; width: 100%; margin-top: 1rem; box-shadow: 0 4px 15px rgba(212,104,138,0.3); }
     .btn-primary:hover { transform: translateY(-2px); filter: brightness(1.02); box-shadow: 0 8px 22px rgba(212,104,138,0.4); }
+    
     .food-grid, .activities-grid, .slot-grid { display: flex; flex-wrap: wrap; gap: 0.6rem; margin: 1rem 0; }
-    .food-btn, .activity-btn, .slot-btn {
-      background: var(--rose-pale);
-      border: 1.5px solid var(--blush);
-      padding: 0.6rem 1rem;
-      border-radius: 40px;
-      font-size: 0.85rem;
-      font-weight: 500;
-      color: var(--text-soft);
-      cursor: pointer;
-      transition: all 0.2s;
-    }
+    .food-btn, .activity-btn, .slot-btn { background: var(--rose-pale); border: 1.5px solid var(--blush); padding: 0.6rem 1rem; border-radius: 40px; font-size: 0.85rem; font-weight: 500; color: var(--text-soft); cursor: pointer; transition: all 0.2s; }
     .food-btn.selected, .activity-btn.selected, .slot-btn.selected { background: var(--rose-light); border-color: var(--rose-deep); color: var(--rose-deep); }
-    .quota-banner {
-      background: linear-gradient(135deg, var(--rose-pale), #fff0f5);
-      border-radius: 24px;
-      padding: 1rem;
-      margin: 1rem 0;
-      text-align: center;
-      border: 1px solid var(--blush);
-    }
+    
+    .quota-banner { background: linear-gradient(135deg, var(--rose-pale), #fff0f5); border-radius: 24px; padding: 1rem; margin: 1rem 0; text-align: center; border: 1px solid var(--blush); }
     .quota-dots { display: flex; justify-content: center; gap: 0.75rem; margin-bottom: 0.5rem; }
     .quota-dot { width: 40px; height: 40px; border-radius: 50%; background: var(--rose-light); border: 2px solid var(--blush); transition: all 0.2s; }
     .quota-dot.used { background: var(--rose-deep); border-color: var(--rose-deep); box-shadow: 0 0 0 2px rgba(212,104,138,0.3); }
     .quota-text { font-size: 0.8rem; color: var(--text-soft); }
+    
     .calendar-nav { display: flex; align-items: center; justify-content: space-between; margin: 1rem 0; }
     .calendar-nav button { background: var(--rose-pale); border: 1px solid var(--blush); width: 36px; height: 36px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; color: var(--rose-deep); }
     .calendar-month { font-weight: 500; font-size: 1.1rem; text-transform: capitalize; }
     .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; }
     .cal-weekday { font-size: 0.7rem; color: var(--text-muted); padding: 6px 0; font-weight: 500; }
-    .cal-day {
-      aspect-ratio: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.85rem;
-      border-radius: 40px;
-      cursor: pointer;
-      transition: all 0.2s;
-      background: var(--rose-pale);
-      position: relative;
-    }
+    .cal-day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; border-radius: 40px; cursor: pointer; transition: all 0.2s; background: var(--rose-pale); position: relative; }
     .cal-day.today { border: 2px solid var(--rose-deep); background: white; font-weight: bold; }
     .cal-day.bookable { background: var(--rose-light); color: var(--text); cursor: pointer; }
     .cal-day.bookable:hover { background: var(--rose); color: white; }
     .cal-day.booked { background: var(--text-muted); color: white; cursor: not-allowed; opacity: 0.6; }
     .cal-day.unavailable { background: var(--red-light); color: var(--red); cursor: not-allowed; text-decoration: line-through; }
-    .modal-bg {
-      position: fixed;
-      inset: 0;
-      background: rgba(61, 37, 53, 0.8);
-      backdrop-filter: blur(6px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      visibility: hidden;
-      opacity: 0;
-      transition: all 0.2s;
-    }
+    
+    .modal-bg { position: fixed; inset: 0; background: rgba(61, 37, 53, 0.8); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; z-index: 1000; visibility: hidden; opacity: 0; transition: all 0.2s; }
     .modal-bg.open { visibility: visible; opacity: 1; }
-    .modal {
-      background: white;
-      max-width: 380px;
-      width: 90%;
-      border-radius: 32px;
-      padding: 1.8rem;
-      text-align: center;
-      box-shadow: 0 30px 40px rgba(0,0,0,0.2);
-    }
+    .modal { background: white; max-width: 380px; width: 90%; border-radius: 32px; padding: 1.8rem; text-align: center; box-shadow: 0 30px 40px rgba(0,0,0,0.2); }
     .modal-date-badge { background: var(--rose-light); padding: 0.5rem; border-radius: 40px; margin: 0.75rem 0; font-weight: 500; }
     .modal-btns { display: flex; gap: 0.75rem; margin-top: 1.25rem; }
     .btn-secondary { background: var(--rose-pale); border: 1px solid var(--blush); padding: 0.7rem 1rem; border-radius: 40px; cursor: pointer; color: var(--text-soft); font-weight: 500; }
-    .toast {
-      position: fixed;
-      bottom: 2rem;
-      left: 50%;
-      transform: translateX(-50%) translateY(100px);
-      background: var(--text);
-      color: white;
-      padding: 0.75rem 1.5rem;
-      border-radius: 40px;
-      font-size: 0.85rem;
-      z-index: 1100;
-      transition: transform 0.3s ease;
-      white-space: nowrap;
-    }
+    
+    .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--text); color: white; padding: 0.75rem 1.5rem; border-radius: 40px; font-size: 0.85rem; z-index: 1100; transition: transform 0.3s ease; white-space: nowrap; }
     .toast.show { transform: translateX(-50%) translateY(0); }
     .toast.success { background: var(--green); }
     .toast.error { background: var(--red); }
+    
     footer { text-align: center; padding: 2rem 0 2.5rem; font-size: 0.75rem; color: var(--text-muted); }
     footer a { color: var(--rose-deep); text-decoration: none; }
     .big-emoji { font-size: 3rem; display: block; margin-bottom: 1rem; }
     .unavailable-msg { text-align: center; }
-    .feedback-mood-btn {
-      flex: 1;
-      padding: 0.75rem;
-      border: 2px solid var(--blush);
-      border-radius: 12px;
-      background: var(--rose-pale);
-      font-size: 1.5rem;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .feedback-mood-btn:hover { border-color: var(--rose); transform: translateY(-2px); }
-    .feedback-mood-btn.selected { border-color: var(--rose-deep); background: var(--rose-light); box-shadow: 0 4px 12px rgba(212,104,138,0.2); }
 
     /* CHAT CLIENT */
-    .chat-header {
-      display: flex;
-      align-items: center;
-      gap: 0.85rem;
-      padding: 1rem 1.25rem;
-      border-bottom: 1px solid var(--blush);
-      background: white;
-    }
+    .chat-header { display: flex; align-items: center; gap: 0.85rem; padding: 1rem 1.25rem; border-bottom: 1px solid var(--blush); background: white; }
     .chat-header-avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--rose), var(--rose-deep)); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
     .chat-header-name { font-weight: 500; font-size: 0.95rem; color: var(--text); }
     .chat-header-sub { font-size: 0.78rem; color: var(--text-muted); margin-top: 0.1rem; }
     .chat-refresh-btn { margin-left: auto; width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--blush); background: var(--rose-pale); cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text-soft); transition: all 0.2s; }
-    .chat-refresh-btn:hover { background: var(--rose-light); color: var(--rose-deep); }
-    .chat-messages {
-      flex: 1;
-      overflow-y: auto;
-      padding: 1rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-      background: var(--cream);
-      min-height: 320px;
-      max-height: 380px;
-      scroll-behavior: smooth;
-    }
-    .chat-messages::-webkit-scrollbar { width: 4px; }
-    .chat-messages::-webkit-scrollbar-thumb { background: var(--blush); border-radius: 2px; }
+    .chat-messages { flex: 1; overflow-y: auto; padding: 1rem; display: flex; flex-direction: column; gap: 0.5rem; background: var(--cream); min-height: 320px; max-height: 380px; scroll-behavior: smooth; }
     .chat-composer { display: flex; align-items: flex-end; gap: 0.6rem; padding: 0.85rem 1rem; border-top: 1px solid var(--blush); background: white; }
-    .chat-textarea { flex: 1; border: 1.5px solid var(--blush); border-radius: 20px; padding: 0.6rem 1rem; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; color: var(--text); background: var(--rose-pale); outline: none; resize: none; max-height: 120px; overflow-y: auto; transition: border-color 0.2s; line-height: 1.4; }
+    .chat-textarea { flex: 1; border: 1.5px solid var(--blush); border-radius: 20px; padding: 0.6rem 1rem; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; color: var(--text); background: var(--rose-pale); outline: none; resize: none; max-height: 120px; overflow-y: auto; transition: border-color 0.2s; line-height: 1.4; margin-bottom:0;}
     .chat-textarea:focus { border-color: var(--rose-deep); background: white; }
-    .chat-send-btn { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, var(--rose-deep), #c45580); border: none; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.2s; box-shadow: 0 3px 10px rgba(212,104,138,0.3); }
-    .chat-send-btn:hover { transform: scale(1.08); }
-    .chat-send-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .chat-send-btn { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, var(--rose-deep), #c45580); border: none; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.2s; box-shadow: 0 3px 10px rgba(212,104,138,0.3); margin-bottom: 2px;}
     .chat-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; color: var(--text-muted); gap: 0.5rem; font-size: 0.88rem; padding: 2rem; }
-    .chat-empty .ce-emoji { font-size: 2rem; }
-    .msg-bubble {
-      max-width: 78%;
-      padding: 0.65rem 0.95rem;
-      border-radius: 18px;
-      font-size: 0.88rem;
-      line-height: 1.5;
-      word-break: break-word;
-    }
+    .msg-bubble { max-width: 78%; padding: 0.65rem 0.95rem; border-radius: 18px; font-size: 0.88rem; line-height: 1.5; word-break: break-word; }
     .msg-bubble.from-her { background: white; color: var(--text); border: 1px solid var(--blush); border-bottom-left-radius: 4px; align-self: flex-start; }
     .msg-bubble.from-me { background: linear-gradient(135deg, var(--rose-deep), #c45580); color: white; border-bottom-right-radius: 4px; align-self: flex-end; }
     .msg-time { font-size: 0.68rem; opacity: 0.6; margin-top: 0.25rem; display: block; }
-    .msg-bubble.from-her .msg-time { color: var(--text-muted); }
-    .msg-bubble.from-me .msg-time { color: rgba(255,255,255,0.7); text-align: right; }
-    .chat-loading { text-align: center; padding: 2rem; color: var(--text-muted); font-size: 0.88rem; }
-    .loading-hearts { font-size: 1.8rem; animation: float 1.5s ease-in-out infinite; margin-bottom: 0.5rem; }
-    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
 
-    /* WEEKDAY INFO BANNER */
-    .weekday-info-banner {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.75rem;
-      background: white;
-      border: 1.5px solid var(--blush);
-      border-radius: 16px;
-      padding: 1rem 1.25rem;
-      margin-bottom: 1.25rem;
-      box-shadow: 0 2px 10px var(--shadow);
-      line-height: 1.5;
-      color: var(--text);
-      font-size: 0.88rem;
-    }
-    .wib-emoji { font-size: 1.4rem; flex-shrink: 0; }
-
-    /* BADGES */
-    .badge { display: inline-block; padding: 0.2rem 0.65rem; border-radius: 20px; font-size: 0.75rem; font-weight: 500; }
-    .badge-accepted { background: var(--green-light); color: var(--green); }
-    .badge-declined { background: var(--red-light); color: var(--red); }
-    .badge-pending { background: #fff8e1; color: #b08000; }
+    /* SECTION RÉPONSES DESIGN (FROM index 2) */
+    .response-item { border-radius: 16px; padding: 1.25rem 1.4rem; margin-bottom: 0.9rem; border: 1.5px solid var(--blush); background: var(--rose-pale); transition: all 0.2s; }
+    .response-item.accepted { background: #f0faf4; border-color: #a8dbb8; }
+    .response-item.declined { background: #fff5f5; border-color: #f5b8b8; }
+    .resp-top { display: flex; align-items: flex-start; gap: 0.9rem; }
+    .resp-icon { font-size: 1.8rem; flex-shrink: 0; line-height: 1; }
+    .resp-body { flex: 1; min-width: 0; }
+    .resp-title { font-size: 0.95rem; font-weight: 500; color: var(--text); margin-bottom: 0.2rem; }
+    .resp-date { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem; }
+    .resp-status { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.3rem 0.75rem; border-radius: 20px; font-size: 0.8rem; font-weight: 500; }
+    .resp-status.accepted { background: #d4f0de; color: #2d7a4a; }
+    .resp-status.declined { background: #fdd8d8; color: #a03030; }
+    .resp-status.pending  { background: var(--blush); color: var(--mauve); }
+    .resp-accepted-msg { margin-top: 0.9rem; padding: 0.9rem 1.1rem; background: linear-gradient(135deg, #f0fdf6, #e6f9ee); border-left: 3px solid #5aac6e; border-radius: 0 12px 12px 0; display: flex; align-items: center; gap: 0.65rem; }
+    .resp-accepted-msg .acc-emoji { font-size: 1.4rem; flex-shrink: 0; }
+    .resp-accepted-msg .acc-text { font-size: 0.9rem; color: #2d5a3a; font-style: italic; line-height: 1.5; }
+    .resp-declined-msg { margin-top: 0.9rem; padding: 0.9rem 1.1rem; background: #fff8f8; border-left: 3px solid #e08080; border-radius: 0 12px 12px 0; }
+    .resp-declined-msg .dec-label { font-size: 0.75rem; color: #b06060; font-weight: 500; margin-bottom: 0.3rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .resp-declined-msg .dec-reason { font-size: 0.88rem; color: #7a3535; font-style: italic; line-height: 1.5; }
+    .resp-type-tag { font-size: 0.72rem; color: var(--text-muted); margin-bottom: 0.3rem; text-transform: uppercase; letter-spacing: 0.05em; }
   </style>
 </head>
 <body>
@@ -341,18 +164,8 @@
     </div>
   </div>
 
-  <!-- SECTION PLANNING (CÂLINS) -->
+  <!-- SECTION PLANNING -->
   <div id="section-planning" class="section">
-    <div id="weekdayBanner" class="weekday-info-banner">
-      <span class="wib-emoji">🌸</span>
-      <div>
-        <strong>Planifie nos moments quand tu veux !</strong><br>
-        <span style="font-size:0.82rem;color:var(--text-soft);">
-          Les week-ends et jours fériés sont réservables 💕<br>
-          Tu peux préparer nos moments à l'avance
-        </span>
-      </div>
-    </div>
     <div id="planningContent">
       <div class="card">
         <div class="card-title">💕 Nos moments précieux</div>
@@ -386,9 +199,7 @@
     </div>
     <div class="card" id="activityWishCard" style="display:none">
       <div class="card-title">🌸 Mon envie</div>
-      <p style="font-size:0.9rem;color:var(--text-soft);margin-bottom:1rem;">
-        Tu as choisi : <strong id="selectedActivity"></strong>
-      </p>
+      <p style="font-size:0.9rem;color:var(--text-soft);margin-bottom:1rem;">Tu as choisi : <strong id="selectedActivity"></strong></p>
       <label>Un message pour moi ?</label>
       <textarea id="activityNote" placeholder="Je voudrais qu'on fasse ça parce que…"></textarea>
       <label>Quand tu imagines ça ?</label>
@@ -402,9 +213,7 @@
     <div class="card">
       <div class="card-title">💌 Ses réponses pour moi</div>
       <div class="card-sub">Voilà ce qu'il a décidé pour nos moments ❤️</div>
-      <div id="reponsesList">
-        <div class="chat-loading"><div class="loading-hearts">💕</div><p>Chargement…</p></div>
-      </div>
+      <div id="reponsesList"><div style="text-align:center;padding:2rem;"><p>Chargement…</p></div></div>
     </div>
   </div>
 
@@ -413,36 +222,25 @@
     <div class="card" style="padding:0; overflow:hidden;">
       <div class="chat-header">
         <div class="chat-header-avatar">💕</div>
-        <div>
-          <div class="chat-header-name">Notre fil secret</div>
-          <div class="chat-header-sub">Juste nous deux ici 🌹</div>
-        </div>
-        <button class="chat-refresh-btn" onclick="loadChatMessages()" title="Rafraîchir">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-            <polyline points="23 4 23 10 17 10"/>
-            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
-          </svg>
-        </button>
+        <div><div class="chat-header-name">Notre fil secret</div><div class="chat-header-sub">Juste nous deux ici 🌹</div></div>
       </div>
-      <div class="chat-messages" id="chatMessages"><div class="chat-loading"><div class="loading-hearts">💕</div><p>Chargement…</p></div></div>
+      <div class="chat-messages" id="chatMessages"></div>
       <div class="chat-composer">
         <textarea id="chatInput" class="chat-textarea" placeholder="Écris-lui quelque chose… 🌸" onkeydown="handleChatKeyPress(event)" oninput="autoResizeChatInput(this)"></textarea>
-        <button class="chat-send-btn" onclick="sendChatMessage()">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-        </button>
+        <button class="chat-send-btn" onclick="sendChatMessage()">➤</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- MODAL PLANNING -->
+<!-- MODALS -->
 <div class="modal-bg" id="planningModal">
   <div class="modal">
     <h3>Un moment pour nous 💕</h3>
     <p>Tu as sélectionné le :</p>
     <div class="modal-date-badge" id="modalDateBadge"></div>
     <label>Ton petit secret pour ce moment… 🌸</label>
-    <textarea id="planningComment" placeholder='Ex : "Mode doux 🕯️", "Surprise...", "Le truc dont on a parlé 😏"'></textarea>
+    <textarea id="planningComment" placeholder='Ex : "Mode doux 🕯️", "Surprise..."'></textarea>
     <div class="modal-btns">
       <button class="btn-secondary" onclick="closePlanningModal()">Annuler</button>
       <button class="btn-primary" style="flex:1" onclick="submitPlanningRequest()">Valider 💌</button>
@@ -450,51 +248,22 @@
   </div>
 </div>
 
-<!-- MODAL DATE INDISPONIBLE -->
 <div class="modal-bg" id="unavailableModal">
   <div class="modal">
     <div class="unavailable-msg">
       <span class="big-emoji">😔</span>
       <h3>Je ne serai pas là ce jour-là…</h3>
-      <p>Désolé mon amour, je ne suis pas disponible à cette date. Tu veux qu'on trouve un autre moment rien que pour nous ? 🌹</p>
+      <p>Désolé mon amour, je ne suis pas disponible à cette date. On trouve un autre moment ? 🌹</p>
       <button class="btn-primary" onclick="closeUnavailableModal()">On cherche une autre date 💕</button>
     </div>
   </div>
 </div>
 
-<!-- MODAL FEEDBACK -->
-<div class="modal-bg" id="feedbackModal">
-  <div class="modal">
-    <div style="text-align: center; margin-bottom: 1.5rem;">
-      <div style="font-size: 3rem; margin-bottom: 0.5rem;">🌹</div>
-      <h3>Comment s'est passée ta journée ?</h3>
-      <p style="color: var(--text-soft); margin-top: 0.5rem;">Partage avec moi tes impressions sur notre moment spécial</p>
-    </div>
-    <div style="margin-bottom: 1.5rem;">
-      <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Ton ressenti</label>
-      <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
-        <button class="feedback-mood-btn" data-mood="happy" onclick="selectFeedbackMood(this)">😊</button>
-        <button class="feedback-mood-btn" data-mood="love" onclick="selectFeedbackMood(this)">😍</button>
-        <button class="feedback-mood-btn" data-mood="neutral" onclick="selectFeedbackMood(this)">😐</button>
-        <button class="feedback-mood-btn" data-mood="sad" onclick="selectFeedbackMood(this)">😢</button>
-      </div>
-    </div>
-    <textarea id="feedbackText" placeholder="Dis-moi tout ce que tu as aimé, ce qui t'a manqué, tes suggestions..." style="min-height: 120px; margin-bottom: 1rem;"></textarea>
-    <div class="modal-btns">
-      <button class="btn-secondary" onclick="closeFeedbackModal()">Plus tard</button>
-      <button class="btn-primary" onclick="submitUserFeedback()">Envoyer mon feedback</button>
-    </div>
-  </div>
-</div>
-
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
-
-<footer><p>Fait avec ❤️ rien que pour toi · <a href="admin.html">Admin</a></p></footer>
 
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-  import { getFirestore, collection, addDoc, getDocs, query, where, orderBy, Timestamp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+  import { getFirestore, collection, addDoc, getDocs, query, where, orderBy, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
   const firebaseConfig = {
     apiKey: "AIzaSyB-GZDMMGGCsoxAgVHBuWG0Z9UGsVVx4x8",
@@ -505,659 +274,207 @@
     appId: "1:340648368652:web:e96efe6100d45a39846c29"
   };
   
-  let db;
-  try {
-    const app = initializeApp(firebaseConfig);
-    db = getFirestore(app);
-    console.log("✅ Firebase connecté");
-  } catch(e) {
-    console.log('⚠️ Firebase non configuré - mode démo');
-  }
-  
-  window._db = db;
-  window._fbFns = { collection, addDoc, getDocs, query, where, orderBy, Timestamp };
+  const app = initializeApp(firebaseConfig);
+  window._db = getFirestore(app);
+  window._fbFns = { collection, addDoc, getDocs, query, where, orderBy, onSnapshot };
 </script>
 
 <script>
-  // ==================== CONSTANTES ====================
   const HOLIDAYS = ['01-01','04-01','05-01','05-08','05-09','05-20','07-14','08-15','11-01','11-11','12-25','04-21','05-29','06-09'];
   const MAX_QUOTA = 2;
   
-  // ==================== ÉTAT GLOBAL ====================
-  let selectedFood = null;
-  let selectedSlot = null;
-  let selectedActivity = null;
+  let selectedFood = null; let selectedSlot = null; let selectedActivity = null;
   let currentDisplayMonth = new Date();
-  let bookedDates = [];
-  let unavailableDates = [];
-  let planningRequests = [];
-  let currentQuotaUsed = 0;
+  let bookedDates = []; let unavailableDates = []; let currentQuotaUsed = 0;
   let selectedPlanningDate = null;
-  let selectedFeedbackMood = null;
-  
-  // Chat
-  let chatPolling = null;
   const CHAT_SENDER = 'her';
   
-  // ==================== UTILITAIRES ====================
-  function formatDate(d) {
-    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-  }
-  
-  function formatDateFr(dateStr) {
-    if (!dateStr) return '';
-    const d = new Date(dateStr + 'T00:00:00');
-    return d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-  }
-  
+  function formatDate(d) { return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
   function isWeekend(date) { const d = date.getDay(); return d === 0 || d === 6; }
-  
-  function isHoliday(date) {
-    const key = `${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
-    return HOLIDAYS.includes(key);
-  }
-  
+  function isHoliday(date) { const key = `${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`; return HOLIDAYS.includes(key); }
   function isBookableDay(date, today = new Date()) {
-    const minDate = new Date(today);
-    minDate.setDate(today.getDate() + 2);
-    minDate.setHours(0,0,0,0);
-    const d = new Date(date);
-    d.setHours(0,0,0,0);
+    const minDate = new Date(today); minDate.setDate(today.getDate() + 2); minDate.setHours(0,0,0,0);
+    const d = new Date(date); d.setHours(0,0,0,0);
     if (d < minDate) return false;
     return isWeekend(d) || isHoliday(d);
   }
+  function escapeHtml(t) { return !t?'':t.replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m])); }
+  function showToast(msg, type = '') { const t = document.getElementById('toast'); t.textContent = msg; t.className = 'toast ' + type; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000); }
   
-  function canBook(quotaUsed) { return quotaUsed < MAX_QUOTA; }
-  
-  function escapeHtml(text) {
-    if (!text) return '';
-    return text.replace(/[&<>]/g, function(m) {
-      if (m === '&') return '&amp;';
-      if (m === '<') return '&lt;';
-      if (m === '>') return '&gt;';
-      return m;
+  // ========== CHAT TEMPS RÉEL ==========
+  function loadChatMessages() {
+    if (!window._db) return;
+    const { collection, query, orderBy, onSnapshot } = window._fbFns;
+    onSnapshot(query(collection(window._db, 'messages'), orderBy('createdAt', 'asc')), (snap) => {
+      const messages = snap.docs.map(d => d.data());
+      if (!messages.length) { document.getElementById('chatMessages').innerHTML = '<div class="chat-empty"><span>💬</span><p>Écris-lui le premier message... 🌸</p></div>'; return; }
+      let html = ''; let lastDate = null;
+      for (const msg of messages) {
+        const isMe = msg.sender === CHAT_SENDER;
+        const msgDate = new Date(msg.createdAt); const dateStr = msgDate.toDateString();
+        if (dateStr !== lastDate) { html += `<div style="text-align:center;font-size:0.72rem;color:var(--text-muted);margin:0.75rem 0;">${msgDate.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' })}</div>`; lastDate = dateStr; }
+        const time = msgDate.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+        html += `<div style="display:flex;flex-direction:column;align-items:${isMe ? 'flex-end' : 'flex-start'};"><div class="msg-bubble ${isMe ? 'from-me' : 'from-her'}">${escapeHtml(msg.text)}<span class="msg-time">${time}</span></div></div>`;
+      }
+      const c = document.getElementById('chatMessages'); c.innerHTML = html; setTimeout(() => { c.scrollTop = c.scrollHeight; }, 100);
     });
   }
   
-  function showToast(msg, type = '') {
-    const toast = document.getElementById('toast');
-    toast.textContent = msg;
-    toast.className = 'toast ' + type;
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 3000);
-  }
-  
-  // ==================== CHAT ====================
-  async function loadChatMessages() {
-    const container = document.getElementById('chatMessages');
-    if (!container) return;
-    
-    container.innerHTML = '<div class="chat-loading"><div class="loading-hearts">💕</div><p>Chargement...</p></div>';
-    
-    if (!window._db) {
-      container.innerHTML = '<div class="chat-empty"><span class="ce-emoji">💬</span><p>Mode démo - aucun message</p></div>';
-      return;
-    }
-    
-    try {
-      const { collection, getDocs, query, orderBy } = window._fbFns;
-      const q = query(collection(window._db, 'messages'), orderBy('createdAt', 'asc'));
-      const snapshot = await getDocs(q);
-      const messages = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      
-      if (messages.length === 0) {
-        container.innerHTML = '<div class="chat-empty"><span class="ce-emoji">💬</span><p>Écris-lui le premier message... 🌸</p></div>';
-        return;
-      }
-      
-      let html = '';
-      let lastDate = null;
-      
-      for (const msg of messages) {
-        const isMe = msg.sender === CHAT_SENDER;
-        const msgDate = new Date(msg.createdAt);
-        const dateStr = msgDate.toDateString();
-        
-        if (dateStr !== lastDate) {
-          html += `<div style="text-align:center;font-size:0.72rem;color:var(--text-muted);margin:0.75rem 0;">
-            ${msgDate.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' })}
-          </div>`;
-          lastDate = dateStr;
-        }
-        
-        const time = msgDate.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-        html += `
-          <div style="display:flex;flex-direction:column;align-items:${isMe ? 'flex-end' : 'flex-start'};">
-            <div class="msg-bubble ${isMe ? 'from-her' : 'from-me'}">
-              ${escapeHtml(msg.text)}
-              <span class="msg-time">${time}</span>
-            </div>
-          </div>
-        `;
-      }
-      
-      container.innerHTML = html;
-      setTimeout(() => { container.scrollTop = container.scrollHeight; }, 100);
-    } catch(e) {
-      console.error("Erreur chargement chat:", e);
-      container.innerHTML = '<div class="chat-empty"><span>😔</span><p>Impossible de charger le chat</p></div>';
-    }
-  }
-  
   async function sendChatMessage() {
-    const input = document.getElementById('chatInput');
-    const text = input.value.trim();
-    if (!text) return;
-    
-    const sendBtn = document.querySelector('.chat-send-btn');
-    sendBtn.disabled = true;
-    input.value = '';
-    input.style.height = 'auto';
-    
+    const input = document.getElementById('chatInput'); const text = input.value.trim();
+    if (!text || !window._db) return;
+    input.value = ''; input.style.height = 'auto';
     try {
-      if (window._db) {
-        const { collection, addDoc } = window._fbFns;
-        await addDoc(collection(window._db, 'messages'), {
-          sender: CHAT_SENDER,
-          text: text,
-          createdAt: new Date().toISOString()
-        });
-        showToast('Message envoyé ❤️', 'success');
-      } else {
-        showToast('Mode démo - message non enregistré', 'error');
-      }
-      await loadChatMessages();
-    } catch(e) {
-      console.error("Erreur envoi message:", e);
-      showToast('Message non envoyé, réessaie 😔', 'error');
-      input.value = text;
-    }
-    sendBtn.disabled = false;
-    input.focus();
+      const { collection, addDoc } = window._fbFns;
+      await addDoc(collection(window._db, 'messages'), { sender: CHAT_SENDER, text: text, createdAt: new Date().toISOString() });
+    } catch(e) { showToast('Message non envoyé', 'error'); input.value = text; }
   }
+  function handleChatKeyPress(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChatMessage(); } }
+  function autoResizeChatInput(el) { el.style.height = 'auto'; el.style.height = Math.min(el.scrollHeight, 120) + 'px'; }
   
-  function handleChatKeyPress(e) {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      sendChatMessage();
-    }
-  }
-  
-  function autoResizeChatInput(el) {
-    el.style.height = 'auto';
-    el.style.height = Math.min(el.scrollHeight, 120) + 'px';
-  }
-  
-  function startChatPolling() {
-    if (chatPolling) clearInterval(chatPolling);
-    chatPolling = setInterval(loadChatMessages, 15000);
-  }
-  
-  function stopChatPolling() {
-    if (chatPolling) {
-      clearInterval(chatPolling);
-      chatPolling = null;
-    }
-  }
-  
-  // ==================== PLANNING (CALENDRIER CÂLINS) ====================
+  // ========== PLANNING (QUOTA FIXÉ) ==========
   async function loadPlanningData() {
-    if (!window._db) {
-      bookedDates = [];
-      unavailableDates = [];
-      planningRequests = [];
-      currentQuotaUsed = 0;
-      renderCalendar();
-      return;
-    }
-    
+    if (!window._db) return;
     try {
-      const { collection, getDocs, query, where } = window._fbFns;
+      const { collection, getDocs, query, where, onSnapshot } = window._fbFns;
       
-      // Récupérer les dates réservées (planning accepté)
-      const planningQuery = query(collection(window._db, 'planningRequests'), where('status', '==', 'accepted'));
-      const planningSnap = await getDocs(planningQuery);
-      bookedDates = planningSnap.docs.map(doc => doc.data().date);
-      
-      // Récupérer les dates indisponibles
-      const unavailableSnap = await getDocs(collection(window._db, 'unavailableDates'));
-      unavailableDates = unavailableSnap.docs.map(doc => doc.data().date);
-      
-      // Récupérer toutes les demandes planning (pour quota)
-      const allPlanningSnap = await getDocs(collection(window._db, 'planningRequests'));
-      planningRequests = allPlanningSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      
-      // Compter les demandes acceptées du mois en cours
+      // Real-time unavailable dates
+      onSnapshot(collection(window._db, 'unavailableDates'), (snap) => {
+        unavailableDates = snap.docs.map(d => d.data().date);
+        renderCalendar();
+      });
+
+      // Fetch bookings for the current month quota
       const now = new Date();
-      const currentMonth = now.getMonth();
-      const currentYear = now.getFullYear();
-      currentQuotaUsed = planningRequests.filter(r => {
-        if (r.status !== 'accepted') return false;
-        const d = new Date(r.date);
-        return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
-      }).length;
+      const currentMonthStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+      onSnapshot(query(collection(window._db, 'planningRequests'), where('month', '==', currentMonthStr)), (snap) => {
+        const reqs = snap.docs.map(d => d.data());
+        bookedDates = reqs.filter(r => r.status !== 'declined').map(r => r.date);
+        currentQuotaUsed = bookedDates.length;
+        renderCalendar(); updateQuotaDisplay();
+      });
       
-      renderCalendar();
-      updateQuotaDisplay();
-    } catch(e) {
-      console.error("Erreur chargement planning:", e);
-    }
+    } catch(e) { console.error("Erreur planning:", e); }
   }
   
   function renderCalendar() {
-    const year = currentDisplayMonth.getFullYear();
-    const month = currentDisplayMonth.getMonth();
-    
+    const year = currentDisplayMonth.getFullYear(); const month = currentDisplayMonth.getMonth();
     document.getElementById('calMonth').textContent = currentDisplayMonth.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
-    
     const weekdays = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
     let html = weekdays.map(d => `<div class="cal-weekday">${d}</div>`).join('');
-    
-    const firstDay = new Date(year, month, 1);
-    const startWeekday = (firstDay.getDay() + 6) % 7;
+    const firstDay = new Date(year, month, 1); const startWeekday = (firstDay.getDay() + 6) % 7;
     const daysInMonth = new Date(year, month + 1, 0).getDate();
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    
+    const today = new Date(); today.setHours(0, 0, 0, 0);
     for (let i = 0; i < startWeekday; i++) html += '<div class="cal-day"></div>';
     
     for (let day = 1; day <= daysInMonth; day++) {
-      const date = new Date(year, month, day);
-      const dateStr = formatDate(date);
+      const date = new Date(year, month, day); const dateStr = formatDate(date);
       const isToday = formatDate(date) === formatDate(today);
       const isReserved = bookedDates.includes(dateStr);
       const isUnavailable = unavailableDates.includes(dateStr);
       const isBookable = isBookableDay(date);
       
-      let cls = 'cal-day';
+      let cls = 'cal-day'; let onclick = '';
       if (isToday) cls += ' today';
-      if (isReserved) cls += ' booked';
-      else if (isUnavailable) cls += ' unavailable';
-      else if (isBookable && canBook(currentQuotaUsed)) cls += ' bookable';
-      
-      const onclick = (!isReserved && !isUnavailable && isBookable && canBook(currentQuotaUsed)) 
-        ? `onclick="openPlanningModal('${dateStr}')"` 
-        : '';
-      
-      html += `<div class="${cls}" ${onclick}>${day}</div>`;
+      if (isReserved) { cls += ' booked'; }
+      else if (isUnavailable) { cls += ' unavailable'; onclick = `openUnavailableModal()`; }
+      else if (isBookable && currentQuotaUsed < MAX_QUOTA) { cls += ' bookable'; onclick = `openPlanningModal('${dateStr}')`; }
+      html += `<div class="${cls}" onclick="${onclick}">${day}</div>`;
     }
-    
     document.getElementById('calGrid').innerHTML = html;
   }
   
   function updateQuotaDisplay() {
-    const quotaText = document.getElementById('quotaText');
-    const quotaSubtext = document.getElementById('quotaSubtext');
-    const dot1 = document.getElementById('dot1');
-    const dot2 = document.getElementById('dot2');
-    
-    quotaText.textContent = `Tu as ${MAX_QUOTA - currentQuotaUsed} créneaux disponibles ce mois-ci`;
-    quotaSubtext.textContent = currentQuotaUsed >= MAX_QUOTA 
-      ? '💕 Tu as déjà utilisé tous tes créneaux ce mois-ci' 
-      : 'Choisis un moment qui te ferait plaisir 🌹';
-    
-    if (dot1) dot1.classList.toggle('used', currentQuotaUsed >= 1);
-    if (dot2) dot2.classList.toggle('used', currentQuotaUsed >= 2);
+    document.getElementById('quotaText').textContent = `Tu as ${MAX_QUOTA - currentQuotaUsed} créneaux disponibles ce mois-ci`;
+    document.getElementById('quotaSubtext').textContent = currentQuotaUsed >= MAX_QUOTA ? '💕 Tu as déjà utilisé tous tes créneaux ce mois-ci' : 'Choisis un moment qui te ferait plaisir 🌹';
+    document.getElementById('dot1').classList.toggle('used', currentQuotaUsed >= 1);
+    document.getElementById('dot2').classList.toggle('used', currentQuotaUsed >= 2);
   }
   
-  function changeMonth(delta) {
-    currentDisplayMonth = new Date(currentDisplayMonth.getFullYear(), currentDisplayMonth.getMonth() + delta, 1);
-    renderCalendar();
-  }
-  
-  function openPlanningModal(dateStr) {
-    selectedPlanningDate = dateStr;
-    document.getElementById('modalDateBadge').textContent = formatDateFr(dateStr);
-    document.getElementById('planningComment').value = '';
-    document.getElementById('planningModal').classList.add('open');
-  }
-  
-  function closePlanningModal() {
-    document.getElementById('planningModal').classList.remove('open');
-    selectedPlanningDate = null;
-  }
-  
-  function closeUnavailableModal() {
-    document.getElementById('unavailableModal').classList.remove('open');
-  }
+  function changeMonth(delta) { currentDisplayMonth = new Date(currentDisplayMonth.getFullYear(), currentDisplayMonth.getMonth() + delta, 1); renderCalendar(); }
+  function openPlanningModal(dateStr) { selectedPlanningDate = dateStr; const d = new Date(dateStr); document.getElementById('modalDateBadge').textContent = d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' }); document.getElementById('planningComment').value = ''; document.getElementById('planningModal').classList.add('open'); }
+  function closePlanningModal() { document.getElementById('planningModal').classList.remove('open'); selectedPlanningDate = null; }
+  function openUnavailableModal() { document.getElementById('unavailableModal').classList.add('open'); }
+  function closeUnavailableModal() { document.getElementById('unavailableModal').classList.remove('open'); }
   
   async function submitPlanningRequest() {
     if (!selectedPlanningDate) return;
-    
     const comment = document.getElementById('planningComment').value.trim();
-    
-    if (!window._db) {
-      showToast('Mode démo - demande non enregistrée', 'error');
-      closePlanningModal();
-      return;
-    }
-    
+    if (!window._db) return;
+    const d = new Date(selectedPlanningDate);
+    const monthStr = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
     try {
       const { collection, addDoc } = window._fbFns;
-      await addDoc(collection(window._db, 'planningRequests'), {
-        date: selectedPlanningDate,
-        comment: comment,
-        status: 'pending',
-        createdAt: new Date().toISOString()
-      });
-      
-      showToast('Demande envoyée avec amour 💕', 'success');
-      closePlanningModal();
-      await loadPlanningData();
-    } catch(e) {
-      console.error("Erreur envoi planning:", e);
-      showToast('Erreur lors de l\'envoi', 'error');
-    }
+      await addDoc(collection(window._db, 'planningRequests'), { type: 'planning', date: selectedPlanningDate, month: monthStr, comment: comment, status: 'pending', createdAt: new Date().toISOString() });
+      showToast('Demande envoyée avec amour 💕', 'success'); closePlanningModal();
+    } catch(e) { showToast('Erreur lors de l\'envoi', 'error'); }
   }
   
-  // ==================== REPAS ====================
-  function initFoodGrid() {
-    const foods = ['🍕 Pizza', '🍣 Sushi', '🥗 Salade', '🍝 Pâtes', '🥩 Steak', '🍜 Ramen', '🥑 Bowl', '🍔 Burger'];
-    const grid = document.getElementById('foodGrid');
-    grid.innerHTML = foods.map(food => `
-      <button class="food-btn" onclick="selectFood(this, '${food}')">${food}</button>
-    `).join('');
-  }
-  
-  function selectFood(btn, food) {
-    document.querySelectorAll('.food-btn').forEach(b => b.classList.remove('selected'));
-    btn.classList.add('selected');
-    selectedFood = food;
-  }
-  
-  function selectSlot(btn, slot) {
-    document.querySelectorAll('.slot-btn').forEach(b => b.classList.remove('selected'));
-    btn.classList.add('selected');
-    selectedSlot = slot;
-  }
+  // ========== REPAS ET ACTIVITÉS ==========
+  function initFoodGrid() { const foods = ['🍕 Pizza', '🍣 Sushi', '🥗 Salade', '🍝 Pâtes', '🥩 Steak', '🍜 Ramen', '🥑 Bowl', '🍔 Burger']; document.getElementById('foodGrid').innerHTML = foods.map(food => `<button class="food-btn" onclick="selectFood(this, '${food}')">${food}</button>`).join(''); }
+  function selectFood(btn, food) { document.querySelectorAll('.food-btn').forEach(b => b.classList.remove('selected')); btn.classList.add('selected'); selectedFood = food; }
+  function selectSlot(btn, slot) { document.querySelectorAll('.slot-btn').forEach(b => b.classList.remove('selected')); btn.classList.add('selected'); selectedSlot = slot; }
   
   async function submitMealRequest() {
-    const customFood = document.getElementById('customFood').value.trim();
-    const food = selectedFood || customFood;
-    const date = document.getElementById('mealDate').value;
-    const note = document.getElementById('mealNote').value.trim();
-    
-    if (!food) {
-      showToast('Choisis un plat ou écris ton envie 🍽️', 'error');
-      return;
-    }
-    if (!date) {
-      showToast('Choisis une date 📅', 'error');
-      return;
-    }
-    if (!selectedSlot) {
-      showToast('Choisis un moment (midi ou soir) 🌞🌙', 'error');
-      return;
-    }
-    
-    if (!window._db) {
-      showToast('Mode démo - proposition non enregistrée', 'error');
-      return;
-    }
-    
+    const customFood = document.getElementById('customFood').value.trim(); const food = selectedFood || customFood;
+    const date = document.getElementById('mealDate').value; const note = document.getElementById('mealNote').value.trim();
+    if (!food || !date || !selectedSlot) { showToast('Vérifie tes choix 🍽️', 'error'); return; }
     try {
       const { collection, addDoc } = window._fbFns;
-      await addDoc(collection(window._db, 'mealRequests'), {
-        food: food,
-        date: date,
-        slot: selectedSlot,
-        note: note,
-        status: 'pending',
-        createdAt: new Date().toISOString()
-      });
-      
+      await addDoc(collection(window._db, 'mealRequests'), { type: 'meal', food, date, slot: selectedSlot, note, status: 'pending', createdAt: new Date().toISOString() });
       showToast('Proposition envoyée 💌', 'success');
-      document.getElementById('customFood').value = '';
-      document.getElementById('mealDate').value = '';
-      document.getElementById('mealNote').value = '';
-      document.querySelectorAll('.food-btn').forEach(b => b.classList.remove('selected'));
-      document.querySelectorAll('.slot-btn').forEach(b => b.classList.remove('selected'));
-      selectedFood = null;
-      selectedSlot = null;
-    } catch(e) {
-      console.error("Erreur envoi repas:", e);
-      showToast('Erreur lors de l\'envoi', 'error');
-    }
+      document.getElementById('customFood').value = ''; document.getElementById('mealDate').value = ''; document.getElementById('mealNote').value = '';
+    } catch(e) {}
   }
   
-  // ==================== ACTIVITÉS ====================
-  function initActivitiesGrid() {
-    const activities = ['🎬 Cinéma', '🍳 Cuisiner ensemble', '🛁 Bain moussant', '🎨 Dessin', '🎮 Jeux vidéo', '📚 Lecture', '🚶 Balade', '🎵 Musique'];
-    const grid = document.getElementById('activitiesGrid');
-    grid.innerHTML = activities.map(act => `
-      <button class="activity-btn" onclick="selectActivity(this, '${act}')">${act}</button>
-    `).join('');
-  }
-  
-  function selectActivity(btn, activity) {
-    document.querySelectorAll('.activity-btn').forEach(b => b.classList.remove('selected'));
-    btn.classList.add('selected');
-    selectedActivity = activity;
-    document.getElementById('selectedActivity').textContent = activity;
-    document.getElementById('activityWishCard').style.display = 'block';
-  }
+  function initActivitiesGrid() { const activities = ['🎬 Cinéma', '🍳 Cuisiner ensemble', '🛁 Bain moussant', '🎨 Dessin', '🎮 Jeux vidéo', '📚 Lecture', '🚶 Balade', '🎵 Musique']; document.getElementById('activitiesGrid').innerHTML = activities.map(act => `<button class="activity-btn" onclick="selectActivity(this, '${act}')">${act}</button>`).join(''); }
+  function selectActivity(btn, activity) { document.querySelectorAll('.activity-btn').forEach(b => b.classList.remove('selected')); btn.classList.add('selected'); selectedActivity = activity; document.getElementById('selectedActivity').textContent = activity; document.getElementById('activityWishCard').style.display = 'block'; }
   
   async function submitActivityRequest() {
-    if (!selectedActivity) {
-      showToast('Choisis une activité ✨', 'error');
-      return;
-    }
-    
-    const note = document.getElementById('activityNote').value.trim();
-    const date = document.getElementById('activityDate').value;
-    
-    if (!window._db) {
-      showToast('Mode démo - demande non enregistrée', 'error');
-      return;
-    }
-    
+    if (!selectedActivity) return; const note = document.getElementById('activityNote').value.trim(); const date = document.getElementById('activityDate').value;
     try {
       const { collection, addDoc } = window._fbFns;
-      await addDoc(collection(window._db, 'activityRequests'), {
-        activity: selectedActivity,
-        note: note,
-        date: date || null,
-        status: 'pending',
-        createdAt: new Date().toISOString()
-      });
-      
-      showToast('Idée envoyée ✨', 'success');
-      document.getElementById('activityNote').value = '';
-      document.getElementById('activityDate').value = '';
-      document.getElementById('activityWishCard').style.display = 'none';
-      document.querySelectorAll('.activity-btn').forEach(b => b.classList.remove('selected'));
-      selectedActivity = null;
-    } catch(e) {
-      console.error("Erreur envoi activité:", e);
-      showToast('Erreur lors de l\'envoi', 'error');
-    }
+      await addDoc(collection(window._db, 'activityRequests'), { type: 'activity', activity: selectedActivity, note, date: date || null, status: 'pending', createdAt: new Date().toISOString() });
+      showToast('Idée envoyée ✨', 'success'); document.getElementById('activityWishCard').style.display = 'none';
+    } catch(e) {}
   }
   
-  // ==================== RÉPONSES ====================
+  // ========== RÉPONSES (AVEC DECLINEREASON) ==========
   async function loadResponses() {
     const container = document.getElementById('reponsesList');
-    if (!container) return;
-    
-    container.innerHTML = '<div class="chat-loading"><div class="loading-hearts">💕</div><p>Chargement…</p></div>';
-    
-    if (!window._db) {
-      container.innerHTML = '<div class="empty-state"><div class="big">💌</div><p>Rien pour l\'instant</p></div>';
-      return;
-    }
-    
+    if (!window._db) return;
     try {
       const { collection, getDocs } = window._fbFns;
-      const [meals, plannings, activities] = await Promise.all([
-        getDocs(collection(window._db, 'mealRequests')),
-        getDocs(collection(window._db, 'planningRequests')),
-        getDocs(collection(window._db, 'activityRequests'))
-      ]);
+      const [m, p, a] = await Promise.all([ getDocs(collection(window._db, 'mealRequests')), getDocs(collection(window._db, 'planningRequests')), getDocs(collection(window._db, 'activityRequests')) ]);
+      const all = [ ...m.docs.map(d=>({type:'meal',...d.data(),id:d.id})), ...p.docs.map(d=>({type:'planning',...d.data(),id:d.id})), ...a.docs.map(d=>({type:'activity',...d.data(),id:d.id})) ]
+        .filter(r => r.status === 'accepted' || r.status === 'declined').sort((x,y) => new Date(y.createdAt) - new Date(x.createdAt));
       
-      const allResponses = [
-        ...meals.docs.map(d => ({ type: 'repas', ...d.data(), id: d.id })),
-        ...plannings.docs.map(d => ({ type: 'planning', ...d.data(), id: d.id })),
-        ...activities.docs.map(d => ({ type: 'activite', ...d.data(), id: d.id }))
-      ].filter(r => r.status === 'accepted' || r.status === 'declined')
-       .sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+      if (!all.length) { container.innerHTML = '<div style="text-align:center;padding:2rem;"><p>Rien pour l\'instant 💌</p></div>'; return; }
+      const tLabel = { meal: '🍽️ Repas', planning: '💕 Moment câlins', activity: '✨ Activité' };
+      const tIcon  = { meal: '🍽️', planning: '💕', activity: '✨' };
       
-      if (allResponses.length === 0) {
-        container.innerHTML = '<div class="empty-state"><div class="big">💌</div><p>Aucune réponse pour l\'instant</p></div>';
-        return;
-      }
-      
-      container.innerHTML = allResponses.map(r => {
-        if (r.type === 'repas') {
-          return `<div class="card" style="margin-bottom:0.75rem;">
-            <div style="display:flex;align-items:center;gap:0.75rem;">
-              <span style="font-size:1.5rem;">🍽️</span>
-              <div><strong>${escapeHtml(r.food)}</strong> · ${r.slot === 'midi' ? 'Déjeuner' : 'Dîner'}</div>
-              <div style="margin-left:auto;"><span class="badge ${r.status === 'accepted' ? 'badge-accepted' : 'badge-declined'}">${r.status === 'accepted' ? '✅ Accepté' : '❌ Refusé'}</span></div>
-            </div>
-            <div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.5rem;">${formatDateFr(r.date)}</div>
-            ${r.note ? `<div style="font-size:0.85rem;margin-top:0.5rem;color:var(--text-soft);">"${escapeHtml(r.note)}"</div>` : ''}
-          </div>`;
-        } else if (r.type === 'planning') {
-          return `<div class="card" style="margin-bottom:0.75rem;">
-            <div style="display:flex;align-items:center;gap:0.75rem;">
-              <span style="font-size:1.5rem;">💕</span>
-              <div><strong>Moment câlins</strong></div>
-              <div style="margin-left:auto;"><span class="badge ${r.status === 'accepted' ? 'badge-accepted' : 'badge-declined'}">${r.status === 'accepted' ? '✅ Confirmé' : '❌ Reporté'}</span></div>
-            </div>
-            <div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.5rem;">${formatDateFr(r.date)}</div>
-            ${r.comment ? `<div style="font-size:0.85rem;margin-top:0.5rem;color:var(--text-soft);">"${escapeHtml(r.comment)}"</div>` : ''}
-          </div>`;
-        } else {
-          return `<div class="card" style="margin-bottom:0.75rem;">
-            <div style="display:flex;align-items:center;gap:0.75rem;">
-              <span style="font-size:1.5rem;">✨</span>
-              <div><strong>${escapeHtml(r.activity)}</strong></div>
-              <div style="margin-left:auto;"><span class="badge ${r.status === 'accepted' ? 'badge-accepted' : 'badge-declined'}">${r.status === 'accepted' ? '✅ Accepté' : '❌ Refusé'}</span></div>
-            </div>
-            <div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.5rem;">${r.date ? formatDateFr(r.date) : 'Date à définir'}</div>
-            ${r.note ? `<div style="font-size:0.85rem;margin-top:0.5rem;color:var(--text-soft);">"${escapeHtml(r.note)}"</div>` : ''}
-          </div>`;
-        }
+      container.innerHTML = all.map(r => {
+        const title = r.type === 'meal' ? r.food : (r.type === 'planning' ? 'Moment câlins' : r.activity);
+        const dateFr = r.date ? new Date(r.date).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' }) : '';
+        const statusHtml = r.status === 'accepted' ? `<span class="resp-status accepted">✅ Validé</span>` : `<span class="resp-status declined">❌ Refusé</span>`;
+        const accMsg = r.status === 'accepted' ? `<div class="resp-accepted-msg"><span class="acc-emoji">😉</span><span class="acc-text">Prépare-toi mon amour… ce moment va être parfait ❤️</span></div>` : '';
+        const decMsg = r.status === 'declined' ? `<div class="resp-declined-msg"><div class="dec-label">Sa raison</div><div class="dec-reason">${escapeHtml(r.declineReason) || 'Il n\'a pas laissé de message… 😔'}</div></div>` : '';
+        return `<div class="response-item ${r.status}"><div class="resp-top"><div class="resp-icon">${tIcon[r.type]}</div><div class="resp-body"><div class="resp-type-tag">${tLabel[r.type]}</div><div class="resp-title">${escapeHtml(title)}</div><div class="resp-date">${dateFr}</div>${statusHtml}</div></div>${accMsg}${decMsg}</div>`;
       }).join('');
-    } catch(e) {
-      console.error("Erreur chargement réponses:", e);
-      container.innerHTML = '<div class="empty-state"><div class="big">😔</div><p>Erreur de chargement</p></div>';
-    }
+    } catch(e) { container.innerHTML = '<p>Erreur</p>'; }
   }
   
-  // ==================== FEEDBACK ====================
-  function selectFeedbackMood(btn) {
-    document.querySelectorAll('.feedback-mood-btn').forEach(b => b.classList.remove('selected'));
-    btn.classList.add('selected');
-    selectedFeedbackMood = btn.dataset.mood;
-  }
-  
-  function openFeedbackModal() {
-    document.getElementById('feedbackModal').classList.add('open');
-  }
-  
-  function closeFeedbackModal() {
-    document.getElementById('feedbackModal').classList.remove('open');
-    selectedFeedbackMood = null;
-  }
-  
-  async function submitUserFeedback() {
-    const text = document.getElementById('feedbackText').value.trim();
-    if (!text && !selectedFeedbackMood) {
-      showToast('Dis-moi au moins comment tu te sens 😊', 'error');
-      return;
-    }
-    
-    const today = formatDate(new Date());
-    
-    if (!window._db) {
-      showToast('Mode démo - feedback non enregistré', 'error');
-      closeFeedbackModal();
-      return;
-    }
-    
-    try {
-      const { collection, addDoc } = window._fbFns;
-      await addDoc(collection(window._db, 'feedbacks'), {
-        date: today,
-        mood: selectedFeedbackMood,
-        text: text,
-        createdAt: new Date().toISOString()
-      });
-      
-      localStorage.setItem('lastFeedbackDate', today);
-      closeFeedbackModal();
-      showToast('Merci pour ton feedback ❤️', 'success');
-    } catch(e) {
-      console.error("Erreur envoi feedback:", e);
-      showToast('Erreur lors de l\'envoi', 'error');
-    }
-  }
-  
-  function checkFeedbackTime() {
-    const now = new Date();
-    const hour = now.getHours();
-    if (hour >= 19) {
-      const today = formatDate(now);
-      const lastFeedbackDate = localStorage.getItem('lastFeedbackDate');
-      if (lastFeedbackDate !== today) {
-        openFeedbackModal();
-      }
-    }
-  }
-  
-  // ==================== TAB MANAGEMENT ====================
   function switchTab(tab) {
     const tabs = ['repas', 'planning', 'activites', 'reponses', 'chat'];
-    document.querySelectorAll('.tab-btn').forEach((btn, i) => {
-      btn.classList.toggle('active', tabs[i] === tab);
-    });
-    document.querySelectorAll('.section').forEach(section => {
-      section.classList.remove('active');
-    });
+    document.querySelectorAll('.tab-btn').forEach((b, i) => b.classList.toggle('active', tabs[i] === tab));
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
     document.getElementById(`section-${tab}`).classList.add('active');
-    
-    stopChatPolling();
-    if (tab === 'chat') {
-      loadChatMessages();
-      startChatPolling();
-    } else if (tab === 'reponses') {
-      loadResponses();
-    } else if (tab === 'planning') {
-      loadPlanningData();
-    }
+    if (tab === 'reponses') loadResponses();
   }
   
-  // ==================== INITIALISATION ====================
-  window.switchTab = switchTab;
-  window.selectFood = selectFood;
-  window.selectSlot = selectSlot;
-  window.submitMealRequest = submitMealRequest;
-  window.selectActivity = selectActivity;
-  window.submitActivityRequest = submitActivityRequest;
-  window.openPlanningModal = openPlanningModal;
-  window.closePlanningModal = closePlanningModal;
-  window.closeUnavailableModal = closeUnavailableModal;
-  window.submitPlanningRequest = submitPlanningRequest;
-  window.changeMonth = changeMonth;
-  window.loadChatMessages = loadChatMessages;
-  window.sendChatMessage = sendChatMessage;
-  window.handleChatKeyPress = handleChatKeyPress;
-  window.autoResizeChatInput = autoResizeChatInput;
-  window.selectFeedbackMood = selectFeedbackMood;
-  window.submitUserFeedback = submitUserFeedback;
-  window.closeFeedbackModal = closeFeedbackModal;
+  window.switchTab = switchTab; window.selectFood = selectFood; window.selectSlot = selectSlot; window.submitMealRequest = submitMealRequest; window.selectActivity = selectActivity; window.submitActivityRequest = submitActivityRequest; window.changeMonth = changeMonth; window.openPlanningModal = openPlanningModal; window.closePlanningModal = closePlanningModal; window.submitPlanningRequest = submitPlanningRequest; window.sendChatMessage = sendChatMessage; window.handleChatKeyPress = handleChatKeyPress; window.autoResizeChatInput = autoResizeChatInput; window.openUnavailableModal = openUnavailableModal; window.closeUnavailableModal = closeUnavailableModal;
   
-  // Démarrer l'application
-  initFoodGrid();
-  initActivitiesGrid();
-  loadPlanningData();
-  loadChatMessages();
-  
-  // Vérifier le feedback toutes les heures
-  setInterval(checkFeedbackTime, 3600000);
-  checkFeedbackTime();
-  
-  console.log("✅ Application initialisée");
+  initFoodGrid(); initActivitiesGrid(); loadPlanningData(); loadChatMessages();
 </script>
 </body>
 </html>

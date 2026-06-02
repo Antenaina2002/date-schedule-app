@@ -7,86 +7,35 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --rose: #f2a7b8;
-    --rose-deep: #d4688a;
-    --rose-light: #fce8ef;
-    --rose-pale: #fff5f8;
-    --blush: #f7d6e0;
-    --cream: #fdf8f5;
-    --text: #3d2535;
-    --text-soft: #8a6070;
-    --text-muted: #c4a8b4;
-    --white: #ffffff;
-    --shadow: rgba(180, 100, 130, 0.12);
-    --green: #5aac6e;
-    --green-light: #edf7f0;
-    --red: #c45050;
-    --red-light: #fdeaea;
+    --rose: #f2a7b8; --rose-deep: #d4688a; --rose-light: #fce8ef; --rose-pale: #fff5f8;
+    --blush: #f7d6e0; --cream: #fdf8f5; --text: #3d2535; --text-soft: #8a6070;
+    --text-muted: #c4a8b4; --white: #ffffff; --shadow: rgba(180, 100, 130, 0.12);
+    --green: #5aac6e; --green-light: #edf7f0; --red: #c45050; --red-light: #fdeaea;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
 
   /* LOGIN */
-  #loginScreen {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, #fce8ef 0%, #f7d6e0 100%);
-    padding: 2rem;
-  }
-  .login-box {
-    background: white;
-    border-radius: 24px;
-    padding: 3rem;
-    max-width: 420px;
-    width: 100%;
-    box-shadow: 0 25px 50px rgba(212, 104, 138, 0.15);
-    text-align: center;
-    position: relative;
-  }
-  .login-box::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 8px;
-    background: linear-gradient(90deg, #d4688a, #f2a7b8);
-    border-radius: 24px 24px 0 0;
-  }
+  #loginScreen { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #fce8ef 0%, #f7d6e0 100%); padding: 2rem; }
+  .login-box { background: white; border-radius: 24px; padding: 3rem; max-width: 420px; width: 100%; box-shadow: 0 25px 50px rgba(212, 104, 138, 0.15); text-align: center; position: relative; }
+  .login-box::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 8px; background: linear-gradient(90deg, #d4688a, #f2a7b8); border-radius: 24px 24px 0 0; }
   .login-emoji { font-size: 3rem; margin-bottom: 1.5rem; display: block; }
   .login-box h1 { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 400; margin-bottom: 0.5rem; color: var(--text); }
   .login-box h1 span { color: var(--rose-deep); font-style: italic; }
   .login-box p { font-size: 0.95rem; color: var(--text-soft); margin-bottom: 2rem; }
-
   .login-input-group { margin-bottom: 1.5rem; text-align: left; }
   .login-input-group label { display: block; font-size: 0.85rem; color: var(--text-soft); margin-bottom: 0.5rem; font-weight: 500; }
-  input[type="email"], input[type="password"] {
-    width: 100%; padding: 0.9rem 1rem; border: 1.5px solid var(--blush); border-radius: 12px;
-    font-family: 'DM Sans', sans-serif; font-size: 0.95rem; background: var(--rose-pale);
-    outline: none;
-  }
+  input[type="email"], input[type="password"] { width: 100%; padding: 0.9rem 1rem; border: 1.5px solid var(--blush); border-radius: 12px; font-family: 'DM Sans', sans-serif; font-size: 0.95rem; background: var(--rose-pale); outline: none; }
   input:focus { border-color: var(--rose-deep); background: white; }
-
-  .btn-primary {
-    width: 100%; padding: 1rem; background: linear-gradient(135deg, var(--rose-deep), #c45580);
-    color: white; border: none; border-radius: 12px; font-size: 1rem;
-    font-weight: 500; cursor: pointer; transition: all 0.3s;
-  }
+  .btn-primary { width: 100%; padding: 1rem; background: linear-gradient(135deg, var(--rose-deep), #c45580); color: white; border: none; border-radius: 12px; font-size: 1rem; font-weight: 500; cursor: pointer; transition: all 0.3s; }
   .btn-primary:hover { transform: translateY(-2px); }
   .login-error { color: var(--red); font-size: 0.85rem; margin-top: 0.75rem; padding: 0.5rem; background: rgba(196, 80, 80, 0.1); border-radius: 8px; display: none; }
 
   /* ADMIN */
   #adminScreen { display: none; }
-  .admin-header {
-    background: white; border-bottom: 1px solid var(--blush); padding: 1rem 2rem;
-    display: flex; align-items: center; justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
+  .admin-header { background: white; border-bottom: 1px solid var(--blush); padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; position: sticky; top: 0; z-index: 10;}
   .admin-header h1 { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; }
-  .admin-header h1 span { color: var(--rose-deep); }
+  .admin-header h1 span { color: var(--rose-deep); font-style: italic;}
   .admin-info { display: flex; align-items: center; gap: 1rem; }
   .admin-email { font-size: 0.85rem; color: var(--text-soft); }
   .logout-btn { background: transparent; border: 1px solid var(--blush); padding: 0.4rem 0.9rem; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
@@ -98,28 +47,49 @@
   .stat-num { font-size: 2rem; color: var(--rose-deep); font-weight: 500; }
   .stat-label { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem; }
 
-  .section-title { font-size: 1.3rem; font-weight: 500; margin: 1.5rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--blush); }
+  .section-title { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 500; margin: 1.5rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--blush); }
   .section-title:first-of-type { margin-top: 0; }
   
-  .request-card {
-    background: white; border-radius: 16px; padding: 1.25rem; margin-bottom: 0.75rem;
-    display: flex; align-items: flex-start; gap: 1rem; box-shadow: 0 2px 12px var(--shadow);
-    border: 1px solid rgba(242,167,184,0.15);
-  }
+  /* CALENDAR ADMIN */
+  .admin-cal-wrap { background: white; border-radius: 16px; padding: 1.5rem; box-shadow: 0 2px 12px var(--shadow); margin-bottom: 2rem; }
+  .cal-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
+  .cal-nav button { background: var(--rose-pale); border: 1px solid var(--blush); border-radius: 8px; width: 32px; height: 32px; cursor: pointer; font-size: 1rem; color: var(--rose-deep); }
+  .cal-title { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; text-transform: capitalize; }
+  .admin-cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
+  .acal-label { font-size: 0.72rem; color: var(--text-muted); padding: 4px; }
+  .acal-day { aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 8px; font-size: 0.82rem; cursor: pointer; transition: all 0.2s; position: relative; border: 1px solid transparent; }
+  .acal-day.empty { cursor: default; }
+  .acal-day.weekday { color: var(--text-muted); cursor: default; }
+  .acal-day.weekend { background: var(--rose-pale); border-color: var(--blush); }
+  .acal-day.weekend:hover { background: var(--rose-light); border-color: var(--rose); }
+  .acal-day.unavailable { background: #fdeaea !important; border-color: #f5a0a0 !important; color: var(--red) !important; }
+  .acal-day.has-request { background: var(--rose-light); border-color: var(--rose-deep); }
+  .acal-day .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--rose-deep); position: absolute; bottom: 4px; }
+
+  /* BLOCK DATE FORM */
+  .block-form { background: var(--rose-pale); border-radius: 12px; padding: 1.25rem; margin-top: 1rem; border: 1px solid var(--blush); }
+  .block-form label { font-size: 0.85rem; color: var(--text-soft); margin-bottom: 0.4rem; display: block; }
+  .block-form input[type="date"] { width: 100%; padding: 0.65rem 0.9rem; border: 1px solid var(--blush); border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; background: white; color: var(--text); outline: none; margin-bottom: 0.75rem; }
+  .block-form input:focus { border-color: var(--rose-deep); }
+  .form-row { display: flex; gap: 0.65rem; }
+  .btn-block { background: var(--rose-light); color: var(--rose-deep); }
+  .btn-block:hover { background: var(--blush); }
+
+  .request-card { background: white; border-radius: 16px; padding: 1.25rem; margin-bottom: 0.75rem; display: flex; align-items: flex-start; gap: 1rem; box-shadow: 0 2px 12px var(--shadow); border: 1px solid rgba(242,167,184,0.15); }
   .req-icon { font-size: 1.8rem; }
   .req-body { flex: 1; }
   .req-title { font-weight: 600; color: var(--text); }
   .req-meta { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem; }
-  .req-note { background: var(--rose-pale); padding: 0.5rem 0.75rem; border-radius: 10px; font-size: 0.85rem; margin-top: 0.5rem; color: var(--text-soft); font-style: italic; }
+  .req-note { background: var(--rose-pale); padding: 0.5rem 0.75rem; border-radius: 10px; font-size: 0.85rem; margin-top: 0.5rem; color: var(--text-soft); font-style: italic; border-left: 3px solid var(--rose); }
   .req-actions { display: flex; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap; }
 
-  .btn-sm { padding: 0.4rem 1rem; border-radius: 20px; cursor: pointer; border: none; font-weight: 500; transition: all 0.2s; }
+  .btn-sm { padding: 0.4rem 1rem; border-radius: 8px; cursor: pointer; border: none; font-weight: 500; transition: all 0.2s; }
   .btn-accept { background: var(--green-light); color: var(--green); }
   .btn-accept:hover { background: #d0ecd5; transform: scale(1.02); }
   .btn-decline { background: var(--red-light); color: var(--red); }
   .btn-decline:hover { background: #f5d0d0; transform: scale(1.02); }
 
-  .badge { display: inline-block; padding: 0.2rem 0.65rem; border-radius: 20px; font-size: 0.7rem; font-weight: 600; }
+  .badge { display: inline-block; padding: 0.2rem 0.65rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
   .badge-pending { background: #fff8e1; color: #b08000; }
   .badge-accepted { background: var(--green-light); color: var(--green); }
   .badge-declined { background: var(--red-light); color: var(--red); }
@@ -152,16 +122,28 @@
   .feedback-mood-emoji { font-size: 1.5rem; }
   .feedback-text { background: var(--rose-pale); padding: 0.75rem; border-radius: 10px; font-size: 0.85rem; color: var(--text-soft); line-height: 1.4; }
 
-  .toast {
-    position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px);
-    background: var(--text); color: white; padding: 0.75rem 1.5rem; border-radius: 40px; font-size: 0.85rem;
-    transition: transform 0.3s; z-index: 1000; white-space: nowrap;
-  }
+  /* DECLINE MODAL */
+  .decline-modal-bg { position: fixed; inset: 0; background: rgba(61,37,53,0.55); backdrop-filter: blur(5px); z-index: 200; display: none; align-items: center; justify-content: center; padding: 1.5rem; }
+  .decline-modal-bg.open { display: flex; }
+  .decline-modal { background: white; border-radius: 20px; padding: 2rem; max-width: 440px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.18); animation: dmIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  @keyframes dmIn { from { transform: scale(0.88); opacity:0; } to { transform:scale(1); opacity:1; } }
+  .decline-modal-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.1rem; }
+  .decline-modal-header .dm-emoji { font-size: 2rem; }
+  .decline-modal-header h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 400; margin: 0; }
+  .decline-modal p { font-size: 0.88rem; color: var(--text-soft); margin-bottom: 1rem; line-height: 1.6; }
+  .decline-modal textarea { width: 100%; padding: 0.85rem 1rem; border: 1.5px solid var(--blush); border-radius: 12px; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; background: var(--rose-pale); outline: none; resize: vertical; min-height: 100px; margin-bottom: 1rem; }
+  .decline-modal textarea:focus { border-color: var(--rose-deep); background: white; }
+  .decline-modal-btns { display: flex; gap: 0.65rem; }
+  .dm-btn-cancel { flex: 1; padding: 0.85rem; border: 1.5px solid var(--blush); border-radius: 12px; background: transparent; cursor: pointer; transition: all 0.2s; font-weight: 500;}
+  .dm-btn-cancel:hover { background: var(--rose-pale); }
+  .dm-btn-confirm { flex: 2; padding: 0.85rem; border: none; border-radius: 12px; background: linear-gradient(135deg, #c45050, #a83030); color: white; cursor: pointer; transition: all 0.2s; font-weight: 500;}
+  .dm-btn-confirm:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(180,60,60,0.25); }
+
+  .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--text); color: white; padding: 0.75rem 1.5rem; border-radius: 40px; font-size: 0.85rem; transition: transform 0.3s; z-index: 1000; white-space: nowrap; }
   .toast.show { transform: translateX(-50%) translateY(0); }
   .toast.success { background: var(--green); }
   .toast.error { background: var(--red); }
 
-  /* Loader */
   .loader { text-align: center; padding: 2rem; color: var(--text-muted); }
   .loader::before { content: '💕'; display: inline-block; animation: pulse 1s ease-in-out infinite; font-size: 1.5rem; margin-right: 0.5rem; }
   @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
@@ -201,9 +183,28 @@
     <!-- STATS -->
     <div class="stats-row">
       <div class="stat-card"><div class="stat-num" id="statMeals">0</div><div class="stat-label">Propositions repas</div></div>
-      <div class="stat-card"><div class="stat-num" id="statPlanning">0</div><div class="stat-label">Moments câlins</div></div>
+      <div class="stat-card"><div class="stat-num" id="statPlanning">0</div><div class="stat-label">Moments réservés</div></div>
       <div class="stat-card"><div class="stat-num" id="statActivities">0</div><div class="stat-label">Idées d'activités</div></div>
       <div class="stat-card"><div class="stat-num" id="statPending">0</div><div class="stat-label">En attente</div></div>
+    </div>
+
+    <!-- CALENDAR ADMIN -->
+    <div class="section-title">📅 Calendrier global</div>
+    <div class="admin-cal-wrap">
+      <div class="cal-nav">
+        <button onclick="prevAdminMonth()">‹</button>
+        <div class="cal-title" id="adminCalMonth"></div>
+        <button onclick="nextAdminMonth()">›</button>
+      </div>
+      <div class="admin-cal-grid" id="adminCalGrid"></div>
+      <div class="block-form">
+        <label>Bloquer / débloquer une date</label>
+        <input type="date" id="blockDateInput">
+        <div class="form-row">
+          <button class="btn-sm btn-block" onclick="blockDate()" style="flex:1;padding:0.6rem">🚫 Marquer indisponible</button>
+          <button class="btn-sm btn-accept" onclick="unblockDate()" style="flex:1;padding:0.6rem">✅ Marquer disponible</button>
+        </div>
+      </div>
     </div>
 
     <!-- REPAS -->
@@ -211,15 +212,15 @@
     <div id="mealList"><div class="loader">Chargement des repas...</div></div>
 
     <!-- PLANNING -->
-    <div class="section-title">💕 Moments câlins</div>
+    <div class="section-title" style="margin-top:1.5rem">💕 Moments câlins</div>
     <div id="planningList"><div class="loader">Chargement des moments...</div></div>
 
     <!-- ACTIVITÉS -->
-    <div class="section-title">✨ Idées d'activités</div>
+    <div class="section-title" style="margin-top:1.5rem">✨ Idées d'activités</div>
     <div id="activityList"><div class="loader">Chargement des activités...</div></div>
 
     <!-- CHAT -->
-    <div class="section-title">💬 Notre fil secret</div>
+    <div class="section-title" style="margin-top:1.5rem">💬 Notre fil secret</div>
     <div class="admin-chat-wrap">
       <div class="chat-messages" id="adminChatMessages"><div class="loader">💕 Chargement du chat...</div></div>
       <div class="admin-chat-composer">
@@ -229,8 +230,24 @@
     </div>
 
     <!-- FEEDBACKS -->
-    <div class="section-title">💬 Feedbacks reçus</div>
+    <div class="section-title" style="margin-top:1.5rem">💬 Feedbacks reçus</div>
     <div id="feedbackList"><div class="loader">Chargement des feedbacks...</div></div>
+  </div>
+</div>
+
+<!-- MODAL REFUS -->
+<div class="decline-modal-bg" id="declineModalBg">
+  <div class="decline-modal">
+    <div class="decline-modal-header">
+      <span class="dm-emoji">😔</span>
+      <h3>Expliquer le refus</h3>
+    </div>
+    <p>Laisse un petit mot pour elle, afin qu'elle comprenne pourquoi ce n'est pas possible ce jour-là…</p>
+    <textarea id="declineReasonInput" placeholder='Ex : "Je travaille ce jour-là mon amour… On trouve un autre moment ? 😘"'></textarea>
+    <div class="decline-modal-btns">
+      <button class="dm-btn-cancel" onclick="closeDeclineModal()">Annuler</button>
+      <button class="dm-btn-confirm" onclick="confirmDecline()">❌ Confirmer le refus</button>
+    </div>
   </div>
 </div>
 
@@ -238,7 +255,7 @@
 
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-  import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc, query, orderBy, addDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+  import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc, query, orderBy, addDoc, onSnapshot, where } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
   import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, setPersistence, browserSessionPersistence } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
 
   const firebaseConfig = {
@@ -254,281 +271,342 @@
   const db = getFirestore(app);
   const auth = getAuth(app);
 
-  // 1. Forcer la déconnexion à la fermeture de l'onglet
   setPersistence(auth, browserSessionPersistence).catch(console.error);
 
-  // 2. Partager Firebase avec le script standard global
   window.db = db;
   window.auth = auth;
-  window._fb = { collection, getDocs, doc, updateDoc, deleteDoc, query, orderBy, addDoc, onSnapshot };
+  window._fb = { collection, getDocs, doc, updateDoc, deleteDoc, query, orderBy, addDoc, onSnapshot, where };
   
-  // =========================================================
-  // 3. FONCTIONS DE CONNEXION ET DÉCONNEXION (CORRECTION ICI)
-  // =========================================================
   window.login = async function() {
     const email = document.getElementById('emailInput').value.trim();
     const password = document.getElementById('passwordInput').value;
     const errorDiv = document.getElementById('loginError');
-    
-    if (!email || !password) {
-      if (errorDiv) {
-        errorDiv.textContent = "Veuillez remplir tous les champs.";
-        errorDiv.style.display = 'block';
-      }
-      return;
-    }
-    
+    if (!email || !password) { errorDiv.textContent = "Remplis tout."; errorDiv.style.display = 'block'; return; }
     try {
-      // Appel à Firebase pour se connecter
       await signInWithEmailAndPassword(auth, email, password);
-      if (errorDiv) errorDiv.style.display = 'none';
-      document.getElementById('passwordInput').value = ''; // On vide le mot de passe
-    } catch (error) {
-      console.error("❌ Erreur de connexion:", error);
-      if (errorDiv) {
-        errorDiv.textContent = "Email ou mot de passe incorrect.";
-        errorDiv.style.display = 'block';
-      }
-    }
+      errorDiv.style.display = 'none'; document.getElementById('passwordInput').value = ''; 
+    } catch (error) { errorDiv.textContent = "Incorrect."; errorDiv.style.display = 'block'; }
   };
 
   window.logout = async function() {
-    try {
-      await signOut(auth);
-    } catch (error) {
-      console.error("❌ Erreur de déconnexion:", error);
-    }
+    await signOut(auth);
   };
-  // =========================================================
-
-  console.log("🔥 Firebase initialisé");
 
   onAuthStateChanged(auth, (user) => {
-    console.log("📌 Statut Auth changé:", user ? `Connecté: ${user.email}` : "Déconnecté");
-    
     const loginScreen = document.getElementById('loginScreen');
     const adminScreen = document.getElementById('adminScreen');
-    const adminEmail = document.getElementById('adminEmail');
-    const loadingScreen = document.getElementById('loadingScreen');
-
-    if (loadingScreen) loadingScreen.style.display = 'none';
-
     if (user) {
-      if (loginScreen) loginScreen.style.display = 'none';
-      if (adminScreen) adminScreen.style.display = 'block';
-      if (adminEmail) adminEmail.textContent = user.email;
-      
-      setTimeout(() => {
-        if (typeof window.initAdminData === 'function') {
-          window.initAdminData();
-        } else {
-          console.warn("⚠️ Les fonctions d'affichage ne sont pas prêtes, on tente à nouveau...");
-          setTimeout(() => { if (typeof window.initAdminData === 'function') window.initAdminData(); }, 500);
-        }
-      }, 50);
-
+      loginScreen.style.display = 'none'; adminScreen.style.display = 'block';
+      document.getElementById('adminEmail').textContent = user.email;
+      setTimeout(() => { if (typeof window.initAdminData === 'function') window.initAdminData(); }, 50);
     } else {
-      if (loginScreen) loginScreen.style.display = 'flex';
-      if (adminScreen) adminScreen.style.display = 'none';
+      loginScreen.style.display = 'flex'; adminScreen.style.display = 'none';
     }
   });
 </script>
 
 <script>
-// ========== FONCTION DE SÉCURITÉ (À PLACER ICI) ==========
+let allMeals = [];
+let allPlanning = [];
+let allActivities = [];
+let adminDate = new Date();
+let adminUnavailable = [];
+let adminBooked = [];
+
 function escapeHtml(text) {
   if (!text) return '';
   return text.replace(/[&<>]/g, function(m) {
-    if (m === '&') return '&amp;';
-    if (m === '<') return '&lt;';
-    if (m === '>') return '&gt;';
-    return m;
+    if(m==='&')return'&amp;';if(m==='<')return'&lt;';if(m==='>')return'&gt;';return m;
   });
+}
+function formatDate(d) { return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
+function formatDateFr(dateStr) {
+  if (!dateStr) return '';
+  try {
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return dateStr;
+    return d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+  } catch(e) { return dateStr; }
+}
+function handleChatKey(event) { if (event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); sendAdminMessage(); } }
+function showToast(message, type = '') {
+  const toast = document.getElementById('toast');
+  toast.textContent = message; toast.className = 'toast show ' + type;
+  setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+// ========== CALENDRIER ADMIN ==========
+function prevAdminMonth() { adminDate = new Date(adminDate.getFullYear(), adminDate.getMonth() - 1, 1); buildAdminCalendar(); }
+function nextAdminMonth() { adminDate = new Date(adminDate.getFullYear(), adminDate.getMonth() + 1, 1); buildAdminCalendar(); }
+
+function buildAdminCalendar() {
+  const year = adminDate.getFullYear(); const month = adminDate.getMonth();
+  document.getElementById('adminCalMonth').textContent = adminDate.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
+  const HOLIDAYS = ['01-01','04-01','05-01','05-08','05-09','05-20','07-14','08-15','11-01','11-11','12-25'];
+  const labels = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+  let html = labels.map(l => `<div class="acal-label">${l}</div>`).join('');
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const offset = (firstDay + 6) % 7;
+  for (let i = 0; i < offset; i++) html += '<div class="acal-day empty"></div>';
+  for (let day = 1; day <= daysInMonth; day++) {
+    const date = new Date(year, month, day); const dow = date.getDay();
+    const dateStr = formatDate(date);
+    const isWeekend = dow === 0 || dow === 6;
+    const isHoliday = HOLIDAYS.includes(`${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`);
+    const isUnavail = adminUnavailable.includes(dateStr);
+    const hasReq = adminBooked.includes(dateStr);
+    let cls = 'acal-day';
+    if (!isWeekend && !isHoliday) cls += ' weekday'; else cls += ' weekend';
+    if (isUnavail) cls += ' unavailable';
+    if (hasReq) cls += ' has-request';
+    const dot = hasReq ? '<div class="dot"></div>' : '';
+    html += `<div class="${cls}" onclick="adminDayClick('${dateStr}')">${day}${dot}</div>`;
+  }
+  document.getElementById('adminCalGrid').innerHTML = html;
+}
+
+function adminDayClick(dateStr) { document.getElementById('blockDateInput').value = dateStr; }
+
+async function blockDate() {
+  const date = document.getElementById('blockDateInput').value;
+  if (!date) { showToast('Choisis une date', 'error'); return; }
+  try {
+    const { collection, addDoc } = window._fb; const db = window.db;
+    await addDoc(collection(db, 'unavailableDates'), { date, createdAt: new Date().toISOString() });
+    showToast(`${formatDateFr(date)} marqué indisponible 🚫`, 'success');
+  } catch(e) { showToast('Erreur', 'error'); }
+}
+
+async function unblockDate() {
+  const date = document.getElementById('blockDateInput').value;
+  if (!date) { showToast('Choisis une date', 'error'); return; }
+  try {
+    const { collection, getDocs, query, where, doc, deleteDoc } = window._fb; const db = window.db;
+    const q = query(collection(db, 'unavailableDates'), where('date', '==', date));
+    const snap = await getDocs(q);
+    snap.forEach(d => deleteDoc(doc(db, 'unavailableDates', d.id)));
+    showToast(`${formatDateFr(date)} est maintenant disponible ✅`, 'success');
+  } catch(e) { showToast('Erreur', 'error'); }
 }
 
 // ========== CHARGEMENT DES DONNÉES EN TEMPS RÉEL ==========
 async function loadAllData() {
     if (!window.db) return;
-    
     try {
       const { collection, query, orderBy, onSnapshot } = window._fb;
-      const db = window.db; // IMPORTANT : on récupère la bonne instance de Firestore
+      const db = window.db; 
       
+      // Unavailable Dates
+      onSnapshot(collection(db, 'unavailableDates'), (snap) => {
+        adminUnavailable = snap.docs.map(d => d.data().date);
+        buildAdminCalendar();
+      });
+
       // Repas
       onSnapshot(query(collection(db, 'mealRequests'), orderBy('createdAt', 'desc')), (snap) => {
         allMeals = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-        if (typeof renderMeals === 'function') renderMeals();
-        if (typeof updateStats === 'function') updateStats();
+        renderMeals(); updateStats();
       });
       
       // Planning
       onSnapshot(query(collection(db, 'planningRequests'), orderBy('createdAt', 'desc')), (snap) => {
         allPlanning = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-        if (typeof renderPlanning === 'function') renderPlanning();
-        if (typeof updateStats === 'function') updateStats();
+        adminBooked = allPlanning.filter(p => p.status !== 'declined').map(p => p.date);
+        renderPlanning(); updateStats(); buildAdminCalendar();
       });
       
       // Activités
       onSnapshot(query(collection(db, 'activityRequests'), orderBy('createdAt', 'desc')), (snap) => {
         allActivities = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-        if (typeof renderActivities === 'function') renderActivities();
-        if (typeof updateStats === 'function') updateStats();
+        renderActivities(); updateStats();
       });
       
-    } catch(e) {
-      console.error("❌ Erreur chargement:", e);
-      showToast('Erreur de chargement des données', 'error');
-    }
-  }
+    } catch(e) { console.error("❌ Erreur chargement:", e); }
+}
 
-  // ========== MISE À JOUR STATUT ==========
-  async function updateStatus(collectionName, id, newStatus) {
-    if (!window.db) return;
-    try {
-      const { doc, updateDoc } = window._fb;
-      const db = window.db; // 👈 CORRECTION
-      
-      await updateDoc(doc(db, collectionName, id), { status: newStatus });
-      showToast(newStatus === 'accepted' ? '✅ Proposition acceptée ❤️' : '❌ Proposition refusée', newStatus === 'accepted' ? 'success' : '');
-    } catch(e) {
-      console.error("❌ Erreur mise à jour:", e);
-    }
-  }
+function updateStats() {
+  const pendingCount = 
+    allMeals.filter(m => m.status === 'pending').length +
+    allPlanning.filter(p => p.status === 'pending').length +
+    allActivities.filter(a => a.status === 'pending').length;
+  if(document.getElementById('statMeals')) document.getElementById('statMeals').textContent = allMeals.length;
+  if(document.getElementById('statPlanning')) document.getElementById('statPlanning').textContent = allPlanning.length;
+  if(document.getElementById('statActivities')) document.getElementById('statActivities').textContent = allActivities.length;
+  if(document.getElementById('statPending')) document.getElementById('statPending').textContent = pendingCount;
+}
 
-  // ========== CHAT TEMPS RÉEL ==========
-  async function loadChat() {
-    const container = document.getElementById('adminChatMessages');
-    if (!window.db || !container) return;
-    
-    const { collection, query, orderBy, onSnapshot } = window._fb;
-    const db = window.db; // IMPORTANT : on récupère la bonne instance de Firestore
-    
-    onSnapshot(query(collection(db, 'messages'), orderBy('createdAt', 'asc')), (snap) => {
-      const messages = snap.docs.map(d => d.data());
-      
-      if (!messages.length) {
-        container.innerHTML = '<div class="empty-state"><div class="big">💬</div><p>Pas encore de messages</p></div>';
-        return;
-      }
-      
-      let html = '';
-      let lastDate = '';
-      
-      for (const msg of messages) {
-        const isMe = msg.sender === 'me';
-        const d = new Date(msg.createdAt);
-        const dateKey = d.toDateString();
-        
-        if (dateKey !== lastDate) {
-          html += `<div class="chat-date-sep">${d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' })}</div>`;
-          lastDate = dateKey;
-        }
-        
-        const time = d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-        html += `
-          <div class="msg-row ${isMe ? 'me' : 'lui'}">
-            <div class="msg-avatar">${isMe ? '👨' : '👩'}</div>
-            <div class="msg-bubble">
-              ${escapeHtml(msg.text)}
-              <span class="msg-time">${time}</span>
-            </div>
+function renderMeals() {
+  const container = document.getElementById('mealList');
+  if (!container) return;
+  if (!allMeals.length) { container.innerHTML = '<div class="empty-state"><div class="big">🍽️</div><p>Aucune proposition</p></div>'; return; }
+  container.innerHTML = allMeals.map(m => `
+    <div class="request-card">
+      <div class="req-icon">🍽️</div>
+      <div class="req-body">
+        <div class="req-title">${escapeHtml(m.title || m.food || 'Repas')} <span class="badge badge-${m.status || 'pending'}">${m.status || 'En attente'}</span></div>
+        <div class="req-meta">Demandé le ${formatDateFr(m.date)}</div>
+        ${m.note ? `<div class="req-note">${escapeHtml(m.note)}</div>` : ''}
+        ${m.status === 'pending' || !m.status ? `
+          <div class="req-actions">
+            <button class="btn-sm btn-accept" onclick="updateStatus('mealRequests', '${m.id}', 'accepted')">✅ Accepter</button>
+            <button class="btn-sm btn-decline" onclick="openDeclineModal('mealRequests', '${m.id}')">❌ Refuser</button>
           </div>
-        `;
-      }
-      
-      container.innerHTML = html;
-      container.scrollTop = container.scrollHeight;
-    });
-  }
+        ` : ''}
+      </div>
+    </div>
+  `).join('');
+}
 
-  async function sendAdminMessage() {
-    const input = document.getElementById('adminChatInput');
-    const text = input.value.trim();
-    if (!text || !window.db) return;
-    
-    input.value = '';
-    input.style.height = 'auto';
-    
-    try {
-      const { collection, addDoc } = window._fb;
-      const db = window.db; // 👈 CORRECTION
-      
-      await addDoc(collection(db, 'messages'), {
-        sender: 'me',
-        text: text,
-        createdAt: new Date().toISOString()
-      });
-    } catch(e) {
-      console.error("❌ Erreur envoi message:", e);
-      input.value = text;
-    }
-  }
-
-  // ========== FEEDBACKS TEMPS RÉEL ==========
-  async function loadFeedbacks() {
-    const container = document.getElementById('feedbackList');
-    if (!window.db || !container) return;
-    
-    const { collection, query, orderBy, onSnapshot } = window._fb;
-    const db = window.db; // 👈 CORRECTION
-    
-    onSnapshot(query(collection(db, 'feedbacks'), orderBy('createdAt', 'desc')), (snap) => {
-      const feedbacks = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-      
-      if (!feedbacks.length) {
-        container.innerHTML = '<div class="empty-state"><div class="big">🌸</div><p>Aucun feedback pour le moment</p></div>';
-        return;
-      }
-      
-      const moodEmoji = { happy: '😊', love: '😍', neutral: '😐', sad: '😢' };
-      container.innerHTML = feedbacks.map(f => `
-        <div class="feedback-card">
-          <div class="feedback-card-header">
-            <span class="feedback-mood-emoji">${moodEmoji[f.mood] || '😊'}</span>
-            <div style="flex:1">
-              <strong>${formatDateFr(f.date)}</strong><br>
-              <small style="color: var(--text-muted);">${new Date(f.createdAt).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}</small>
-            </div>
-            <button class="btn-sm btn-decline" onclick="deleteFeedback('${f.id}')">🗑️ Supprimer</button>
+function renderPlanning() {
+  const container = document.getElementById('planningList');
+  if (!container) return;
+  if (!allPlanning.length) { container.innerHTML = '<div class="empty-state"><div class="big">💕</div><p>Aucun moment réservé</p></div>'; return; }
+  container.innerHTML = allPlanning.map(p => `
+    <div class="request-card">
+      <div class="req-icon">💕</div>
+      <div class="req-body">
+        <div class="req-title">${escapeHtml(p.title || 'Moment câlins')} <span class="badge badge-${p.status || 'pending'}">${p.status || 'En attente'}</span></div>
+        <div class="req-meta">Date : ${formatDateFr(p.date)}</div>
+        ${p.comment ? `<div class="req-note">${escapeHtml(p.comment)}</div>` : ''}
+        ${p.status === 'pending' || !p.status ? `
+          <div class="req-actions">
+            <button class="btn-sm btn-accept" onclick="updateStatus('planningRequests', '${p.id}', 'accepted')">✅ Confirmer</button>
+            <button class="btn-sm btn-decline" onclick="openDeclineModal('planningRequests', '${p.id}')">❌ Reporter</button>
           </div>
-          <div class="feedback-text">${escapeHtml(f.text) || '<em>Aucun commentaire</em>'}</div>
+        ` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderActivities() {
+  const container = document.getElementById('activityList');
+  if (!container) return;
+  if (!allActivities.length) { container.innerHTML = '<div class="empty-state"><div class="big">✨</div><p>Aucune idée</p></div>'; return; }
+  container.innerHTML = allActivities.map(a => `
+    <div class="request-card">
+      <div class="req-icon">✨</div>
+      <div class="req-body">
+        <div class="req-title">${escapeHtml(a.title || a.activity || 'Activité')} <span class="badge badge-${a.status || 'pending'}">${a.status || 'En attente'}</span></div>
+        <div class="req-meta">Proposé le ${formatDateFr(a.date || a.createdAt)}</div>
+        ${a.note ? `<div class="req-note">${escapeHtml(a.note)}</div>` : ''}
+        ${a.status === 'pending' || !a.status ? `
+          <div class="req-actions">
+            <button class="btn-sm btn-accept" onclick="updateStatus('activityRequests', '${a.id}', 'accepted')">✅ Accepter</button>
+            <button class="btn-sm btn-decline" onclick="openDeclineModal('activityRequests', '${a.id}')">❌ Refuser</button>
+          </div>
+        ` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+// ========== MODALE REFUS ==========
+let _pendingDecline = null;
+function openDeclineModal(collectionName, id) {
+  _pendingDecline = { collectionName, id };
+  document.getElementById('declineReasonInput').value = '';
+  document.getElementById('declineModalBg').classList.add('open');
+}
+function closeDeclineModal() {
+  document.getElementById('declineModalBg').classList.remove('open');
+  _pendingDecline = null;
+}
+async function confirmDecline() {
+  if (!_pendingDecline) return;
+  const reason = document.getElementById('declineReasonInput').value.trim();
+  if (!reason) return; // Need a reason
+  await updateStatus(_pendingDecline.collectionName, _pendingDecline.id, 'declined', reason);
+  closeDeclineModal();
+}
+
+// ========== MISE À JOUR STATUT ==========
+async function updateStatus(collectionName, id, newStatus, declineReason = null) {
+  if (!window.db) return;
+  try {
+    const { doc, updateDoc } = window._fb; const db = window.db; 
+    const payload = { status: newStatus };
+    if (declineReason) payload.declineReason = declineReason;
+    await updateDoc(doc(db, collectionName, id), payload);
+    showToast(newStatus === 'accepted' ? '✅ Accepté ❤️' : '❌ Refusé (message envoyé)', newStatus === 'accepted' ? 'success' : '');
+  } catch(e) { console.error("❌ Erreur mise à jour:", e); }
+}
+
+// ========== CHAT TEMPS RÉEL ==========
+async function loadChat() {
+  const container = document.getElementById('adminChatMessages');
+  if (!window.db || !container) return;
+  const { collection, query, orderBy, onSnapshot } = window._fb; const db = window.db; 
+  onSnapshot(query(collection(db, 'messages'), orderBy('createdAt', 'asc')), (snap) => {
+    const messages = snap.docs.map(d => d.data());
+    if (!messages.length) { container.innerHTML = '<div class="empty-state"><div class="big">💬</div><p>Pas encore de messages</p></div>'; return; }
+    let html = ''; let lastDate = '';
+    for (const msg of messages) {
+      const isMe = msg.sender === 'me';
+      let d = msg.createdAt ? new Date(msg.createdAt) : new Date();
+      if (isNaN(d.getTime())) d = new Date();
+      const dateKey = d.toDateString();
+      if (dateKey !== lastDate) { html += `<div class="chat-date-sep">${d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' })}</div>`; lastDate = dateKey; }
+      const time = d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+      html += `<div class="msg-row ${isMe ? 'me' : 'lui'}"><div class="msg-avatar">${isMe ? '👨' : '👩'}</div><div class="msg-bubble">${escapeHtml(msg.text)}<span class="msg-time">${time}</span></div></div>`;
+    }
+    container.innerHTML = html; container.scrollTop = container.scrollHeight;
+  });
+}
+
+async function sendAdminMessage() {
+  const input = document.getElementById('adminChatInput');
+  if (!input) return; const text = input.value.trim();
+  if (!text || !window.db) return;
+  input.value = ''; input.style.height = 'auto';
+  try {
+    const { collection, addDoc } = window._fb; const db = window.db; 
+    await addDoc(collection(db, 'messages'), { sender: 'me', text: text, createdAt: new Date().toISOString() });
+  } catch(e) { console.error("❌ Erreur envoi message:", e); }
+}
+
+// ========== FEEDBACKS TEMPS RÉEL ==========
+async function loadFeedbacks() {
+  const container = document.getElementById('feedbackList');
+  if (!window.db || !container) return;
+  const { collection, query, orderBy, onSnapshot } = window._fb; const db = window.db; 
+  onSnapshot(query(collection(db, 'feedbacks'), orderBy('createdAt', 'desc')), (snap) => {
+    const feedbacks = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    if (!feedbacks.length) { container.innerHTML = '<div class="empty-state"><div class="big">🌸</div><p>Aucun feedback</p></div>'; return; }
+    const moodEmoji = { happy: '😊', love: '😍', neutral: '😐', sad: '😢' };
+    container.innerHTML = feedbacks.map(f => `
+      <div class="feedback-card">
+        <div class="feedback-card-header">
+          <span class="feedback-mood-emoji">${moodEmoji[f.mood] || '😊'}</span>
+          <div style="flex:1"><strong>${formatDateFr(f.date || f.createdAt)}</strong><br><small style="color: var(--text-muted);">${f.createdAt ? new Date(f.createdAt).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }) : ''}</small></div>
+          <button class="btn-sm btn-decline" onclick="deleteFeedback('${f.id}')">🗑️ Supprimer</button>
         </div>
-      `).join('');
-    });
-  }
+        <div class="feedback-text">${escapeHtml(f.text) || '<em>Aucun commentaire</em>'}</div>
+      </div>
+    `).join('');
+  });
+}
 
-  async function deleteFeedback(id) {
-    if (!confirm('Supprimer ce feedback ?') || !window.db) return;
-    try {
-      const { doc, deleteDoc } = window._fb;
-      const db = window.db; // IMPORTANT : on récupère la bonne instance de Firestore
-      
-      await deleteDoc(doc(db, 'feedbacks', id));
-      showToast('Feedback supprimé', 'success');
-    } catch(e) {
-      console.error("❌ Erreur suppression feedback:", e);
-    }
-  }
+async function deleteFeedback(id) {
+  if (!confirm('Supprimer ce feedback ?') || !window.db) return;
+  try {
+    const { doc, deleteDoc } = window._fb; const db = window.db; 
+    await deleteDoc(doc(db, 'feedbacks', id));
+    showToast('Feedback supprimé', 'success');
+  } catch(e) { console.error("❌ Erreur:", e); }
+}
 
-  // Fonction globale sécurisée appelée par le module d'authentification Firebase
-  function initAdminData() {
-    console.log("🚀 Initialisation des flux de données temps réel...");
-    loadAllData();
-    loadChat();
-    loadFeedbacks();
-  }
+function initAdminData() {
+  buildAdminCalendar(); loadAllData(); loadChat(); loadFeedbacks();
+}
 
-  // Attacher absolument toutes les fonctions nécessaires à l'objet window
-  window.initAdminData = initAdminData;
-  window.login = login;
-  window.logout = logout;
-  window.updateStatus = updateStatus;
-  window.sendAdminMessage = sendAdminMessage;
-  window.handleChatKey = handleChatKey;
-  window.deleteFeedback = deleteFeedback;
-  window.loadAllData = loadAllData;
-  window.loadChat = loadChat;
-  window.loadFeedbacks = loadFeedbacks;
+window.initAdminData = initAdminData; window.updateStatus = updateStatus;
+window.sendAdminMessage = sendAdminMessage; window.handleChatKey = handleChatKey;
+window.deleteFeedback = deleteFeedback; window.openDeclineModal = openDeclineModal;
+window.closeDeclineModal = closeDeclineModal; window.confirmDecline = confirmDecline;
+window.prevAdminMonth = prevAdminMonth; window.nextAdminMonth = nextAdminMonth;
+window.adminDayClick = adminDayClick; window.blockDate = blockDate; window.unblockDate = unblockDate;
 </script>
 </body>
 </html>
