@@ -851,7 +851,7 @@
 
     <script type="module">
       import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-      import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc, query, orderBy, addDoc, onSnapshot, where } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+      import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc, query, orderBy, addDoc, onSnapshot, where, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
       import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, setPersistence, browserSessionPersistence } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
 
       const firebaseConfig = {
@@ -871,7 +871,7 @@
 
       window.db = db;
       window.auth = auth;
-      window._fb = { collection, getDocs, doc, updateDoc, deleteDoc, query, orderBy, addDoc, onSnapshot, where };
+      window._fb = { collection, getDocs, doc, updateDoc, deleteDoc, query, orderBy, addDoc, onSnapshot, where, serverTimestamp };
       
       window.login = async function() {
         const email = document.getElementById('emailInput').value.trim();
@@ -1009,9 +1009,9 @@
           return;
         }
         try {
-          const { collection, addDoc } = window._fb;
+          const { collection, addDoc, serverTimestamp } = window._fb;
           const db = window.db;
-          await addDoc(collection(db, 'unavailableDates'), { date, createdAt: new Date().toISOString() });
+          await addDoc(collection(db, 'unavailableDates'), { date, createdAt: serverTimestamp() });
           showToast(`${formatDateFr(date)} marqué indisponible 🚫`, 'success');
         } catch(e) {
           showToast('Erreur', 'error');
@@ -1254,9 +1254,9 @@
         input.value = '';
         input.style.height = 'auto';
         try {
-          const { collection, addDoc } = window._fb;
+          const { collection, addDoc, serverTimestamp } = window._fb;
           const db = window.db;
-          await addDoc(collection(db, 'messages'), { sender: 'me', text: text, createdAt: new Date().toISOString() });
+          await addDoc(collection(db, 'messages'), { sender: 'me', text: text, createdAt: serverTimestamp() });
         } catch(e) {
           console.error("❌ Erreur envoi message:", e);
         }

@@ -843,7 +843,8 @@
         query,
         where,
         orderBy,
-        onSnapshot
+        onSnapshot,
+        serverTimestamp
       } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
       const firebaseConfig = {
@@ -857,7 +858,7 @@
 
       const app = initializeApp(firebaseConfig);
       window._db = getFirestore(app);
-      window._fbFns = { collection, addDoc, getDocs, query, where, orderBy, onSnapshot };
+      window._fbFns = { collection, addDoc, getDocs, query, where, orderBy, onSnapshot, serverTimestamp };
     </script>
 
     <script>
@@ -961,11 +962,11 @@
         input.value = '';
         input.style.height = 'auto';
         try {
-          const { collection, addDoc } = window._fbFns;
+          const { collection, addDoc, serverTimestamp } = window._fbFns;
           await addDoc(collection(window._db, 'messages'), {
             sender: CHAT_SENDER,
             text: text,
-            createdAt: new Date().toISOString()
+            createdAt: serverTimestamp()
           });
         } catch (e) {
           showToast('Message non envoyé', 'error');
@@ -1100,14 +1101,14 @@
         const monthStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
 
         try {
-          const { collection, addDoc } = window._fbFns;
+          const { collection, addDoc, serverTimestamp } = window._fbFns;
           await addDoc(collection(window._db, 'planningRequests'), {
             type: 'planning',
             date: selectedPlanningDate,
             month: monthStr,
             comment: comment,
             status: 'pending',
-            createdAt: new Date() // Format objet Date
+            createdAt: serverTimestamp()
           });
 
           showToast('Demande envoyée avec amour 💕', 'success');
@@ -1149,7 +1150,8 @@
         }
 
         try {
-          // Envoi à Firestore avec createdAt en objet Date
+          // Envoi à Firestore avec createdAt comme Firestore Timestamp
+          const { collection, addDoc, serverTimestamp } = window._fbFns;
           await addDoc(collection(window._db, 'mealRequests'), {
             type: 'meal',
             food,
@@ -1157,7 +1159,7 @@
             slot: selectedSlot,
             note,
             status: 'pending',
-            createdAt: new Date() // Important : format Date pour la comparaison des 7 jours
+            createdAt: serverTimestamp()
           });
 
           showToast('Proposition envoyée 💌', 'success');
@@ -1195,14 +1197,14 @@
         const date = document.getElementById('activityDate').value;
 
         try {
-          const { collection, addDoc } = window._fbFns;
+          const { collection, addDoc, serverTimestamp } = window._fbFns;
           await addDoc(collection(window._db, 'activityRequests'), {
             type: 'activity',
             activity: selectedActivity,
             note,
             date: date || null,
             status: 'pending',
-            createdAt: new Date() // Format objet Date
+            createdAt: serverTimestamp()
           });
 
           showToast('Idée envoyée ✨', 'success');
