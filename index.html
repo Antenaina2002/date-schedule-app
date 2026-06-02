@@ -943,7 +943,7 @@
               html += `
                 <div style="display:flex;justify-content:${isMe ? 'flex-end' : 'flex-start'};margin:5px;">
                   <div class="msg-bubble ${isMe ? 'from-me' : 'from-her'}">
-                    ${msg.text} <span class="msg-time">${time}</span>
+                    ${escapeHtml(msg.text)} <span class="msg-time">${time}</span>
                   </div>
                 </div>
               `;
@@ -1043,18 +1043,18 @@
           let cls = 'cal-day';
           let onclick = '';
           if (isToday) cls += ' today';
-          if (isReserved) {
-            cls += ' booked';
-          }
-          else if (isUnavailable) {
+
+          // ⚠️ Ordre critique : unavailable > reserved > bookable
+          if (isUnavailable) {
             cls += ' unavailable';
             onclick = `openUnavailableModal()`;
-          }
-          else if (isBookable && currentQuotaUsed < MAX_QUOTA) {
+          } else if (isReserved) {
+            cls += ' booked';
+          } else if (isBookable && currentQuotaUsed < MAX_QUOTA) {
             cls += ' bookable';
             onclick = `openPlanningModal('${dateStr}')`;
           }
-          html += `<div class="${cls}" onclick="${onclick}">${day}</div>`;
+          html += `<div class="${cls}" ${onclick ? `onclick="${onclick}"` : ''}>${day}</div>`;
         }
         document.getElementById('calGrid').innerHTML = html;
       }
@@ -1220,11 +1220,11 @@
         const container = document.getElementById('reponsesList');
         if (!window._db) return;
 
-        container.innerHTML = '<p style="text-align:center;">Chargement en cours...</p>';
+        container.innerHTML = '<p style="text-align:center;padding:2rem;">Chargement en cours...</p>';
 
         try {
           const { collection, getDocs } = window._fbFns;
-          // On récupère séparément pour éviter que l'échec d'une seule casse tout
+
           const [mSnap, pSnap, aSnap] = await Promise.all([
             getDocs(collection(window._db, 'mealRequests')),
             getDocs(collection(window._db, 'planningRequests')),
@@ -1238,22 +1238,66 @@
           ].filter(r => r.status === 'accepted' || r.status === 'declined');
 
           if (all.length === 0) {
-            container.innerHTML = '<div style="text-align:center;padding:2rem;">Rien pour l\'instant 💌</div>';
+            container.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--text-muted);">Rien pour l\'instant 💌</div>';
             return;
           }
 
-          // Tri par date
-          all.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+          // Tri correct : Firestore Timestamp → .toDate()
+          all.sort((a, b) => {
+            const da = a.createdAt?.toDate ? a.createdAt.toDate() : new Date(a.createdAt || 0);
+            const db2 = b.createdAt?.toDate ? b.createdAt.toDate() : new Date(b.createdAt || 0);
+            return db2 - da;
+          });
+
+          const typeLabel = { meal: '🍽️ Repas', planning: '💕 Câlins', activity: '✨ Activité' };
+          const typeIcon  = { meal: '🍽️', planning: '💕', activity: '✨' };
 
           container.innerHTML = all.map(r => {
-            // ... (votre logique d'affichage actuelle est bonne)
-            // Assurez-vous juste que 'r.type' est bien défini
-            return `<div class="response-item">...</div>`;
+            const label   = typeLabel[r.type] || '📋 Demande';
+            const icon    = typeIcon[r.type]  || '📋';
+            const title   = r.food || r.activity || (r.date ? `Moment du ${r.date}` : 'Demande');
+            const dateStr = r.date
+              ? new Date(r.date).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' })
+              : '';
+            const createdStr = r.createdAt?.toDate
+              ? r.createdAt.toDate().toLocaleDateString('fr-FR')
+              : '';
+
+            const statusBadge = r.status === 'accepted'
+              ? `<span class="resp-status accepted">✅ Accepté</span>`
+              : `<span class="resp-status declined">❌ Refusé</span>`;
+
+            const extraBlock = r.status === 'accepted'
+              ? `<div class="resp-accepted-msg">
+                   <span class="acc-emoji">💕</span>
+                   <span class="acc-text">C'est noté mon amour, j'ai hâte ! 🌹</span>
+                 </div>`
+              : r.declineReason
+                ? `<div class="resp-declined-msg">
+                     <div class="dec-label">Son message</div>
+                     <div class="dec-reason">${escapeHtml(r.declineReason)}</div>
+                   </div>`
+                : '';
+
+            return `
+              <div class="response-item ${r.status}">
+                <div class="resp-top">
+                  <div class="resp-icon">${icon}</div>
+                  <div class="resp-body">
+                    <div class="resp-type-tag">${label}</div>
+                    <div class="resp-title">${escapeHtml(title)}</div>
+                    ${dateStr    ? `<div class="resp-date">📅 ${dateStr}</div>`       : ''}
+                    ${createdStr ? `<div class="resp-date">Envoyé le ${createdStr}</div>` : ''}
+                    ${statusBadge}
+                  </div>
+                </div>
+                ${extraBlock}
+              </div>`;
           }).join('');
 
         } catch (e) {
-          console.error("Erreur chargement:", e);
-          container.innerHTML = '<p>Erreur de connexion aux données.</p>';
+          console.error('Erreur chargement réponses:', e);
+          container.innerHTML = '<p style="text-align:center;color:var(--red);">Erreur de connexion aux données.</p>';
         }
       }
 
@@ -1283,10 +1327,17 @@
       window.openUnavailableModal = openUnavailableModal;
       window.closeUnavailableModal = closeUnavailableModal;
 
-      initFoodGrid();
-      initActivitiesGrid();
-      loadPlanningData();
-      loadChatMessages();
+      function waitForFirebaseAndInit() {
+        if (window._db) {
+          initFoodGrid();
+          initActivitiesGrid();
+          loadPlanningData();
+          loadChatMessages();
+        } else {
+          setTimeout(waitForFirebaseAndInit, 50);
+        }
+      }
+      waitForFirebaseAndInit();
     </script>
   </body>
 </html>
