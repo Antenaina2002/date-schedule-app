@@ -912,10 +912,11 @@
       // ========== CHAT USER ==========
       function loadChatMessages() {
         if (!window._db) return;
-        const { collection, query, orderBy, onSnapshot } = window._fbFns;
+        const { collection, onSnapshot } = window._fbFns;
 
+        // Pas de orderBy : évite le crash quand createdAt est un mix de types (Timestamp vs Date JS)
         onSnapshot(
-          query(collection(window._db, 'messages'), orderBy('createdAt', 'asc')),
+          collection(window._db, 'messages'),
           (snap) => {
             const c = document.getElementById('chatMessages');
             if (snap.empty) {
@@ -923,12 +924,26 @@
               return;
             }
 
+            // Convertit n'importe quel format de date en ms pour le tri
+            function toMs(createdAt) {
+              if (!createdAt) return Date.now();
+              if (typeof createdAt.toDate === 'function') return createdAt.toDate().getTime();
+              if (createdAt instanceof Date) return createdAt.getTime();
+              if (typeof createdAt === 'string') return new Date(createdAt).getTime();
+              if (createdAt.seconds) return createdAt.seconds * 1000;
+              return Date.now();
+            }
+
+            // Tri client-side
+            const docs = [];
+            snap.forEach(docSnap => docs.push(docSnap.data()));
+            docs.sort((a, b) => toMs(a.createdAt) - toMs(b.createdAt));
+
             let html = '';
             let lastDate = null;
 
-            snap.forEach((docSnap) => {
-              const msg = docSnap.data();
-              const msgDate = msg.createdAt?.toDate ? msg.createdAt.toDate() : new Date();
+            docs.forEach((msg) => {
+              const msgDate = new Date(toMs(msg.createdAt));
               const isMe = msg.sender === CHAT_SENDER;
 
               const dateStr = msgDate.toDateString();
@@ -951,7 +966,8 @@
 
             c.innerHTML = html;
             c.scrollTop = c.scrollHeight;
-          }
+          },
+          (err) => console.error('❌ onSnapshot error:', err)
         );
       }
 

@@ -1303,22 +1303,33 @@
         const container = document.getElementById('adminChatMessages');
         if (!window.db || !container) return;
 
-        const { collection, query, orderBy, onSnapshot } = window._fb;
-        const q = query(collection(window.db, 'messages'), orderBy('createdAt', 'asc'));
+        const { collection, onSnapshot } = window._fb;
 
-        onSnapshot(q, (snap) => {
+        function toMs(v) {
+          if (!v) return Date.now();
+          if (typeof v.toDate === 'function') return v.toDate().getTime();
+          if (v instanceof Date) return v.getTime();
+          if (typeof v === 'string') return new Date(v).getTime();
+          if (v.seconds) return v.seconds * 1000;
+          return Date.now();
+        }
+
+        onSnapshot(collection(window.db, 'messages'), (snap) => {
           if (snap.empty) {
             container.innerHTML = '<div class="empty-state"><div class="big">💬</div><p>Pas encore de messages</p></div>';
             return;
           }
 
+          const docs = [];
+          snap.forEach(docSnap => docs.push(docSnap.data()));
+          docs.sort((a, b) => toMs(a.createdAt) - toMs(b.createdAt));
+
           let html = '';
           let lastDate = '';
 
-          snap.forEach(docSnap => {
-            const msg = docSnap.data();
+          docs.forEach(msg => {
             const isMe = msg.sender === 'me';
-            const d = msg.createdAt?.toDate ? msg.createdAt.toDate() : new Date();
+            const d = new Date(toMs(msg.createdAt));
             const dateKey = d.toDateString();
 
             if (dateKey !== lastDate) {
@@ -1338,7 +1349,7 @@
 
           container.innerHTML = html;
           container.scrollTop = container.scrollHeight;
-        });
+        }, (err) => console.error('❌ onSnapshot error:', err));
       }
 
       async function sendAdminMessage() {
