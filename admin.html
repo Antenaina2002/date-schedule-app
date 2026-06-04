@@ -218,6 +218,9 @@
         margin: 1.5rem 0 1rem;
         padding-bottom: 0.5rem;
         border-bottom: 2px solid var(--blush);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
       }
       .section-title:first-of-type {
         margin-top: 0;
@@ -807,25 +810,40 @@
         </div>
 
         <!-- REPAS -->
-        <div class="section-title">🍽️ Propositions repas</div>
+        <div class="section-title">
+          <span>🍽️ Propositions repas</span>
+          <button class="btn-sm btn-decline" onclick="deleteHistory('mealRequests')" title="Supprimer les demandes acceptées ou refusées" style="font-size: 0.75rem;">🗑️ Supprimer l'historique</button>
+        </div>
         <div id="mealList">
           <div class="loader">Chargement des repas...</div>
         </div>
 
         <!-- PLANNING -->
-        <div class="section-title" style="margin-top:1.5rem">💕 Moments câlins</div>
+        <div class="section-title" style="margin-top:1.5rem">
+          <span>💕 Moments câlins</span>
+          <div style="display: flex; gap: 0.5rem;">
+            <button class="btn-sm btn-accept" onclick="resetCuddleQuota()" title="Réinitialiser le quota sans supprimer les dates" style="font-size: 0.75rem;">🔄 Reset Quota</button>
+            <button class="btn-sm btn-decline" onclick="deleteHistory('planningRequests')" title="Supprimer les demandes confirmées ou reportées" style="font-size: 0.75rem;">🗑️ Supprimer l'historique</button>
+          </div>
+        </div>
         <div id="planningList">
           <div class="loader">Chargement des moments...</div>
         </div>
 
         <!-- ACTIVITÉS -->
-        <div class="section-title" style="margin-top:1.5rem">✨ Idées d'activités</div>
+        <div class="section-title" style="margin-top:1.5rem">
+          <span>✨ Idées d'activités</span>
+          <button class="btn-sm btn-decline" onclick="deleteHistory('activityRequests')" title="Supprimer les demandes acceptées ou refusées" style="font-size: 0.75rem;">🗑️ Supprimer l'historique</button>
+        </div>
         <div id="activityList">
           <div class="loader">Chargement des activités...</div>
         </div>
 
         <!-- CHAT -->
-        <div class="section-title" style="margin-top:1.5rem">💬 Notre fil secret</div>
+        <div class="section-title" style="margin-top:1.5rem">
+          <span>💬 Notre fil secret</span>
+          <button class="btn-sm btn-decline" onclick="clearMessages()" style="font-size: 0.75rem;">🗑️ Effacer le chat</button>
+        </div>
         <div class="admin-chat-wrap">
           <div class="chat-messages" id="adminChatMessages">
             <div class="loader">💕 Chargement du chat...</div>
@@ -1464,6 +1482,73 @@
       window.updateStatus = updateStatus;
       window.sendAdminMessage = sendAdminMessage;
       window.handleChatKey = handleChatKey;
+      async function deleteHistory(collectionName) {
+        if (!confirm('Voulez-vous supprimer tout l\'historique (demandes traitées) de cette section ?')) return;
+        try {
+          const { collection, getDocs, query, where, doc, deleteDoc } = window._fb;
+          const db = window.db;
+          const q = query(collection(db, collectionName), where('status', 'in', ['accepted', 'declined']));
+          const snap = await getDocs(q);
+          let count = 0;
+          const promises = snap.docs.map(d => {
+            count++;
+            return deleteDoc(doc(db, collectionName, d.id));
+          });
+          await Promise.all(promises);
+          showToast(`${count} éléments supprimés`, 'success');
+        } catch (e) {
+          console.error(e);
+          showToast('Erreur lors de la suppression', 'error');
+        }
+      }
+
+      async function resetCuddleQuota() {
+        if (!confirm('Voulez-vous réinitialiser le quota des câlins ? Les dates resteront sur le calendrier mais ne compteront plus dans la limite.')) return;
+        try {
+          const { collection, getDocs, query, where, doc, updateDoc } = window._fb;
+          const db = window.db;
+
+          const now = new Date();
+          const currentMonthStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+
+          const q = query(collection(db, 'planningRequests'), where('month', '==', currentMonthStr));
+          const snap = await getDocs(q);
+
+          let count = 0;
+          const promises = snap.docs.map(d => {
+            if (!d.data().ignoredByQuota) {
+                count++;
+                return updateDoc(doc(db, 'planningRequests', d.id), { ignoredByQuota: true });
+            }
+          }).filter(p => p);
+
+          await Promise.all(promises);
+          showToast(`Quota réinitialisé (${count} demandes marquées)`, 'success');
+        } catch (e) {
+          console.error(e);
+          showToast('Erreur lors du reset', 'error');
+        }
+      }
+
+      async function clearMessages() {
+        if (!confirm('Voulez-vous effacer TOUT le fil de discussion ?')) return;
+        try {
+          const { collection, getDocs, doc, deleteDoc } = window._fb;
+          const db = window.db;
+          const snap = await getDocs(collection(db, 'messages'));
+          let count = 0;
+          const promises = snap.docs.map(d => {
+            count++;
+            return deleteDoc(doc(db, 'messages', d.id));
+          });
+          await Promise.all(promises);
+          showToast('Chat effacé', 'success');
+        } catch (e) {
+          console.error(e);
+          showToast('Erreur', 'error');
+        }
+      }
+
       window.deleteFeedback = deleteFeedback;
       window.openDeclineModal = openDeclineModal;
       window.closeDeclineModal = closeDeclineModal;
@@ -1473,6 +1558,9 @@
       window.adminDayClick = adminDayClick;
       window.blockDate = blockDate;
       window.unblockDate = unblockDate;
+      window.deleteHistory = deleteHistory;
+      window.resetCuddleQuota = resetCuddleQuota;
+      window.clearMessages = clearMessages;
     </script>
   </body>
 </html>

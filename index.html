@@ -1034,7 +1034,7 @@
             (snap) => {
               const reqs = snap.docs.map(d => d.data());
               bookedDates = reqs.filter(r => r.status !== 'declined').map(r => r.date);
-              currentQuotaUsed = bookedDates.length;
+              currentQuotaUsed = reqs.filter(r => r.status !== 'declined' && !r.ignoredByQuota).length;
               renderCalendar();
               updateQuotaDisplay();
             }
