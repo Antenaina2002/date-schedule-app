@@ -909,7 +909,6 @@
         setTimeout(() => t.classList.remove('show'), 3000);
       }
 
-      // ========== CHAT TEMPS RÉEL ==========
       // ========== CHAT USER ==========
       function loadChatMessages() {
         if (!window._db) return;
@@ -927,10 +926,13 @@
             let html = '';
             let lastDate = null;
 
-            snap.forEach((doc) => {
-              const msg = doc.data();
-              const msgDate = msg.createdAt?.toDate ? msg.createdAt.toDate() : new Date(msg.createdAt || Date.now());
-              const isMe = msg.sender === CHAT_SENDER; // 'her'
+            snap.forEach((docSnap) => {
+              const msg = docSnap.data();
+              // Skip docs without server timestamp yet (pending write)
+              if (!msg.createdAt) return;
+
+              const msgDate = msg.createdAt.toDate ? msg.createdAt.toDate() : new Date(msg.createdAt);
+              const isMe = msg.sender === CHAT_SENDER;
 
               const dateStr = msgDate.toDateString();
               if (dateStr !== lastDate) {
@@ -964,8 +966,9 @@
         const tempId = 'temp-' + Date.now();
         const c = document.getElementById('chatMessages');
 
+        // insertAdjacentHTML preserves existing DOM nodes (unlike innerHTML +=)
         c.insertAdjacentHTML('beforeend', `
-          <div style="display:flex;justify-content:flex-end;margin:5px 0;opacity:0.7;" id="${tempId}">
+          <div style="display:flex;justify-content:flex-end;margin:5px 0;opacity:0.6;" id="${tempId}">
             <div class="msg-bubble from-me">
               ${escapeHtml(text)}
               <span class="msg-time">envoi...</span>
@@ -984,53 +987,13 @@
             text: text,
             createdAt: serverTimestamp()
           });
-
-          // Supprime le message temporaire
+          // onSnapshot will render the real message; remove temp bubble
           const temp = document.getElementById(tempId);
           if (temp) temp.remove();
-
         } catch (e) {
           console.error(e);
-          showToast('Message non envoyé', 'error');
           const temp = document.getElementById(tempId);
           if (temp) temp.remove();
-        }
-      }
-
-      async function sendChatMessage() {
-        const input = document.getElementById('chatInput');
-        const text = input.value.trim();
-        if (!text || !window._db) return;
-
-        const tempMsg = {
-          sender: CHAT_SENDER,
-          text: text,
-          createdAt: { toDate: () => new Date() } // timestamp local
-        };
-
-        // Optimistic update
-        const c = document.getElementById('chatMessages');
-        c.innerHTML += `
-          <div style="display:flex;justify-content:flex-end;margin:5px 0;opacity:0.7;">
-            <div class="msg-bubble from-me">
-              ${escapeHtml(text)}
-              <span class="msg-time">envoi...</span>
-            </div>
-          </div>
-        `;
-        c.scrollTop = c.scrollHeight;
-
-        input.value = '';
-        input.style.height = 'auto';
-
-        try {
-          const { collection, addDoc, serverTimestamp } = window._fbFns;
-          await addDoc(collection(window._db, 'messages'), {
-            sender: CHAT_SENDER,
-            text: text,
-            createdAt: serverTimestamp()
-          });
-        } catch (e) {
           showToast('Message non envoyé', 'error');
         }
       }

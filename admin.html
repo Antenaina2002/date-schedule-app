@@ -1315,11 +1315,13 @@
           let html = '';
           let lastDate = '';
 
-          snap.forEach(doc => {
-            const msg = doc.data();
-            const isMe = msg.sender === 'me';
+          snap.forEach(docSnap => {
+            const msg = docSnap.data();
+            // Skip docs without server timestamp yet (pending write)
+            if (!msg.createdAt) return;
 
-            let d = msg.createdAt?.toDate ? msg.createdAt.toDate() : new Date(msg.createdAt || Date.now());
+            const isMe = msg.sender === 'me';
+            const d = msg.createdAt.toDate ? msg.createdAt.toDate() : new Date(msg.createdAt);
             const dateKey = d.toDateString();
 
             if (dateKey !== lastDate) {
@@ -1343,53 +1345,46 @@
       }
 
       async function sendAdminMessage() {
-          const input = document.getElementById('adminChatInput');
-          if (!input) return;
+        const input = document.getElementById('adminChatInput');
+        if (!input) return;
 
-          const text = input.value.trim();
-          if (!text || !window.db) return;
+        const text = input.value.trim();
+        if (!text || !window.db) return;
 
-          // Optimistic UI - On affiche immédiatement
-          const container = document.getElementById('adminChatMessages');
-          const tempId = 'temp-msg-' + Date.now();
+        const container = document.getElementById('adminChatMessages');
+        const tempId = 'temp-msg-' + Date.now();
 
-          const tempHTML = `
-              <div class="msg-row me" id="${tempId}">
-                  <div class="msg-avatar">👨</div>
-                  <div class="msg-bubble">
-                      ${escapeHtml(text)}
-                      <span class="msg-time">envoi...</span>
-                  </div>
-              </div>
-          `;
+        // insertAdjacentHTML preserves existing DOM nodes (unlike innerHTML +=)
+        container.insertAdjacentHTML('beforeend', `
+          <div class="msg-row me" id="${tempId}">
+            <div class="msg-avatar">👨</div>
+            <div class="msg-bubble">
+              ${escapeHtml(text)}
+              <span class="msg-time">envoi...</span>
+            </div>
+          </div>
+        `);
+        container.scrollTop = container.scrollHeight;
 
-          container.insertAdjacentHTML('beforeend', tempHTML);
-          container.scrollTop = container.scrollHeight;
+        input.value = '';
+        input.style.height = 'auto';
 
-          // Vide l'input
-          input.value = '';
-          input.style.height = 'auto';
-
-          try {
-              const { collection, addDoc, serverTimestamp } = window._fb;
-              const db = window.db;
-
-              await addDoc(collection(db, 'messages'), {
-                  sender: 'me',
-                  text: text,
-                  createdAt: serverTimestamp()
-              });
-
-              // Suppression du message temporaire (le onSnapshot va le rajouter proprement)
-              const tempEl = document.getElementById(tempId);
-              if (tempEl) tempEl.remove();
-
-          } catch (e) {
-              console.error("❌ Erreur envoi message admin:", e);
-              const tempEl = document.getElementById(tempId);
-              if (tempEl) tempEl.remove();
-              showToast('Message non envoyé 😔', 'error');
-          }
+        try {
+          const { collection, addDoc, serverTimestamp } = window._fb;
+          await addDoc(collection(window.db, 'messages'), {
+            sender: 'me',
+            text: text,
+            createdAt: serverTimestamp()
+          });
+          // onSnapshot will re-render with the real message; remove temp
+          const tempEl = document.getElementById(tempId);
+          if (tempEl) tempEl.remove();
+        } catch (e) {
+          console.error('❌ Erreur envoi message admin:', e);
+          const tempEl = document.getElementById(tempId);
+          if (tempEl) tempEl.remove();
+          showToast('Message non envoyé 😔', 'error');
+        }
       }
 
       // ========== FEEDBACKS TEMPS RÉEL ==========
