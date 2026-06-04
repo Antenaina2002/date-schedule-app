@@ -1317,11 +1317,8 @@
 
           snap.forEach(docSnap => {
             const msg = docSnap.data();
-            // Skip docs without server timestamp yet (pending write)
-            if (!msg.createdAt) return;
-
             const isMe = msg.sender === 'me';
-            const d = msg.createdAt.toDate ? msg.createdAt.toDate() : new Date(msg.createdAt);
+            const d = msg.createdAt?.toDate ? msg.createdAt.toDate() : new Date();
             const dateKey = d.toDateString();
 
             if (dateKey !== lastDate) {
