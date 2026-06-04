@@ -57,7 +57,10 @@
       .login-box::before {
         content: '';
         position: absolute;
-        top: 0; left: 0; width: 100%; height: 8px;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 8px;
         background: linear-gradient(90deg, #d4688a, #f2a7b8);
         border-radius: 24px 24px 0 0;
       }
@@ -93,7 +96,8 @@
         margin-bottom: 0.5rem;
         font-weight: 500;
       }
-      input[type="email"], input[type="password"] {
+      input[type="email"],
+      input[type="password"] {
         width: 100%;
         padding: 0.9rem 1rem;
         border: 1.5px solid var(--blush);
@@ -607,8 +611,14 @@
         animation: dmIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
       }
       @keyframes dmIn {
-        from { transform: scale(0.88); opacity:0; }
-        to { transform:scale(1); opacity:1; }
+        from {
+          transform: scale(0.88);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
       }
       .decline-modal-header {
         display: flex;
@@ -718,13 +728,16 @@
         margin-right: 0.5rem;
       }
       @keyframes pulse {
-        0%, 100% { transform: scale(1); }
-        50% { transform: scale(1.2); }
+        0%, 100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.2);
+        }
       }
     </style>
   </head>
   <body>
-
     <!-- LOGIN SCREEN -->
     <div id="loginScreen">
       <div class="login-box">
@@ -851,8 +864,28 @@
 
     <script type="module">
       import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-      import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc, query, orderBy, addDoc, onSnapshot, where, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
-      import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, setPersistence, browserSessionPersistence } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+      import {
+        getFirestore,
+        collection,
+        getDocs,
+        doc,
+        updateDoc,
+        deleteDoc,
+        query,
+        orderBy,
+        addDoc,
+        onSnapshot,
+        where,
+        serverTimestamp
+      } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+      import {
+        getAuth,
+        signInWithEmailAndPassword,
+        signOut,
+        onAuthStateChanged,
+        setPersistence,
+        browserSessionPersistence
+      } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
 
       const firebaseConfig = {
         apiKey: "AIzaSyB-GZDMMGGCsoxAgVHBuWG0Z9UGsVVx4x8",
@@ -871,9 +904,21 @@
 
       window.db = db;
       window.auth = auth;
-      window._fb = { collection, getDocs, doc, updateDoc, deleteDoc, query, orderBy, addDoc, onSnapshot, where, serverTimestamp };
-      
-      window.login = async function() {
+      window._fb = {
+        collection,
+        getDocs,
+        doc,
+        updateDoc,
+        deleteDoc,
+        query,
+        orderBy,
+        addDoc,
+        onSnapshot,
+        where,
+        serverTimestamp
+      };
+
+      window.login = async function () {
         const email = document.getElementById('emailInput').value.trim();
         const password = document.getElementById('passwordInput').value;
         const errorDiv = document.getElementById('loginError');
@@ -892,7 +937,7 @@
         }
       };
 
-      window.logout = async function() {
+      window.logout = async function () {
         await signOut(auth);
       };
 
@@ -923,32 +968,40 @@
 
       function escapeHtml(text) {
         if (!text) return '';
-        return text.replace(/[&<>]/g, function(m) {
+        return text.replace(/[&<>]/g, function (m) {
           if (m === '&') return '&amp;';
           if (m === '<') return '&lt;';
           if (m === '>') return '&gt;';
           return m;
         });
       }
+
       function formatDate(d) {
-        return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+        return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
       }
+
       function formatDateFr(dateStr) {
         if (!dateStr) return '';
         try {
           const d = new Date(dateStr);
           if (isNaN(d.getTime())) return dateStr;
-          return d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
-        } catch(e) {
+          return d.toLocaleDateString('fr-FR', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+          });
+        } catch (e) {
           return dateStr;
         }
       }
+
       function handleChatKey(event) {
         if (event.key === 'Enter' && !event.shiftKey) {
           event.preventDefault();
           sendAdminMessage();
         }
       }
+
       function showToast(message, type = '') {
         const toast = document.getElementById('toast');
         toast.textContent = message;
@@ -961,6 +1014,7 @@
         adminDate = new Date(adminDate.getFullYear(), adminDate.getMonth() - 1, 1);
         buildAdminCalendar();
       }
+
       function nextAdminMonth() {
         adminDate = new Date(adminDate.getFullYear(), adminDate.getMonth() + 1, 1);
         buildAdminCalendar();
@@ -970,8 +1024,12 @@
         const year = adminDate.getFullYear();
         const month = adminDate.getMonth();
         document.getElementById('adminCalMonth').textContent = adminDate.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
-        const HOLIDAYS = ['01-01','04-01','05-01','05-08','05-09','05-20','07-14','08-15','11-01','11-11','12-25'];
-        const labels = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+
+        const HOLIDAYS = [
+          '01-01', '04-01', '05-01', '05-08', '05-09',
+          '05-20', '07-14', '08-15', '11-01', '11-11', '12-25'
+        ];
+        const labels = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
         let html = labels.map(l => `<div class="acal-label">${l}</div>`).join('');
         const firstDay = new Date(year, month, 1).getDay();
         const daysInMonth = new Date(year, month + 1, 0).getDate();
@@ -982,7 +1040,7 @@
           const dow = date.getDay();
           const dateStr = formatDate(date);
           const isWeekend = dow === 0 || dow === 6;
-          const isHoliday = HOLIDAYS.includes(`${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`);
+          const isHoliday = HOLIDAYS.includes(`${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`);
           const isUnavail = adminUnavailable.includes(dateStr);
           const hasReq = adminBooked.includes(dateStr);
           let cls = 'acal-day';
@@ -1013,7 +1071,7 @@
           const db = window.db;
           await addDoc(collection(db, 'unavailableDates'), { date, createdAt: serverTimestamp() });
           showToast(`${formatDateFr(date)} marqué indisponible 🚫`, 'success');
-        } catch(e) {
+        } catch (e) {
           showToast('Erreur', 'error');
         }
       }
@@ -1031,7 +1089,7 @@
           const snap = await getDocs(q);
           snap.forEach(d => deleteDoc(doc(db, 'unavailableDates', d.id)));
           showToast(`${formatDateFr(date)} est maintenant disponible ✅`, 'success');
-        } catch(e) {
+        } catch (e) {
           showToast('Erreur', 'error');
         }
       }
@@ -1091,19 +1149,24 @@
             renderActivities();
             updateStats();
           });
-        } catch(e) {
+        } catch (e) {
           console.error("❌ Erreur chargement:", e);
         }
       }
+
       function updateStats() {
-        const pendingCount = 
+        const pendingCount =
           allMeals.filter(m => m.status === 'pending').length +
           allPlanning.filter(p => p.status === 'pending').length +
           allActivities.filter(a => a.status === 'pending').length;
-        if (document.getElementById('statMeals')) document.getElementById('statMeals').textContent = allMeals.length;
-        if (document.getElementById('statPlanning')) document.getElementById('statPlanning').textContent = allPlanning.length;
-        if (document.getElementById('statActivities')) document.getElementById('statActivities').textContent = allActivities.length;
-        if (document.getElementById('statPending')) document.getElementById('statPending').textContent = pendingCount;
+        if (document.getElementById('statMeals'))
+          document.getElementById('statMeals').textContent = allMeals.length;
+        if (document.getElementById('statPlanning'))
+          document.getElementById('statPlanning').textContent = allPlanning.length;
+        if (document.getElementById('statActivities'))
+          document.getElementById('statActivities').textContent = allActivities.length;
+        if (document.getElementById('statPending'))
+          document.getElementById('statPending').textContent = pendingCount;
       }
 
       function renderMeals() {
@@ -1113,22 +1176,27 @@
           container.innerHTML = '<div class="empty-state"><div class="big">🍽️</div><p>Aucune proposition</p></div>';
           return;
         }
-        container.innerHTML = allMeals.map(m => `
-          <div class="request-card">
-            <div class="req-icon">🍽️</div>
-            <div class="req-body">
-              <div class="req-title">${escapeHtml(m.title || m.food || 'Repas')} <span class="badge badge-${m.status || 'pending'}">${m.status || 'En attente'}</span></div>
-              <div class="req-meta">Demandé le ${formatDateFr(m.date)}</div>
-              ${m.note ? `<div class="req-note">${escapeHtml(m.note)}</div>` : ''}
-              ${m.status === 'pending' || !m.status ? `
-                <div class="req-actions">
-                  <button class="btn-sm btn-accept" onclick="updateStatus('mealRequests', '${m.id}', 'accepted')">✅ Accepter</button>
-                  <button class="btn-sm btn-decline" onclick="openDeclineModal('mealRequests', '${m.id}')">❌ Refuser</button>
+        container.innerHTML = allMeals
+          .map(m => `
+            <div class="request-card">
+              <div class="req-icon">🍽️</div>
+              <div class="req-body">
+                <div class="req-title">
+                  ${escapeHtml(m.title || m.food || 'Repas')}
+                  <span class="badge badge-${m.status || 'pending'}">${m.status || 'En attente'}</span>
                 </div>
-              ` : ''}
+                <div class="req-meta">Demandé le ${formatDateFr(m.date)}</div>
+                ${m.note ? `<div class="req-note">${escapeHtml(m.note)}</div>` : ''}
+                ${m.status === 'pending' || !m.status ? `
+                  <div class="req-actions">
+                    <button class="btn-sm btn-accept" onclick="updateStatus('mealRequests', '${m.id}', 'accepted')">✅ Accepter</button>
+                    <button class="btn-sm btn-decline" onclick="openDeclineModal('mealRequests', '${m.id}')">❌ Refuser</button>
+                  </div>
+                ` : ''}
+              </div>
             </div>
-          </div>
-        `).join('');
+          `)
+          .join('');
       }
 
       function renderPlanning() {
@@ -1138,22 +1206,27 @@
           container.innerHTML = '<div class="empty-state"><div class="big">💕</div><p>Aucun moment réservé</p></div>';
           return;
         }
-        container.innerHTML = allPlanning.map(p => `
-          <div class="request-card">
-            <div class="req-icon">💕</div>
-            <div class="req-body">
-              <div class="req-title">${escapeHtml(p.title || 'Moment câlins')} <span class="badge badge-${p.status || 'pending'}">${p.status || 'En attente'}</span></div>
-              <div class="req-meta">Date : ${formatDateFr(p.date)}</div>
-              ${p.comment ? `<div class="req-note">${escapeHtml(p.comment)}</div>` : ''}
-              ${p.status === 'pending' || !p.status ? `
-                <div class="req-actions">
-                  <button class="btn-sm btn-accept" onclick="updateStatus('planningRequests', '${p.id}', 'accepted')">✅ Confirmer</button>
-                  <button class="btn-sm btn-decline" onclick="openDeclineModal('planningRequests', '${p.id}')">❌ Reporter</button>
+        container.innerHTML = allPlanning
+          .map(p => `
+            <div class="request-card">
+              <div class="req-icon">💕</div>
+              <div class="req-body">
+                <div class="req-title">
+                  ${escapeHtml(p.title || 'Moment câlins')}
+                  <span class="badge badge-${p.status || 'pending'}">${p.status || 'En attente'}</span>
                 </div>
-              ` : ''}
+                <div class="req-meta">Date : ${formatDateFr(p.date)}</div>
+                ${p.comment ? `<div class="req-note">${escapeHtml(p.comment)}</div>` : ''}
+                ${p.status === 'pending' || !p.status ? `
+                  <div class="req-actions">
+                    <button class="btn-sm btn-accept" onclick="updateStatus('planningRequests', '${p.id}', 'accepted')">✅ Confirmer</button>
+                    <button class="btn-sm btn-decline" onclick="openDeclineModal('planningRequests', '${p.id}')">❌ Reporter</button>
+                  </div>
+                ` : ''}
+              </div>
             </div>
-          </div>
-        `).join('');
+          `)
+          .join('');
       }
 
       function renderActivities() {
@@ -1163,22 +1236,27 @@
           container.innerHTML = '<div class="empty-state"><div class="big">✨</div><p>Aucune idée</p></div>';
           return;
         }
-        container.innerHTML = allActivities.map(a => `
-          <div class="request-card">
-            <div class="req-icon">✨</div>
-            <div class="req-body">
-              <div class="req-title">${escapeHtml(a.title || a.activity || 'Activité')} <span class="badge badge-${a.status || 'pending'}">${a.status || 'En attente'}</span></div>
-              <div class="req-meta">Proposé le ${formatDateFr(a.date || a.createdAt)}</div>
-              ${a.note ? `<div class="req-note">${escapeHtml(a.note)}</div>` : ''}
-              ${a.status === 'pending' || !a.status ? `
-                <div class="req-actions">
-                  <button class="btn-sm btn-accept" onclick="updateStatus('activityRequests', '${a.id}', 'accepted')">✅ Accepter</button>
-                  <button class="btn-sm btn-decline" onclick="openDeclineModal('activityRequests', '${a.id}')">❌ Refuser</button>
+        container.innerHTML = allActivities
+          .map(a => `
+            <div class="request-card">
+              <div class="req-icon">✨</div>
+              <div class="req-body">
+                <div class="req-title">
+                  ${escapeHtml(a.title || a.activity || 'Activité')}
+                  <span class="badge badge-${a.status || 'pending'}">${a.status || 'En attente'}</span>
                 </div>
-              ` : ''}
+                <div class="req-meta">Proposé le ${formatDateFr(a.date || a.createdAt)}</div>
+                ${a.note ? `<div class="req-note">${escapeHtml(a.note)}</div>` : ''}
+                ${a.status === 'pending' || !a.status ? `
+                  <div class="req-actions">
+                    <button class="btn-sm btn-accept" onclick="updateStatus('activityRequests', '${a.id}', 'accepted')">✅ Accepter</button>
+                    <button class="btn-sm btn-decline" onclick="openDeclineModal('activityRequests', '${a.id}')">❌ Refuser</button>
+                  </div>
+                ` : ''}
+              </div>
             </div>
-          </div>
-        `).join('');
+          `)
+          .join('');
       }
 
       // ========== MODALE REFUS ==========
@@ -1188,10 +1266,12 @@
         document.getElementById('declineReasonInput').value = '';
         document.getElementById('declineModalBg').classList.add('open');
       }
+
       function closeDeclineModal() {
         document.getElementById('declineModalBg').classList.remove('open');
         _pendingDecline = null;
       }
+
       async function confirmDecline() {
         if (!_pendingDecline) return;
         const reason = document.getElementById('declineReasonInput').value.trim();
@@ -1209,57 +1289,107 @@
           const payload = { status: newStatus };
           if (declineReason) payload.declineReason = declineReason;
           await updateDoc(doc(db, collectionName, id), payload);
-          showToast(newStatus === 'accepted' ? '✅ Accepté ❤️' : '❌ Refusé (message envoyé)', newStatus === 'accepted' ? 'success' : '');
-        } catch(e) {
+          showToast(
+            newStatus === 'accepted' ? '✅ Accepté ❤️' : '❌ Refusé (message envoyé)',
+            newStatus === 'accepted' ? 'success' : ''
+          );
+        } catch (e) {
           console.error("❌ Erreur mise à jour:", e);
         }
       }
 
       // ========== CHAT TEMPS RÉEL ==========
-      async function loadChat() {
+      function loadChat() {
         const container = document.getElementById('adminChatMessages');
         if (!window.db || !container) return;
+
         const { collection, query, orderBy, onSnapshot } = window._fb;
-        const db = window.db;
-        onSnapshot(query(collection(db, 'messages'), orderBy('createdAt', 'asc')), (snap) => {
-          const messages = snap.docs.map(d => d.data());
-          if (!messages.length) {
+        const q = query(collection(window.db, 'messages'), orderBy('createdAt', 'asc'));
+
+        onSnapshot(q, (snap) => {
+          if (snap.empty) {
             container.innerHTML = '<div class="empty-state"><div class="big">💬</div><p>Pas encore de messages</p></div>';
             return;
           }
-          let html = ''; 
+
+          let html = '';
           let lastDate = '';
-          for (const msg of messages) {
+
+          snap.forEach(doc => {
+            const msg = doc.data();
             const isMe = msg.sender === 'me';
-            let d = msg.createdAt ? new Date(msg.createdAt) : new Date();
-            if (isNaN(d.getTime())) d = new Date();
+
+            let d = msg.createdAt?.toDate ? msg.createdAt.toDate() : new Date(msg.createdAt || Date.now());
             const dateKey = d.toDateString();
+
             if (dateKey !== lastDate) {
               html += `<div class="chat-date-sep">${d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' })}</div>`;
               lastDate = dateKey;
             }
+
             const time = d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-            html += `<div class="msg-row ${isMe ? 'me' : 'lui'}"><div class="msg-avatar">${isMe ? '👨' : '👩'}</div><div class="msg-bubble">${escapeHtml(msg.text)}<span class="msg-time">${time}</span></div></div>`;
-          }
+
+            html += `
+              <div class="msg-row ${isMe ? 'me' : 'lui'}">
+                <div class="msg-avatar">${isMe ? '👨' : '👩'}</div>
+                <div class="msg-bubble">${escapeHtml(msg.text)}<span class="msg-time">${time}</span></div>
+              </div>
+            `;
+          });
+
           container.innerHTML = html;
           container.scrollTop = container.scrollHeight;
         });
       }
 
       async function sendAdminMessage() {
-        const input = document.getElementById('adminChatInput');
-        if (!input) return;
-        const text = input.value.trim();
-        if (!text || !window.db) return;
-        input.value = '';
-        input.style.height = 'auto';
-        try {
-          const { collection, addDoc, serverTimestamp } = window._fb;
-          const db = window.db;
-          await addDoc(collection(db, 'messages'), { sender: 'me', text: text, createdAt: serverTimestamp() });
-        } catch(e) {
-          console.error("❌ Erreur envoi message:", e);
-        }
+          const input = document.getElementById('adminChatInput');
+          if (!input) return;
+
+          const text = input.value.trim();
+          if (!text || !window.db) return;
+
+          // Optimistic UI - On affiche immédiatement
+          const container = document.getElementById('adminChatMessages');
+          const tempId = 'temp-msg-' + Date.now();
+
+          const tempHTML = `
+              <div class="msg-row me" id="${tempId}">
+                  <div class="msg-avatar">👨</div>
+                  <div class="msg-bubble">
+                      ${escapeHtml(text)}
+                      <span class="msg-time">envoi...</span>
+                  </div>
+              </div>
+          `;
+
+          container.insertAdjacentHTML('beforeend', tempHTML);
+          container.scrollTop = container.scrollHeight;
+
+          // Vide l'input
+          input.value = '';
+          input.style.height = 'auto';
+
+          try {
+              const { collection, addDoc, serverTimestamp } = window._fb;
+              const db = window.db;
+
+              await addDoc(collection(db, 'messages'), {
+                  sender: 'me',
+                  text: text,
+                  createdAt: serverTimestamp()
+              });
+
+              // Suppression du message temporaire (le onSnapshot va le rajouter proprement)
+              const tempEl = document.getElementById(tempId);
+              if (tempEl) tempEl.remove();
+
+          } catch (e) {
+              console.error("❌ Erreur envoi message admin:", e);
+              const tempEl = document.getElementById(tempId);
+              if (tempEl) tempEl.remove();
+              showToast('Message non envoyé 😔', 'error');
+          }
       }
 
       // ========== FEEDBACKS TEMPS RÉEL ==========
@@ -1295,13 +1425,13 @@
           const db = window.db;
           await deleteDoc(doc(db, 'feedbacks', id));
           showToast('Feedback supprimé', 'success');
-        } catch(e) {
+        } catch (e) {
           console.error("❌ Erreur:", e);
         }
       }
 
       async function cleanOldRequests() {
-        const { collection, getDocs, deleteDoc, doc } = window._fb; // Vérifiez bien vos imports
+        const { collection, getDocs, deleteDoc, doc } = window._fb;
         const collections = ['mealRequests', 'planningRequests', 'activityRequests'];
         const sevenDaysAgo = new Date();
         sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
