@@ -1,6 +1,11 @@
-# 💕 Date avec mon amour
+# 🌸 Date avec mon amour
 
-> *Une application web romantique pour planifier des moments à deux — repas, câlins et activités — dans une interface douce et intime.*
+[![License: ISC](https://img.shields.io/badge/License-ISC-ff69b4.svg)](https://opensource.org/licenses/ISC)
+[![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-f2a7b8.svg)](#)
+[![Stack: Vanilla JS](https://img.shields.io/badge/Stack-Vanilla_JS-fdf8f5.svg?logo=javascript)](#)
+[![Backend: Firebase](https://img.shields.io/badge/Backend-Firebase-ffca28.svg?logo=firebase)](#)
+
+> **Une application web romantique pour planifier des moments à deux — repas, câlins et activités — dans une interface douce et intime.**
 
 ---
 
@@ -12,375 +17,136 @@ L'interface côté client est douce, rose, animée. L'interface admin est claire
 
 ---
 
-## 🗂️ Structure du projet
+## 🎯 Fonctionnalités détaillées
 
-```
-date-app/
-│
-├── index.html              # Interface client (pour elle)
-├── admin.html              # Interface admin (pour lui)
-│
-├── utils.js                # Logique pure de index.html
-├── admin.utils.js          # Logique pure de admin.html
-│
-├── utils.test.js           # Tests unitaires — client
-├── admin.utils.test.js     # Tests unitaires — admin + auth
-│
-└── vercel.json             # Config de déploiement Vercel
-```
+### 🌹 Côté Elle — `index.html`
 
----
-
-## 🎯 Ce que fait l'application
-
-### Côté elle — `index.html`
-
-L'interface client est organisée en **3 onglets** :
-
----
+L'interface client est organisée en **5 onglets** thématiques :
 
 #### 🍽️ Onglet Repas
-
 Elle peut proposer un repas en 3 étapes :
+1.  **Choisir un plat** : Une grille de plats illustrés (Pizza, Sushi, Burger, Ramen...) ou un champ libre pour une envie personnalisée.
+2.  **Choisir une date et un créneau** : Sélection via un calendrier natif (dates passées bloquées) et choix entre `🌞 Déjeuner · Midi` et `🌙 Dîner · Soir`.
+3.  **Ajouter un petit mot** : Un message romantique pour accompagner la proposition.
+À l'envoi, des confettis roses envahissent l'écran ! 🎊
 
-**1 — Choisir un plat**
-Une grille de 12 plats illustrés en emoji est affichée :
-Pizza · Sushi · Burger · Carbonara · Nouilles · Tacos · Salade Bowl · Poké Bowl · Steak Frites · Crêpes · Fondant chocolat · Ramen.
-Un champ libre permet d'écrire un plat personnalisé si aucun ne convient.
-
-**2 — Choisir une date et un créneau**
-Un champ date natif avec un minimum fixé à aujourd'hui (impossible de proposer une date passée).
-Deux boutons : `🌞 Déjeuner · Midi` et `🌙 Dîner · Soir`.
-
-**3 — Ajouter un petit mot (optionnel)**
-Un textarea pour écrire un message romantique qui accompagnera la proposition.
-
-À l'envoi, la proposition est **sauvegardée dans Firestore** et des confettis roses envahissent l'écran. 🎊
-
----
-
-#### 💕 Onglet Planning câlins
-
-Cet onglet est soumis à deux règles métier strictes :
-
-**Restriction jour de la semaine**
-L'onglet est accessible uniquement **le week-end et les jours fériés**.
-En semaine, un message romantique s'affiche : *"Reviens me voir vendredi soir… 😘"*
-
-**Quota mensuel**
-Elle dispose de **2 créneaux maximum par mois**.
-Un indicateur visuel avec deux pastilles roses montre l'état du quota en temps réel.
-Au 3ème essai, les jours restants sont grisés et un message s'affiche : *"Tu as déjà utilisé tes 2 moments ce mois-ci ❤️ On recommence le mois prochain"*
-
-**Le calendrier**
-Seuls les samedis, dimanches et jours fériés français sont cliquables.
-Les jours passés sont automatiquement désactivés.
-Les dates déjà réservées apparaissent barrées.
-Les dates bloquées par l'admin déclenchent une modale romantique : *"Désolé mon amour, je ne serai pas disponible ce jour-là 😔"*
-
-**La réservation**
-Au clic sur un jour disponible, une modale s'ouvre avec un textarea pour écrire un commentaire secret (ex : *"Mode doux 🕯️"*, *"Surprise…"*, *"Le truc dont on a parlé 😏"*).
-À la validation, le créneau est enregistré et le quota s'incrémente.
-
----
+#### 🔥 Onglet Planning Câlins
+Soumis à des règles métier strictes :
+- **Restriction temporelle** : Accessible uniquement le week-end et les jours fériés.
+- **Quota mensuel** : Elle dispose de **2 créneaux maximum par mois**. Un indicateur visuel montre l'état du quota.
+- **Calendrier intelligent** : Affiche les jours réservés, les dates passées désactivées et les dates bloquées par l'admin.
+- **Réservation** : Possibilité d'ajouter un "commentaire secret" (ex: *"Mode doux 🕯️"*) lors de la sélection d'un jour.
 
 #### ✨ Onglet Activités
+Une grille d'activités romantiques (Massage, Ciné, Étoiles, Bain moussant...). Au clic, un formulaire permet de préciser la date souhaitée et d'ajouter un message.
 
-Une grille de 10 activités romantiques proposées :
+#### 💌 Onglet Réponses
+Un fil historique permettant de consulter les décisions de l'admin pour chaque demande, incluant les messages d'acceptation ou les raisons d'un refus.
 
-| Activité | Description |
-|----------|-------------|
-| 🌅 Balade au coucher du soleil | Main dans la main |
-| 🎬 Soirée ciné câlins | Plaid + pop-corn |
-| 💆 Massage mutuel | Bougies et huile |
-| 🧺 Pique-nique | Dans le parc |
-| 📸 Session photo | Nos plus beaux souvenirs |
-| 🛁 Bain moussant | Rien que nous deux |
-| 🎲 Jeu coquin | Soirée jeux |
-| 💃 Danse dans le salon | Playlist romantique |
-| 🍳 Cuisine ensemble | On invente une recette |
-| ⭐ Observer les étoiles | Sur le balcon |
-
-Au clic sur une activité, un formulaire apparaît pour ajouter un message et une date souhaitée, puis envoyer la proposition.
+#### 💬 Onglet Nous
+Un chat privé et sécurisé en temps réel pour échanger des messages instantanés avec son amoureux.
 
 ---
 
-### Côté lui — `admin.html`
+### 🔐 Côté Lui — `admin.html`
 
 L'interface admin est protégée par **Firebase Authentication** (email + mot de passe).
 
----
-
-#### 🔐 Authentification
-
-La page s'ouvre sur un écran de connexion minimaliste.
-L'authentification est gérée entièrement par Firebase Auth — le mot de passe n'existe nulle part dans le code.
-
-`onAuthStateChanged` surveille l'état de connexion en permanence :
-- Si connecté → l'interface admin s'affiche
-- Si déconnecté → l'écran de login s'affiche
-- La session persiste entre les rechargements (géré par Firebase)
-
-Avant d'appeler Firebase, le formulaire est validé localement (`validateLoginForm`) pour éviter un appel réseau inutile si l'email est mal formaté. Les erreurs Firebase sont traduites en messages lisibles en français (`getAuthErrorMessage`).
-
----
-
 #### 📊 Tableau de bord
+Affiche 4 compteurs clés : Repas, Moments, Activités, et le total des demandes en attente.
 
-4 compteurs s'affichent en haut de page :
-
-```
-┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌─────────────┐
-│      2      │ │      1      │ │      3      │ │      4      │
-│  Repas      │ │  Moments    │ │  Activités  │ │  En attente │
-└─────────────┘ └─────────────┘ └─────────────┘ └─────────────┘
-```
-
----
-
-#### 📅 Calendrier global
-
-Un calendrier mensuel navigable affiche en un coup d'œil :
-- Les jours normaux (gris, non cliquables)
-- Les week-ends disponibles (rose pâle)
-- Les dates bloquées (rouge)
-- Les dates avec une réservation (rose intense + point indicateur)
-
-En cliquant sur un jour, sa date se remplit automatiquement dans le formulaire de blocage.
-
-**Blocage / déblocage de dates**
-Deux boutons : `🚫 Marquer indisponible` et `✅ Marquer disponible`.
-Les dates bloquées sont sauvegardées dans la collection `unavailableDates` de Firestore.
-
----
+#### 📅 Calendrier Global
+Un calendrier mensuel permettant de :
+- Visualiser les week-ends et jours fériés.
+- Voir les dates ayant déjà fait l'objet d'une réservation.
+- **Bloquer/Débloquer des dates** : Marquer des jours comme "Indisponible" pour qu'ils ne soient pas réservables côté client.
 
 #### 📋 Gestion des propositions
+Listes détaillées pour chaque catégorie (Repas, Câlins, Activités) avec les boutons `✅ Accepter` et `❌ Refuser`. En cas de refus, l'admin peut laisser un message explicatif.
 
-Trois sections listent toutes les propositions reçues :
-
-**Propositions repas**
-Chaque carte affiche : le plat, le créneau (midi/soir), la date en français, le statut, et le petit mot s'il y en a un.
-Deux boutons : `✅ Accepter` et `❌ Refuser`.
-
-**Moments câlins**
-Chaque carte affiche la date réservée, le statut, et le commentaire secret.
-Deux boutons : `✅ Confirmer` et `❌ Reporter`.
-
-**Idées d'activités**
-Chaque carte affiche l'activité, la date souhaitée, le message, et le statut.
-Deux boutons : `✅ Accepter` et `❌ Refuser`.
-
-Toute action met à jour Firestore **et** la liste locale instantanément, sans rechargement de page.
+#### 💬 Fil Secret & Feedbacks
+- Répondre aux messages du chat en temps réel.
+- Consulter les feedbacks et humeurs envoyés.
 
 ---
 
-## 🏗️ Architecture technique
+## 🛠️ Architecture Technique
 
 ### Stack
-
 | Couche | Technologie | Pourquoi |
-|--------|-------------|----------|
-| Frontend | HTML + CSS + JS vanilla | Zéro build, zéro dépendance |
-| Styles | CSS custom properties | Design system cohérent sans framework |
-| Base de données | Firebase Firestore | Temps réel, gratuit, zéro backend |
-| Authentification | Firebase Auth | Sécurité réelle sans serveur |
-| Déploiement | Vercel | CD automatique sur chaque push |
-| Tests | Vitest | Rapide, zéro config, ESM natif |
+| :--- | :--- | :--- |
+| **Frontend** | HTML + CSS + JS Vanilla | Zéro build, modules ES natifs |
+| **Styles** | CSS Custom Properties | Design system cohérent sans framework |
+| **Base de données**| Firebase Firestore | Temps réel, NoSQL, gratuit |
+| **Authentification**| Firebase Auth | Sécurité réelle sans serveur |
+| **Tests** | Vitest | Rapide, ESM natif |
 
-### Pas de bundler, pas de framework
-
-L'application utilise les **ES Modules natifs du navigateur** pour importer Firebase :
-
-```javascript
-import { initializeApp } from
-  'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+### Architecture des fichiers
+```text
+date-app/
+├── 📄 index.html          # Interface client
+├── 📄 admin.html          # Interface admin
+├── 📄 Utils.js            # Logique métier client
+├── 📄 admin.utils.js      # Logique métier admin (Auth, Stats)
+├── 📄 Utils.test.js       # Tests unitaires client (51 tests)
+├── 📄 admin.utils.test.js # Tests unitaires admin (54 tests)
+├── ⚙️ package.json        # Configuration et dépendances
+└── 📘 README.md           # Documentation
 ```
-
-Et pour partager la logique entre HTML et tests :
-
-```javascript
-import { isBookableDay, canBook } from './utils.js';
-```
-
-Aucun Webpack, Vite, ou npm en production. Ce qui est déployé sur Vercel, c'est exactement ce qui est écrit.
 
 ---
 
-### Collections Firestore
+## 🎨 Design System
 
-```
-Firestore
-│
-├── mealRequests/          ← propositions de repas
-│   └── {id}
-│       ├── food           "Sushi"
-│       ├── date           "2025-02-15"
-│       ├── slot           "soir"
-│       ├── note           "J'ai envie de sushis 🍣"
-│       ├── status         "pending" | "accepted" | "declined"
-│       └── createdAt      ISO string
-│
-├── planningRequests/      ← moments câlins réservés
-│   └── {id}
-│       ├── date           "2025-02-08"
-│       ├── month          "2025-02"
-│       ├── comment        "Mode doux 🕯️"
-│       ├── status         "pending" | "accepted" | "declined"
-│       └── createdAt      ISO string
-│
-├── activityRequests/      ← idées d'activités
-│   └── {id}
-│       ├── activity       "Bain moussant"
-│       ├── date           "2025-02-14"
-│       ├── note           "J'adorerais ça"
-│       ├── status         "pending" | "accepted" | "declined"
-│       └── createdAt      ISO string
-│
-└── unavailableDates/      ← dates bloquées par l'admin
-    └── {id}
-        ├── date           "2025-02-10"
-        └── createdAt      ISO string
-```
-
-### Règles Firestore
-
-```javascript
-// Elle peut créer des demandes sans compte
-// Seul l'admin connecté peut lire, modifier, supprimer
-match /mealRequests/{id} {
-  allow create: if true;
-  allow read, update, delete: if request.auth != null;
+Couleurs définies via des **CSS custom properties** sur `:root` :
+```css
+:root {
+  --rose:       #f2a7b8;   /* Rose principal */
+  --rose-deep:  #d4688a;   /* Rose profond (CTA, accents) */
+  --rose-light: #fce8ef;   /* Rose clair (hover, sélection) */
+  --rose-pale:  #fff5f8;   /* Rose très pâle (fonds) */
+  --cream:      #fdf8f5;   /* Crème (fond de page) */
+  --text:       #3d2535;   /* Texte principal */
 }
 ```
+**Animations** : `float` pour les cœurs du header, `fadeIn` pour les sections, `modalIn` avec rebond, et `confettiFall` pour les succès.
 
 ---
 
-### Sécurité
+## 🛡️ Sécurité & Firestore
 
-| Élément | Approche |
-|---------|----------|
-| Config Firebase (`apiKey`) | Dans le code — normal, c'est un identifiant public |
-| Mot de passe admin | Jamais dans le code — géré par Firebase Auth |
-| Accès Firestore | Règles restrictives : écriture libre, lecture admin only |
-| Session admin | Persistée par Firebase (localStorage chiffré) |
+### Collections
+- `mealRequests` : Propositions de repas.
+- `planningRequests` : Moments câlins réservés (avec `month` pour le quota).
+- `activityRequests` : Idées d'activités.
+- `messages` : Fil de discussion en temps réel.
+- `feedbacks` : Humeurs et retours.
+- `unavailableDates` : Dates bloquées par l'admin.
+
+### Règles Firestore
+L'accès est restreint pour garantir la vie privée du couple :
+- **Création** : Libre pour les demandes initiales.
+- **Lecture/Modif** : Uniquement pour l'administrateur authentifié.
 
 ---
 
 ## 🧪 Tests
 
-Les tests couvrent **uniquement la logique métier pure** — les fonctions qui n'ont aucune dépendance au DOM ni à Firebase.
+L'application intègre **105 tests unitaires** pour garantir la fiabilité de la logique métier.
 
 ### Ce qui est testé
+- **Logique Client (`Utils.js`)** : Formatage des dates, détection des week-ends/fériés, validation du quota mensuel, validation des formulaires.
+- **Logique Admin (`admin.utils.js`)** : Calcul des stats, gestion des listes immuables, validation du login, traduction des erreurs Auth Firebase.
 
-**`utils.test.js`** — 32 tests sur la logique client :
+### Technique de Mock
+Utilisation de `vi.fn()` de Vitest pour simuler Firebase sans appels réseau.
 
+### Lancer les tests
+```bash
+npm install
+npm test -- --run
 ```
-✓ formatDate         — YYYY-MM-DD correct avec padding
-✓ formatDateFr       — texte français lisible
-✓ isWeekend          — samedi/dimanche détectés
-✓ isHoliday          — jours fériés français détectés
-✓ isBookableDay      — weekend futur ✓ / semaine ✗ / passé ✗
-✓ canBook            — quota 0,1 ✓ / quota 2 ✗
-✓ getQuotaText       — pluriel "créneau/créneaux" correct
-✓ validateMealRequest  — priorité des erreurs
-✓ validatePlanningRequest — quota bloque avant le commentaire
-✓ getDaysInMonth     — février bissextile 29 jours
-```
-
-**`admin.utils.test.js`** — 47 tests sur la logique admin + auth :
-
-```
-✓ statusLabel           — codes → labels français
-✓ computeStats          — pending seulement dans le compteur
-✓ addUnavailableDate    — pas de doublon, immutable
-✓ removeUnavailableDate — original non muté
-✓ updateRequestStatus   — seul l'élément ciblé change
-✓ extractBookedDates    — declined exclus
-✓ isValidUser           — null/undefined/email vide → false
-✓ validateLoginForm     — email sans @ → erreur
-✓ getAuthErrorMessage   — auth/invalid-credential traduit
-✓ Mock onAuthStateChanged — user connecté / null déconnecté
-✓ Mock signIn           — succès / rejet avec bon code d'erreur
-✓ Mock signOut          — appelé une seule fois
-```
-
-### Ce qui n'est pas testé (et pourquoi)
-
-- **Firebase lui-même** — c'est une librairie externe, on lui fait confiance
-- **Le DOM** — les clics et l'affichage se testent visuellement
-- **Les animations** — les confettis et transitions ne sont pas de la logique
-
-### Technique de mock
-
-Pour tester le comportement de notre code face à Firebase Auth
-sans appeler Firebase réellement, on utilise `vi.fn()` de Vitest :
-
-```javascript
-// On simule Firebase qui connecte un utilisateur
-const mockSignIn = vi.fn().mockResolvedValue({
-  user: { uid: 'abc123', email: 'toi@gmail.com' }
-});
-
-// On simule Firebase qui rejette (mauvais mot de passe)
-const mockSignIn = vi.fn().mockRejectedValue({
-  code: 'auth/invalid-credential'
-});
-```
-
-Le mock enregistre combien de fois il a été appelé,
-avec quels arguments, et retourne exactement ce qu'on lui demande.
 
 ---
 
-## 🎨 Design system
-
-Toutes les couleurs sont des **CSS custom properties** définies sur `:root` :
-
-```css
-:root {
-  --rose:       #f2a7b8;   /* rose principal */
-  --rose-deep:  #d4688a;   /* rose profond — CTA, accents */
-  --rose-light: #fce8ef;   /* rose clair — hover, sélection */
-  --rose-pale:  #fff5f8;   /* rose très pâle — fonds */
-  --blush:      #f7d6e0;   /* blush — bordures */
-  --cream:      #fdf8f5;   /* crème — fond de page */
-  --mauve:      #c9a0b0;   /* mauve — texte désactivé */
-  --text:       #3d2535;   /* texte principal */
-  --text-soft:  #8a6070;   /* texte secondaire */
-  --text-muted: #c4a8b4;   /* texte désactivé */
-}
-```
-
-**Typographie** : `Cormorant Garamond` (serif élégant) pour les titres, `DM Sans` (sans-serif doux) pour le corps.
-
-**Animations** :
-- `float` — les cœurs du header oscillent doucement en boucle
-- `fadeIn` — les sections apparaissent en fondu au changement d'onglet
-- `modalIn` — les modales arrivent avec un léger rebond (`cubic-bezier`)
-- `confettiFall` — 40 pétales roses tombent à chaque envoi réussi
-
----
-
-## 📁 Séparation logique / DOM
-
-Le principe appliqué dans les deux fichiers HTML : **toute fonction testable vit dans un `.js` séparé**.
-
-```
-index.html          admin.html
-    │                   │
-    │  importe          │  importe
-    ▼                   ▼
-utils.js          admin.utils.js
-    │                   │
-    └──────┬────────────┘
-           │  testés par
-           ▼
-    utils.test.js
-    admin.utils.test.js
-```
-
-Les fonctions qui touchent le DOM (`buildCalendar`, `renderMeals`, `showToast`…) restent dans les fichiers HTML — elles ne sont pas testées unitairement mais restent simples et courtes.
-
----
-
-*Fait avec ❤️ — pour que chaque date soit parfaite.*
+*Fait avec ❤️ — pour que chaque moment soit parfait.*

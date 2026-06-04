@@ -16,7 +16,7 @@ import {
   validateLoginForm,
   getAuthErrorMessage,
   formatDateFr,
-} from './Admin.utils.js';
+} from './admin.utils.js';
 
 // ══════════════════════════════════════════════
 //  DONNÉES DE TEST RÉUTILISABLES
