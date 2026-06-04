@@ -910,52 +910,91 @@
       }
 
       // ========== CHAT TEMPS RÉEL ==========
+      // ========== CHAT USER ==========
       function loadChatMessages() {
         if (!window._db) return;
         const { collection, query, orderBy, onSnapshot } = window._fbFns;
 
-        const q = query(
-          collection(window._db, 'messages'),
-          orderBy('createdAt', 'asc')
-        );
-
-        onSnapshot(q, (snap) => {
-          const c = document.getElementById('chatMessages');
-          if (snap.empty) {
-            c.innerHTML = '<div class="chat-empty"><span>💬</span><p>Écris-lui le premier message... 🌸</p></div>';
-            return;
-          }
-
-          let html = '';
-          let lastDate = null;
-
-          snap.forEach((doc) => {
-            const msg = doc.data();
-            const msgDate = msg.createdAt?.toDate ? msg.createdAt.toDate() : new Date(msg.createdAt || Date.now());
-            const isMe = msg.sender === CHAT_SENDER; // 'her'
-
-            const dateStr = msgDate.toDateString();
-
-            if (dateStr !== lastDate) {
-              html += `<div style="text-align:center;font-size:0.7rem;color:#888;margin:12px 0 8px;">${msgDate.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' })}</div>`;
-              lastDate = dateStr;
+        onSnapshot(
+          query(collection(window._db, 'messages'), orderBy('createdAt', 'asc')),
+          (snap) => {
+            const c = document.getElementById('chatMessages');
+            if (snap.empty) {
+              c.innerHTML = '<div class="chat-empty"><span>💬</span><p>Écris-lui le premier message... 🌸</p></div>';
+              return;
             }
 
-            const time = msgDate.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+            let html = '';
+            let lastDate = null;
 
-            html += `
-              <div style="display:flex;justify-content:${isMe ? 'flex-end' : 'flex-start'};margin:5px 0;">
-                <div class="msg-bubble ${isMe ? 'from-me' : 'from-her'}">
-                  ${escapeHtml(msg.text)}
-                  <span class="msg-time">${time}</span>
+            snap.forEach((doc) => {
+              const msg = doc.data();
+              const msgDate = msg.createdAt?.toDate ? msg.createdAt.toDate() : new Date(msg.createdAt || Date.now());
+              const isMe = msg.sender === CHAT_SENDER; // 'her'
+
+              const dateStr = msgDate.toDateString();
+              if (dateStr !== lastDate) {
+                html += `<div style="text-align:center;font-size:0.7rem;color:#888;margin:12px 0 8px;">${msgDate.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' })}</div>`;
+                lastDate = dateStr;
+              }
+
+              const time = msgDate.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+
+              html += `
+                <div style="display:flex;justify-content:${isMe ? 'flex-end' : 'flex-start'};margin:5px 0;">
+                  <div class="msg-bubble ${isMe ? 'from-me' : 'from-her'}">
+                    ${escapeHtml(msg.text)}
+                    <span class="msg-time">${time}</span>
+                  </div>
                 </div>
-              </div>
-            `;
+              `;
+            });
+
+            c.innerHTML = html;
+            c.scrollTop = c.scrollHeight;
+          }
+        );
+      }
+
+      async function sendChatMessage() {
+        const input = document.getElementById('chatInput');
+        const text = input.value.trim();
+        if (!text || !window._db) return;
+
+        const tempId = 'temp-' + Date.now();
+        const c = document.getElementById('chatMessages');
+
+        c.insertAdjacentHTML('beforeend', `
+          <div style="display:flex;justify-content:flex-end;margin:5px 0;opacity:0.7;" id="${tempId}">
+            <div class="msg-bubble from-me">
+              ${escapeHtml(text)}
+              <span class="msg-time">envoi...</span>
+            </div>
+          </div>
+        `);
+        c.scrollTop = c.scrollHeight;
+
+        input.value = '';
+        input.style.height = 'auto';
+
+        try {
+          const { collection, addDoc, serverTimestamp } = window._fbFns;
+          await addDoc(collection(window._db, 'messages'), {
+            sender: CHAT_SENDER,
+            text: text,
+            createdAt: serverTimestamp()
           });
 
-          c.innerHTML = html;
-          c.scrollTop = c.scrollHeight;
-        });
+          // Supprime le message temporaire
+          const temp = document.getElementById(tempId);
+          if (temp) temp.remove();
+
+        } catch (e) {
+          console.error(e);
+          showToast('Message non envoyé', 'error');
+          const temp = document.getElementById(tempId);
+          if (temp) temp.remove();
+        }
       }
 
       async function sendChatMessage() {
@@ -1321,6 +1360,19 @@
         document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
         document.getElementById(`section-${tab}`).classList.add('active');
         if (tab === 'reponses') loadResponses();
+      }
+
+      // ==================== CHAT FUNCTIONS ====================
+      function handleChatKeyPress(e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          sendChatMessage();
+        }
+      }
+
+      function autoResizeChatInput(el) {
+        el.style.height = 'auto';
+        el.style.height = Math.min(el.scrollHeight, 120) + 'px';
       }
 
       window.switchTab = switchTab;
