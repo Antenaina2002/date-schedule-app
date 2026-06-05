@@ -910,85 +910,83 @@
       }
 
       // ========== CHAT USER ==========
+      let chatListenerAttached = false;
       function loadChatMessages() {
-        if (!window._db) return;
+        if (!window._db || !window._fbFns || chatListenerAttached) return;
+        chatListenerAttached = true;
         const { collection, onSnapshot } = window._fbFns;
+        const container = document.getElementById('chatMessages');
 
-        // Pas de orderBy : évite le crash quand createdAt est un mix de types (Timestamp vs Date JS)
-        onSnapshot(
-          collection(window._db, 'messages'),
-          (snap) => {
-            const c = document.getElementById('chatMessages');
-            if (snap.empty) {
-              c.innerHTML = '<div class="chat-empty"><span>💬</span><p>Écris-lui le premier message... 🌸</p></div>';
-              return;
+        function toMs(v) {
+          if (!v) return Date.now();
+          if (typeof v.toDate === 'function') return v.toDate().getTime();
+          if (v instanceof Date) return v.getTime();
+          if (typeof v === 'string') return new Date(v).getTime();
+          if (v.seconds) return v.seconds * 1000;
+          return Date.now();
+        }
+
+        onSnapshot(collection(window._db, 'messages'), (snap) => {
+          if (snap.empty) {
+            container.innerHTML = '<div class="chat-empty"><span>💬</span><p>Écris-lui le premier message... 🌸</p></div>';
+            return;
+          }
+
+          const docs = [];
+          snap.forEach(docSnap => docs.push(docSnap.data()));
+          docs.sort((a, b) => toMs(a.createdAt) - toMs(b.createdAt));
+
+          let html = '';
+          let lastDate = '';
+
+          docs.forEach(msg => {
+            const isMe = msg.sender === CHAT_SENDER;
+            const d = new Date(toMs(msg.createdAt));
+            const dateKey = d.toDateString();
+
+            if (dateKey !== lastDate) {
+              html += `<div style="text-align:center;font-size:0.7rem;color:var(--text-muted);margin:12px 0 8px;">${d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' })}</div>`;
+              lastDate = dateKey;
             }
 
-            // Convertit n'importe quel format de date en ms pour le tri
-            function toMs(createdAt) {
-              if (!createdAt) return Date.now();
-              if (typeof createdAt.toDate === 'function') return createdAt.toDate().getTime();
-              if (createdAt instanceof Date) return createdAt.getTime();
-              if (typeof createdAt === 'string') return new Date(createdAt).getTime();
-              if (createdAt.seconds) return createdAt.seconds * 1000;
-              return Date.now();
-            }
+            const time = d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
 
-            // Tri client-side
-            const docs = [];
-            snap.forEach(docSnap => docs.push(docSnap.data()));
-            docs.sort((a, b) => toMs(a.createdAt) - toMs(b.createdAt));
-
-            let html = '';
-            let lastDate = null;
-
-            docs.forEach((msg) => {
-              const msgDate = new Date(toMs(msg.createdAt));
-              const isMe = msg.sender === CHAT_SENDER;
-
-              const dateStr = msgDate.toDateString();
-              if (dateStr !== lastDate) {
-                html += `<div style="text-align:center;font-size:0.7rem;color:#888;margin:12px 0 8px;">${msgDate.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' })}</div>`;
-                lastDate = dateStr;
-              }
-
-              const time = msgDate.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-
-              html += `
-                <div style="display:flex;justify-content:${isMe ? 'flex-end' : 'flex-start'};margin:5px 0;">
-                  <div class="msg-bubble ${isMe ? 'from-me' : 'from-her'}">
-                    ${escapeHtml(msg.text)}
-                    <span class="msg-time">${time}</span>
-                  </div>
+            html += `
+              <div style="display:flex; justify-content:${isMe ? 'flex-end' : 'flex-start'}; margin:5px 0;">
+                <div class="msg-bubble ${isMe ? 'from-me' : 'from-her'}">
+                  ${escapeHtml(msg.text)}
+                  <span class="msg-time">${time}</span>
                 </div>
-              `;
-            });
+              </div>
+            `;
+          });
 
-            c.innerHTML = html;
-            c.scrollTop = c.scrollHeight;
-          },
-          (err) => console.error('❌ onSnapshot error:', err)
-        );
+          container.innerHTML = html;
+          container.scrollTop = container.scrollHeight;
+        }, (err) => {
+          console.error('❌ onSnapshot error:', err);
+          chatListenerAttached = false; // Permet de réessayer
+          showToast('Erreur de connexion au chat 😔', 'error');
+        });
       }
 
       async function sendChatMessage() {
         const input = document.getElementById('chatInput');
         const text = input.value.trim();
-        if (!text || !window._db) return;
+        if (!text || !window._db || !window._fbFns) return;
 
+        const container = document.getElementById('chatMessages');
         const tempId = 'temp-' + Date.now();
-        const c = document.getElementById('chatMessages');
 
-        // insertAdjacentHTML preserves existing DOM nodes (unlike innerHTML +=)
-        c.insertAdjacentHTML('beforeend', `
-          <div style="display:flex;justify-content:flex-end;margin:5px 0;opacity:0.6;" id="${tempId}">
+        container.insertAdjacentHTML('beforeend', `
+          <div style="display:flex; justify-content:flex-end; margin:5px 0; opacity:0.6;" id="${tempId}">
             <div class="msg-bubble from-me">
               ${escapeHtml(text)}
               <span class="msg-time">envoi...</span>
             </div>
           </div>
         `);
-        c.scrollTop = c.scrollHeight;
+        container.scrollTop = container.scrollHeight;
 
         input.value = '';
         input.style.height = 'auto';
@@ -1000,7 +998,6 @@
             text: text,
             createdAt: serverTimestamp()
           });
-          // onSnapshot will render the real message; remove temp bubble
           const temp = document.getElementById(tempId);
           if (temp) temp.remove();
         } catch (e) {
@@ -1336,6 +1333,7 @@
         document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
         document.getElementById(`section-${tab}`).classList.add('active');
         if (tab === 'reponses') loadResponses();
+        if (tab === 'chat') loadChatMessages();
       }
 
       // ==================== CHAT FUNCTIONS ====================
@@ -1361,6 +1359,7 @@
       window.openPlanningModal = openPlanningModal;
       window.closePlanningModal = closePlanningModal;
       window.submitPlanningRequest = submitPlanningRequest;
+      window.loadChatMessages = loadChatMessages;
       window.sendChatMessage = sendChatMessage;
       window.handleChatKeyPress = handleChatKeyPress;
       window.autoResizeChatInput = autoResizeChatInput;
