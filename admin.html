@@ -2,8 +2,17 @@
 <html lang="fr">
   <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Admin — Date avec mon amour ❤️</title>
+
+    <!-- PWA -->
+    <link rel="manifest" href="manifest-admin.json">
+    <meta name="theme-color" content="#d4688a">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Admin 💕">
+    <link rel="apple-touch-icon" href="icon-192.png">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
       :root {
@@ -735,6 +744,84 @@
           transform: scale(1.2);
         }
       }
+
+      /* ===== 3-DOT MENU ===== */
+      .req-card-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 0.5rem;
+      }
+      .req-menu-wrap {
+        position: relative;
+        flex-shrink: 0;
+      }
+      .req-menu-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 1.2rem;
+        color: #aaa;
+        padding: 2px 6px;
+        border-radius: 6px;
+        line-height: 1;
+        transition: background 0.15s;
+      }
+      .req-menu-btn:hover { background: rgba(0,0,0,0.07); color: #555; }
+      .req-dropdown {
+        display: none;
+        position: absolute;
+        right: 0;
+        top: 110%;
+        background: #fff;
+        border: 1px solid #eee;
+        border-radius: 10px;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+        min-width: 140px;
+        z-index: 100;
+        overflow: hidden;
+      }
+      .req-dropdown.open { display: block; }
+      .req-dropdown-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.6rem 1rem;
+        font-size: 0.85rem;
+        cursor: pointer;
+        color: #e74c3c;
+        transition: background 0.15s;
+        border: none;
+        background: none;
+        width: 100%;
+        text-align: left;
+      }
+      .req-dropdown-item:hover { background: #fff5f5; }
+
+      /* ===== SECTION HEADER WITH CLEAR BUTTON ===== */
+      .section-title-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 1.5rem;
+        margin-bottom: 0.2rem;
+      }
+      .section-title-row .section-title {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      .btn-clear-section {
+        font-size: 0.72rem;
+        padding: 0.3rem 0.7rem;
+        border-radius: 8px;
+        border: 1px solid #ffb3b3;
+        background: #fff5f5;
+        color: #e74c3c;
+        cursor: pointer;
+        transition: background 0.15s;
+        white-space: nowrap;
+      }
+      .btn-clear-section:hover { background: #ffe0e0; }
     </style>
   </head>
   <body>
@@ -807,25 +894,40 @@
         </div>
 
         <!-- REPAS -->
-        <div class="section-title">🍽️ Propositions repas</div>
+        <div class="section-title-row">
+          <div class="section-title">🍽️ Propositions repas</div>
+          <button class="btn-clear-section" onclick="clearSection('mealRequests', 'mealList', '🍽️ Propositions repas')">🗑️ Vider tout</button>
+        </div>
         <div id="mealList">
           <div class="loader">Chargement des repas...</div>
         </div>
 
         <!-- PLANNING -->
-        <div class="section-title" style="margin-top:1.5rem">💕 Moments câlins</div>
+        <div class="section-title-row">
+          <div class="section-title">💕 Moments câlins</div>
+          <div style="display:flex;gap:0.4rem;align-items:center;">
+            <button class="btn-clear-section" style="border-color:#b3d4ff;background:#f0f7ff;color:#2563eb;" onclick="resetCalinCounter()">🔄 Reset compteur</button>
+            <button class="btn-clear-section" onclick="clearSection('planningRequests', 'planningList', '💕 Moments câlins')">🗑️ Vider tout</button>
+          </div>
+        </div>
         <div id="planningList">
           <div class="loader">Chargement des moments...</div>
         </div>
 
         <!-- ACTIVITÉS -->
-        <div class="section-title" style="margin-top:1.5rem">✨ Idées d'activités</div>
+        <div class="section-title-row">
+          <div class="section-title">✨ Idées d'activités</div>
+          <button class="btn-clear-section" onclick="clearSection('activityRequests', 'activityList', '✨ Idées d\'activités')">🗑️ Vider tout</button>
+        </div>
         <div id="activityList">
           <div class="loader">Chargement des activités...</div>
         </div>
 
         <!-- CHAT -->
-        <div class="section-title" style="margin-top:1.5rem">💬 Notre fil secret</div>
+        <div class="section-title-row">
+          <div class="section-title">💬 Notre fil secret</div>
+          <button class="btn-clear-section" onclick="clearSection('messages', null, '💬 Messages')">🗑️ Vider tout</button>
+        </div>
         <div class="admin-chat-wrap">
           <div class="chat-messages" id="adminChatMessages">
             <div class="loader">💕 Chargement du chat...</div>
@@ -1181,9 +1283,17 @@
             <div class="request-card">
               <div class="req-icon">🍽️</div>
               <div class="req-body">
-                <div class="req-title">
-                  ${escapeHtml(m.title || m.food || 'Repas')}
-                  <span class="badge badge-${m.status || 'pending'}">${m.status || 'En attente'}</span>
+                <div class="req-card-header">
+                  <div class="req-title">
+                    ${escapeHtml(m.title || m.food || 'Repas')}
+                    <span class="badge badge-${m.status || 'pending'}">${m.status || 'En attente'}</span>
+                  </div>
+                  <div class="req-menu-wrap">
+                    <button class="req-menu-btn" onclick="toggleCardMenu(event, 'menu-meal-${m.id}')">⋮</button>
+                    <div class="req-dropdown" id="menu-meal-${m.id}">
+                      <button class="req-dropdown-item" onclick="deleteRequest('mealRequests', '${m.id}')">🗑️ Supprimer</button>
+                    </div>
+                  </div>
                 </div>
                 <div class="req-meta">Demandé le ${formatDateFr(m.date)}</div>
                 ${m.note ? `<div class="req-note">${escapeHtml(m.note)}</div>` : ''}
@@ -1211,9 +1321,17 @@
             <div class="request-card">
               <div class="req-icon">💕</div>
               <div class="req-body">
-                <div class="req-title">
-                  ${escapeHtml(p.title || 'Moment câlins')}
-                  <span class="badge badge-${p.status || 'pending'}">${p.status || 'En attente'}</span>
+                <div class="req-card-header">
+                  <div class="req-title">
+                    ${escapeHtml(p.title || 'Moment câlins')}
+                    <span class="badge badge-${p.status || 'pending'}">${p.status || 'En attente'}</span>
+                  </div>
+                  <div class="req-menu-wrap">
+                    <button class="req-menu-btn" onclick="toggleCardMenu(event, 'menu-plan-${p.id}')">⋮</button>
+                    <div class="req-dropdown" id="menu-plan-${p.id}">
+                      <button class="req-dropdown-item" onclick="deleteRequest('planningRequests', '${p.id}')">🗑️ Supprimer</button>
+                    </div>
+                  </div>
                 </div>
                 <div class="req-meta">Date : ${formatDateFr(p.date)}</div>
                 ${p.comment ? `<div class="req-note">${escapeHtml(p.comment)}</div>` : ''}
@@ -1241,9 +1359,17 @@
             <div class="request-card">
               <div class="req-icon">✨</div>
               <div class="req-body">
-                <div class="req-title">
-                  ${escapeHtml(a.title || a.activity || 'Activité')}
-                  <span class="badge badge-${a.status || 'pending'}">${a.status || 'En attente'}</span>
+                <div class="req-card-header">
+                  <div class="req-title">
+                    ${escapeHtml(a.title || a.activity || 'Activité')}
+                    <span class="badge badge-${a.status || 'pending'}">${a.status || 'En attente'}</span>
+                  </div>
+                  <div class="req-menu-wrap">
+                    <button class="req-menu-btn" onclick="toggleCardMenu(event, 'menu-act-${a.id}')">⋮</button>
+                    <div class="req-dropdown" id="menu-act-${a.id}">
+                      <button class="req-dropdown-item" onclick="deleteRequest('activityRequests', '${a.id}')">🗑️ Supprimer</button>
+                    </div>
+                  </div>
                 </div>
                 <div class="req-meta">Proposé le ${formatDateFr(a.date || a.createdAt)}</div>
                 ${a.note ? `<div class="req-note">${escapeHtml(a.note)}</div>` : ''}
@@ -1453,6 +1579,72 @@
         }
       }
 
+
+      // ===== 3-DOT MENU TOGGLE =====
+      function toggleCardMenu(e, menuId) {
+        e.stopPropagation();
+        // Close all other open menus
+        document.querySelectorAll('.req-dropdown.open').forEach(el => {
+          if (el.id !== menuId) el.classList.remove('open');
+        });
+        document.getElementById(menuId)?.classList.toggle('open');
+      }
+      // Close menus on outside click
+      document.addEventListener('click', () => {
+        document.querySelectorAll('.req-dropdown.open').forEach(el => el.classList.remove('open'));
+      });
+
+      // ===== DELETE SINGLE REQUEST =====
+      async function deleteRequest(collectionName, id) {
+        document.querySelectorAll('.req-dropdown.open').forEach(el => el.classList.remove('open'));
+        if (!confirm('Supprimer cette entrée ?')) return;
+        try {
+          const { doc, deleteDoc } = window._fb;
+          await deleteDoc(doc(window.db, collectionName, id));
+          showToast('Supprimé ✓', 'success');
+        } catch (e) {
+          console.error('❌ deleteRequest:', e);
+          showToast('Erreur lors de la suppression', 'error');
+        }
+      }
+
+      // ===== CLEAR ENTIRE SECTION =====
+      async function clearSection(collectionName, listId, label) {
+        if (!confirm(`Vider toute la section "${label}" ? Cette action est irréversible.`)) return;
+        try {
+          const { collection, getDocs, doc, deleteDoc } = window._fb;
+          const snap = await getDocs(collection(window.db, collectionName));
+          const deletes = snap.docs.map(d => deleteDoc(doc(window.db, collectionName, d.id)));
+          await Promise.all(deletes);
+          if (listId) {
+            const container = document.getElementById(listId);
+            if (container) container.innerHTML = '<div class="empty-state"><div class="big">🗑️</div><p>Section vidée</p></div>';
+          }
+          showToast(`${label} vidé ✓`, 'success');
+        } catch (e) {
+          console.error('❌ clearSection:', e);
+          showToast('Erreur lors de la suppression', 'error');
+        }
+      }
+
+      // ===== RESET CÂLINS COUNTER (current month) =====
+      async function resetCalinCounter() {
+        const now = new Date();
+        const monthStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+        if (!confirm(`Réinitialiser le compteur de câlins pour ${monthStr} ? Les demandes de ce mois seront supprimées.`)) return;
+        try {
+          const { collection, getDocs, query, where, doc, deleteDoc } = window._fb;
+          const q = query(collection(window.db, 'planningRequests'), where('month', '==', monthStr));
+          const snap = await getDocs(q);
+          const deletes = snap.docs.map(d => deleteDoc(doc(window.db, 'planningRequests', d.id)));
+          await Promise.all(deletes);
+          showToast(`Compteur câlins réinitialisé pour ${monthStr} ✓`, 'success');
+        } catch (e) {
+          console.error('❌ resetCalinCounter:', e);
+          showToast('Erreur lors de la réinitialisation', 'error');
+        }
+      }
+
       function initAdminData() {
         buildAdminCalendar();
         loadAllData();
@@ -1461,6 +1653,10 @@
       }
 
       window.initAdminData = initAdminData;
+      window.toggleCardMenu = toggleCardMenu;
+      window.deleteRequest = deleteRequest;
+      window.clearSection = clearSection;
+      window.resetCalinCounter = resetCalinCounter;
       window.updateStatus = updateStatus;
       window.sendAdminMessage = sendAdminMessage;
       window.handleChatKey = handleChatKey;
@@ -1473,6 +1669,16 @@
       window.adminDayClick = adminDayClick;
       window.blockDate = blockDate;
       window.unblockDate = unblockDate;
+    </script>
+
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then(reg => console.log('✅ Service Worker enregistré:', reg.scope))
+            .catch(err => console.warn('SW non enregistré:', err));
+        });
+      }
     </script>
   </body>
 </html>
