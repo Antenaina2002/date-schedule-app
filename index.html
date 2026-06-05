@@ -919,12 +919,15 @@
       }
 
       // ========== CHAT USER ==========
+      let _chatUnsubscribe = null; // garde la référence pour éviter les listeners multiples
+
       function loadChatMessages() {
         if (!window._db) return;
+        if (_chatUnsubscribe) return; // listener déjà actif, on ne recrée pas
         const { collection, onSnapshot } = window._fbFns;
 
         // Pas de orderBy : évite le crash quand createdAt est un mix de types (Timestamp vs Date JS)
-        onSnapshot(
+        _chatUnsubscribe = onSnapshot(
           collection(window._db, 'messages'),
           (snap) => {
             const c = document.getElementById('chatMessages');
@@ -1344,7 +1347,9 @@
         );
         document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
         document.getElementById(`section-${tab}`).classList.add('active');
+        // loadResponses uniquement sur l'onglet réponses — jamais sur chat
         if (tab === 'reponses') loadResponses();
+        // Le chat est géré par le listener onSnapshot permanent, pas besoin de recharger
       }
 
       // ==================== CHAT FUNCTIONS ====================
