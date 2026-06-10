@@ -1097,6 +1097,18 @@
         }
       }
 
+      function formatRequestedAt(createdAt) {
+        if (!createdAt) return '';
+        try {
+          const d = createdAt.toDate ? createdAt.toDate()
+                  : createdAt instanceof Date ? createdAt
+                  : new Date(createdAt);
+          if (isNaN(d.getTime())) return '';
+          return d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })
+            + ' à ' + d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+        } catch (e) { return ''; }
+      }
+
       function handleChatKey(event) {
         if (event.key === 'Enter' && !event.shiftKey) {
           event.preventDefault();
@@ -1295,7 +1307,8 @@
                     </div>
                   </div>
                 </div>
-                <div class="req-meta">Demande pour le ${formatDateFr(m.date)}</div>
+                <div class="req-meta">📅 Date prévue : ${formatDateFr(m.date)}</div>
+                ${m.createdAt ? `<div class="req-meta" style="color:var(--text-muted);font-size:0.78rem;">🕐 Demandé le ${formatRequestedAt(m.createdAt)}</div>` : ''}
                 ${m.note ? `<div class="req-note">${escapeHtml(m.note)}</div>` : ''}
                 ${m.status === 'pending' || !m.status ? `
                   <div class="req-actions">
@@ -1333,7 +1346,8 @@
                     </div>
                   </div>
                 </div>
-                <div class="req-meta">Date : ${formatDateFr(p.date)}</div>
+                <div class="req-meta">📅 Date prévue : ${formatDateFr(p.date)}</div>
+                ${p.createdAt ? `<div class="req-meta" style="color:var(--text-muted);font-size:0.78rem;">🕐 Demandé le ${formatRequestedAt(p.createdAt)}</div>` : ''}
                 ${p.comment ? `<div class="req-note">${escapeHtml(p.comment)}</div>` : ''}
                 ${p.status === 'pending' || !p.status ? `
                   <div class="req-actions">
@@ -1371,7 +1385,8 @@
                     </div>
                   </div>
                 </div>
-                <div class="req-meta">Proposé le ${formatDateFr(a.date || a.createdAt)}</div>
+                ${a.date ? `<div class="req-meta">📅 Date prévue : ${formatDateFr(a.date)}</div>` : ''}
+                ${a.createdAt ? `<div class="req-meta" style="color:var(--text-muted);font-size:0.78rem;">🕐 Demandé le ${formatRequestedAt(a.createdAt)}</div>` : ''}
                 ${a.note ? `<div class="req-note">${escapeHtml(a.note)}</div>` : ''}
                 ${a.status === 'pending' || !a.status ? `
                   <div class="req-actions">
