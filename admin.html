@@ -745,7 +745,42 @@
         }
       }
 
-      /* ===== 3-DOT MENU ===== */
+      .admin-lunch-proposal {
+        margin-top: 0.6rem;
+        padding: 0.75rem;
+        background: #fff8f0;
+        border: 1.5px dashed #f0c987;
+        border-radius: 14px;
+      }
+      .admin-lunch-proposal label {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #b8791a;
+        margin: 0 0 0.4rem;
+        display: block;
+      }
+      .admin-lunch-proposal textarea {
+        width: 100%;
+        border: 1px solid #f0c987;
+        border-radius: 10px;
+        padding: 0.6rem;
+        font-family: inherit;
+        font-size: 0.85rem;
+        resize: vertical;
+        min-height: 50px;
+      }
+      .admin-lunch-proposal .btn-save-proposal {
+        margin-top: 0.4rem;
+        font-size: 0.78rem;
+        padding: 0.35rem 0.8rem;
+        border-radius: 8px;
+        border: none;
+        background: #d4a017;
+        color: white;
+        cursor: pointer;
+      }
+      .admin-lunch-proposal .btn-save-proposal:hover { background: #b8860b; }
+
       .req-card-header {
         display: flex;
         align-items: flex-start;
@@ -970,6 +1005,7 @@
         getFirestore,
         collection,
         getDocs,
+        getDoc,
         doc,
         updateDoc,
         deleteDoc,
@@ -1009,6 +1045,7 @@
       window._fb = {
         collection,
         getDocs,
+        getDoc,
         doc,
         updateDoc,
         deleteDoc,
@@ -1330,7 +1367,10 @@
           return;
         }
         container.innerHTML = allPlanning
-          .map(p => `
+          .map(p => {
+            const needsLunchInput = p.lunchChoice === 'Je cuisine' && !p.adminLunchProposal;
+            const canAccept = !needsLunchInput;
+            return `
             <div class="request-card">
               <div class="req-icon">💕</div>
               <div class="req-body">
@@ -1348,17 +1388,50 @@
                 </div>
                 <div class="req-meta">📅 Date prévue : ${formatDateFr(p.date)}</div>
                 ${p.createdAt ? `<div class="req-meta" style="color:var(--text-muted);font-size:0.78rem;">🕐 Demandé le ${formatRequestedAt(p.createdAt)}</div>` : ''}
+                ${p.hotel ? `<div class="req-meta">🏨 ${escapeHtml(p.hotel)}</div>` : ''}
+                ${p.lunchChoice ? `<div class="req-meta">🍽️ Midi : ${escapeHtml(p.lunchChoice)}</div>` : ''}
+                ${p.lunchDetail ? `<div class="req-note">${escapeHtml(p.lunchDetail)}</div>` : ''}
+                ${p.duration ? `<div class="req-meta">⏳ ${escapeHtml(p.duration)}</div>` : ''}
+                ${p.dinnerChoice ? `<div class="req-meta">🌙 Soir : ${escapeHtml(p.dinnerChoice)}</div>` : ''}
                 ${p.comment ? `<div class="req-note">${escapeHtml(p.comment)}</div>` : ''}
+                ${p.lunchChoice === 'Je cuisine' ? `
+                  <div class="admin-lunch-proposal">
+                    <label>👨‍🍳 Ce qu'elle va cuisiner (obligatoire avant validation)</label>
+                    <textarea id="lunchProposal-${p.id}" placeholder="Ex : Pâtes carbonara, salade César...">${escapeHtml(p.adminLunchProposal || '')}</textarea>
+                    <button class="btn-save-proposal" onclick="saveLunchProposal('${p.id}')">💾 Enregistrer</button>
+                    ${needsLunchInput ? `<div style="font-size:0.75rem;color:#e74c3c;margin-top:0.3rem;">⚠️ À remplir avant de pouvoir confirmer</div>` : ''}
+                  </div>
+                ` : ''}
                 ${p.status === 'pending' || !p.status ? `
                   <div class="req-actions">
-                    <button class="btn-sm btn-accept" onclick="updateStatus('planningRequests', '${p.id}', 'accepted')">✅ Confirmer</button>
+                    <button class="btn-sm btn-accept" onclick="updateStatus('planningRequests', '${p.id}', 'accepted')" ${canAccept ? '' : 'disabled style="opacity:0.4;cursor:not-allowed;"'}>✅ Confirmer</button>
                     <button class="btn-sm btn-decline" onclick="openDeclineModal('planningRequests', '${p.id}')">❌ Reporter</button>
                   </div>
                 ` : ''}
               </div>
             </div>
-          `)
+          `;
+          })
           .join('');
+      }
+
+      // Sauvegarde la proposition de repas cuisiné par l'admin (cas "Je cuisine")
+      async function saveLunchProposal(id) {
+        const textarea = document.getElementById(`lunchProposal-${id}`);
+        if (!textarea) return;
+        const value = textarea.value.trim();
+        if (!value) {
+          showToast('Écris quelque chose avant d\'enregistrer 🍽️', 'error');
+          return;
+        }
+        try {
+          const { doc, updateDoc } = window._fb;
+          await updateDoc(doc(window.db, 'planningRequests', id), { adminLunchProposal: value });
+          showToast('Proposition enregistrée ✓', 'success');
+        } catch (e) {
+          console.error('❌ saveLunchProposal:', e);
+          showToast('Erreur lors de l\'enregistrement', 'error');
+        }
       }
 
       function renderActivities() {
@@ -1425,8 +1498,19 @@
       async function updateStatus(collectionName, id, newStatus, declineReason = null) {
         if (!window.db) return;
         try {
-          const { doc, updateDoc } = window._fb;
+          const { doc, updateDoc, getDoc } = window._fb;
           const db = window.db;
+
+          // Garde-fou : impossible de confirmer un planning "Je cuisine" sans proposition admin
+          if (collectionName === 'planningRequests' && newStatus === 'accepted' && getDoc) {
+            const snap = await getDoc(doc(db, collectionName, id));
+            const data = snap.exists() ? snap.data() : null;
+            if (data && data.lunchChoice === 'Je cuisine' && !data.adminLunchProposal) {
+              showToast('Remplis d\'abord ce qu\'elle va cuisiner 🍽️', 'error');
+              return;
+            }
+          }
+
           const payload = { status: newStatus };
           if (declineReason) payload.declineReason = declineReason;
           await updateDoc(doc(db, collectionName, id), payload);
@@ -1673,6 +1757,7 @@
       window.clearSection = clearSection;
       window.resetCalinCounter = resetCalinCounter;
       window.updateStatus = updateStatus;
+      window.saveLunchProposal = saveLunchProposal;
       window.sendAdminMessage = sendAdminMessage;
       window.handleChatKey = handleChatKey;
       window.deleteFeedback = deleteFeedback;

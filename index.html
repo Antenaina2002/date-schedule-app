@@ -816,10 +816,46 @@
 
     <!-- MODALS -->
     <div class="modal-bg" id="planningModal">
-      <div class="modal">
+      <div class="modal" style="max-height:85vh;overflow-y:auto;">
         <h3>Un moment pour nous 💕</h3>
         <p>Tu as sélectionné le :</p>
         <div class="modal-date-badge" id="modalDateBadge"></div>
+
+        <label>🏨 Hôtel</label>
+        <select id="planningHotel">
+          <option value="Hôtel Ambohijatovo">Hôtel Ambohijatovo</option>
+          <option value="L'hôtel habituel">L'hôtel habituel</option>
+        </select>
+
+        <label>🍽️ Nourriture du midi</label>
+        <select id="planningLunchChoice" onchange="handleLunchChoiceChange()">
+          <option value="On commande">On commande</option>
+          <option value="Tu cuisines">Tu cuisines</option>
+          <option value="Je cuisine">Je cuisine</option>
+          <option value="On mange dehors">On mange dehors</option>
+        </select>
+
+        <div id="lunchDetailWrap">
+          <label id="lunchDetailLabel">Précise ce que tu veux manger</label>
+          <textarea id="planningLunchDetail" placeholder='Ex : "Sushi", "Pizza margherita"...'></textarea>
+          <p id="lunchDetailHint" style="display:none;font-size:0.78rem;color:var(--text-muted);margin-top:-0.5rem;">Le choix précis se fera sur place, mais dis-moi si t'as une envie ou une restriction 🌸</p>
+          <p id="lunchDetailError" style="display:none;font-size:0.8rem;color:#e74c3c;margin-top:0.3rem;"></p>
+        </div>
+
+        <label>⏳ Durée</label>
+        <select id="planningDuration" onchange="handleDurationChange()">
+          <option value="Journée uniquement">Journée uniquement</option>
+          <option value="Journée + Nuit">Journée + Nuit</option>
+        </select>
+
+        <div id="dinnerWrap" style="display:none;">
+          <label>🌙 Nourriture du soir</label>
+          <select id="planningDinnerChoice">
+            <option value="On commande et on ramène">On commande et on ramène</option>
+            <option value="On commande ce qu'il y a à l'hôtel">On commande ce qu'il y a à l'hôtel</option>
+          </select>
+        </div>
+
         <label>Ton petit secret pour ce moment… 🌸</label>
         <textarea id="planningComment" placeholder='Ex : "Mode doux 🕯️", "Surprise..."'></textarea>
         <div class="modal-btns">
@@ -1118,6 +1154,14 @@
         const d = new Date(dateStr);
         document.getElementById('modalDateBadge').textContent = d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
         document.getElementById('planningComment').value = '';
+        document.getElementById('planningHotel').value = 'Hôtel Ambohijatovo';
+        document.getElementById('planningLunchChoice').value = 'On commande';
+        document.getElementById('planningLunchDetail').value = '';
+        document.getElementById('planningDuration').value = 'Journée uniquement';
+        document.getElementById('planningDinnerChoice').value = 'On commande et on ramène';
+        document.getElementById('lunchDetailError').style.display = 'none';
+        handleLunchChoiceChange();
+        handleDurationChange();
         document.getElementById('planningModal').classList.add('open');
       }
       function closePlanningModal() {
@@ -1131,24 +1175,115 @@
         document.getElementById('unavailableModal').classList.remove('open');
       }
 
+      // ===== Champs conditionnels du planning câlin =====
+      function handleLunchChoiceChange() {
+        const choice = document.getElementById('planningLunchChoice').value;
+        const wrap = document.getElementById('lunchDetailWrap');
+        const label = document.getElementById('lunchDetailLabel');
+        const hint = document.getElementById('lunchDetailHint');
+        const errorEl = document.getElementById('lunchDetailError');
+
+        errorEl.style.display = 'none';
+
+        if (choice === 'Je cuisine') {
+          // Pas de précision demandée — l'admin renseignera ce qui sera cuisiné
+          wrap.style.display = 'none';
+          return;
+        }
+
+        wrap.style.display = 'block';
+
+        if (choice === 'On mange dehors') {
+          label.textContent = 'Une envie particulière ? (facultatif mais apprécié 🌸)';
+          hint.style.display = 'block';
+        } else {
+          label.textContent = 'Précise ce que tu veux manger';
+          hint.style.display = 'none';
+        }
+      }
+
+      function handleDurationChange() {
+        const duration = document.getElementById('planningDuration').value;
+        document.getElementById('dinnerWrap').style.display = duration === 'Journée + Nuit' ? 'block' : 'none';
+      }
+
+      // Détecte les réponses trop vagues pour "précise ce que tu veux manger"
+      function isVagueLunchAnswer(text) {
+        const normalized = text
+          .toLowerCase()
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '') // enlève les accents
+          .trim();
+
+        const vaguePatterns = [
+          'comme tu veux', 'comme tu veut', 'tu veux quoi', 'tu veut quoi',
+          'choisis pour moi', 'choisi pour moi', 'jsp', 'je sais pas',
+          'je ne sais pas', 'peu importe', 'n importe quoi', 'nimporte quoi',
+          'surprise moi', 'a toi de voir', 'toi de voir', 'osef', 'sais pas',
+          'aucune idee', 'jss pas', 'idc'
+        ];
+
+        if (normalized.length < 2) return true;
+        return vaguePatterns.some(p => normalized === p || normalized.includes(p));
+      }
+
       async function submitPlanningRequest() {
         if (!selectedPlanningDate) return;
-        const comment = document.getElementById('planningComment').value.trim();
         if (!window._db) return;
+
+        const hotel = document.getElementById('planningHotel').value;
+        const lunchChoice = document.getElementById('planningLunchChoice').value;
+        const lunchDetailRaw = document.getElementById('planningLunchDetail').value.trim();
+        const duration = document.getElementById('planningDuration').value;
+        const dinnerChoice = duration === 'Journée + Nuit'
+          ? document.getElementById('planningDinnerChoice').value
+          : null;
+        const comment = document.getElementById('planningComment').value.trim();
+        const errorEl = document.getElementById('lunchDetailError');
+
+        // Validation conditionnelle du champ "nourriture du midi"
+        if (lunchChoice === 'On commande' || lunchChoice === 'Tu cuisines') {
+          if (!lunchDetailRaw) {
+            errorEl.textContent = 'Faut choisir chérie 😏';
+            errorEl.style.display = 'block';
+            return;
+          }
+          if (isVagueLunchAnswer(lunchDetailRaw)) {
+            errorEl.textContent = 'Faut choisir chérie 😏 (une vraie réponse cette fois 😉)';
+            errorEl.style.display = 'block';
+            return;
+          }
+        }
+        // "On mange dehors" : champ facultatif, jamais bloquant
+        errorEl.style.display = 'none';
 
         const d = new Date(selectedPlanningDate);
         const monthStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
 
+        const payload = {
+          type: 'planning',
+          date: selectedPlanningDate,
+          month: monthStr,
+          comment: comment,
+          status: 'pending',
+          hotel: hotel,
+          lunchChoice: lunchChoice,
+          lunchDetail: lunchChoice === 'Je cuisine' ? '' : lunchDetailRaw,
+          duration: duration,
+          dinnerChoice: dinnerChoice,
+          createdAt: null // remplacé juste après par serverTimestamp()
+        };
+
+        // "Je cuisine" : l'admin doit renseigner ce qui sera cuisiné avant validation possible
+        if (lunchChoice === 'Je cuisine') {
+          payload.needsAdminLunchInput = true;
+          payload.adminLunchProposal = '';
+        }
+
         try {
           const { collection, addDoc, serverTimestamp } = window._fbFns;
-          await addDoc(collection(window._db, 'planningRequests'), {
-            type: 'planning',
-            date: selectedPlanningDate,
-            month: monthStr,
-            comment: comment,
-            status: 'pending',
-            createdAt: serverTimestamp()
-          });
+          payload.createdAt = serverTimestamp();
+          await addDoc(collection(window._db, 'planningRequests'), payload);
 
           showToast('Demande envoyée avec amour 💕', 'success');
           closePlanningModal();
@@ -1157,6 +1292,7 @@
           showToast('Erreur lors de l\'envoi', 'error');
         }
       }
+
 
       // ========== REPAS ET ACTIVITÉS ==========
       function initFoodGrid() {
@@ -1375,6 +1511,8 @@
       window.openPlanningModal = openPlanningModal;
       window.closePlanningModal = closePlanningModal;
       window.submitPlanningRequest = submitPlanningRequest;
+      window.handleLunchChoiceChange = handleLunchChoiceChange;
+      window.handleDurationChange = handleDurationChange;
       window.sendChatMessage = sendChatMessage;
       window.handleChatKeyPress = handleChatKeyPress;
       window.autoResizeChatInput = autoResizeChatInput;
