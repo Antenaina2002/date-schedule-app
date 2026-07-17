@@ -639,6 +639,40 @@
         background: var(--blush);
         color: var(--mauve);
       }
+      .resp-meta {
+        font-size: 0.82rem;
+        color: var(--text-soft);
+        margin: 0.18rem 0;
+        line-height: 1.4;
+      }
+      .resp-meta strong { color: var(--text); }
+      .resp-note-block {
+        font-size: 0.83rem;
+        color: var(--text-soft);
+        background: white;
+        border-left: 3px solid var(--rose);
+        border-radius: 0 10px 10px 0;
+        padding: 0.5rem 0.75rem;
+        margin: 0.4rem 0;
+        font-style: italic;
+      }
+      .resp-admin-proposal {
+        margin-top: 0.5rem;
+        padding: 0.6rem 0.8rem;
+        background: #fff8f0;
+        border: 1.5px dashed #f0c987;
+        border-radius: 10px;
+        font-size: 0.82rem;
+        color: #7a5010;
+      }
+      .resp-admin-proposal strong {
+        display: block;
+        font-size: 0.75rem;
+        color: #b8791a;
+        margin-bottom: 0.2rem;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
       .resp-accepted-msg {
         margin-top: 0.9rem;
         padding: 0.9rem 1.1rem;
@@ -1428,19 +1462,53 @@
           const typeIcon  = { meal: '🍽️', planning: '💕', activity: '✨' };
 
           container.innerHTML = all.map(r => {
-            const label   = typeLabel[r.type] || '📋 Demande';
-            const icon    = typeIcon[r.type]  || '📋';
-            const title   = r.food || r.activity || (r.date ? `Moment du ${r.date}` : 'Demande');
-            const dateStr = r.date
-              ? new Date(r.date).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' })
-              : '';
+            const label = typeLabel[r.type] || '📋 Demande';
+            const icon  = typeIcon[r.type]  || '📋';
+
+            // Titre principal selon le type
+            const title = r.type === 'planning'
+              ? (r.date ? new Date(r.date).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' }) : 'Moment câlins')
+              : r.food || r.activity || 'Demande';
+
             const createdStr = r.createdAt?.toDate
-              ? r.createdAt.toDate().toLocaleDateString('fr-FR')
+              ? r.createdAt.toDate().toLocaleDateString('fr-FR') + ' à ' + r.createdAt.toDate().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
               : '';
 
             const statusBadge = r.status === 'accepted'
               ? `<span class="resp-status accepted">✅ Accepté</span>`
               : `<span class="resp-status declined">❌ Refusé</span>`;
+
+            // ===== Lignes de détails selon le type (style identique à l'admin) =====
+            let detailLines = '';
+
+            if (r.type === 'planning') {
+              if (r.hotel)        detailLines += `<div class="resp-meta">🏨 <strong>Hôtel :</strong> ${escapeHtml(r.hotel)}</div>`;
+              if (r.lunchChoice)  detailLines += `<div class="resp-meta">🍽️ <strong>Midi :</strong> ${escapeHtml(r.lunchChoice)}</div>`;
+              if (r.lunchDetail)  detailLines += `<div class="resp-note-block">${escapeHtml(r.lunchDetail)}</div>`;
+              if (r.lunchChoice === 'Je cuisine') {
+                if (r.adminLunchProposal) {
+                  detailLines += `<div class="resp-admin-proposal"><strong>👨‍🍳 Ce qu'elle va cuisiner</strong>${escapeHtml(r.adminLunchProposal)}</div>`;
+                } else {
+                  detailLines += `<div class="resp-admin-proposal"><strong>👨‍🍳 Ce qu'elle va cuisiner</strong><em style="color:#aaa;">En attente de la proposition…</em></div>`;
+                }
+              }
+              if (r.duration)     detailLines += `<div class="resp-meta">⏳ <strong>Durée :</strong> ${escapeHtml(r.duration)}</div>`;
+              if (r.dinnerChoice) detailLines += `<div class="resp-meta">🌙 <strong>Soir :</strong> ${escapeHtml(r.dinnerChoice)}</div>`;
+              if (r.comment)      detailLines += `<div class="resp-note-block">💬 ${escapeHtml(r.comment)}</div>`;
+            }
+
+            if (r.type === 'meal') {
+              const dateStr = r.date ? new Date(r.date).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' }) : '';
+              if (dateStr)  detailLines += `<div class="resp-meta">📅 <strong>Date :</strong> ${dateStr}</div>`;
+              if (r.slot)   detailLines += `<div class="resp-meta">🕐 <strong>Créneau :</strong> ${escapeHtml(r.slot)}</div>`;
+              if (r.note)   detailLines += `<div class="resp-note-block">💬 ${escapeHtml(r.note)}</div>`;
+            }
+
+            if (r.type === 'activity') {
+              const dateStr = r.date ? new Date(r.date).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' }) : '';
+              if (dateStr) detailLines += `<div class="resp-meta">📅 <strong>Date :</strong> ${dateStr}</div>`;
+              if (r.note)  detailLines += `<div class="resp-note-block">💬 ${escapeHtml(r.note)}</div>`;
+            }
 
             const extraBlock = r.status === 'accepted'
               ? `<div class="resp-accepted-msg">
@@ -1461,11 +1529,11 @@
                   <div class="resp-body">
                     <div class="resp-type-tag">${label}</div>
                     <div class="resp-title">${escapeHtml(title)}</div>
-                    ${dateStr    ? `<div class="resp-date">📅 ${dateStr}</div>`       : ''}
-                    ${createdStr ? `<div class="resp-date">Envoyé le ${createdStr}</div>` : ''}
+                    ${createdStr ? `<div class="resp-date">🕐 Envoyé le ${createdStr}</div>` : ''}
                     ${statusBadge}
                   </div>
                 </div>
+                ${detailLines ? `<div style="margin-top:0.7rem;">${detailLines}</div>` : ''}
                 ${extraBlock}
               </div>`;
           }).join('');
